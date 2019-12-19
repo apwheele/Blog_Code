@@ -1,0 +1,87 @@
+%Andy Wheeler, LaTex guide for SUNY Albany dissertation, apwheele@gmail.com
+%See http://www.albany.edu/graduate/assets/Dissertation_DIGITAL_Submission_Instructions.pdf
+%These are my best hacks to get it the way they want it
+%For a finished product you can see https://www.dropbox.com/s/0goftnx2u8tgb2z/AndyW_Dissertation.pdf?dl=0
+
+
+%I use report for page numbering on chapter pages, no running head, and the abstract environment
+%is already defined
+\documentclass[letterpaper, 12pt]{report}
+
+%via http://tex.stackexchange.com/a/57773/8217
+%setting frontmatter to roman numerals, everything else arabic
+\makeatletter
+\newif\if@mainmatter \@mainmattertrue
+\newcommand\frontmatter{%
+    \cleardoublepage
+  \@mainmatterfalse
+  \pagenumbering{roman}}
+\newcommand\mainmatter{%
+    \cleardoublepage
+  \@mainmattertrue
+  \pagenumbering{arabic}}
+\makeatother
+
+%double spacing, captions for tables/graphs can be smaller
+\linespread{2}
+\usepackage[font={small,singlespacing}]{caption}
+
+%1 inch margin
+\usepackage[margin=1in]{geometry}
+
+%figures consecutive
+\usepackage{chngcntr}
+\counterwithout{figure}{chapter}
+\counterwithout{table}{chapter}
+
+%citations
+\usepackage{natbib}
+
+% other regular packages
+%\usepackage{graphicx}
+%\usepackage{url}
+%\usepackage[fleqn]{amsmath}
+
+\begin{document}
+
+\frontmatter
+
+%Title Page
+\begin{titlepage}
+\title{Your Title Here}
+\author{\centerline{by} \\
+        \centerline{Author} \\
+        \\
+        \centerline{A dissertation submitted to} \\
+        \centerline{The University at Albany, State University of New York} \\
+        \centerline{in partial fulfilment of the requirements for the degree of} \\
+        \centerline{Doctor of Philosophy} \\
+        \centerline{School of ????????????} \\
+        \centerline{20?? \date{}}}
+\maketitle
+\end{titlepage}
+
+\begin{abstract}
+\thispagestyle{plain}
+\setcounter{page}{2} %manually set the counter
+Blah blah blah - needs to be under 350 words
+\end{abstract}
+
+\section*{Acknowledgements}
+I have no idea if this should go before or after the table of contents (or the abstract!)
+\setcounter{page}{3}
+
+%again hacky, but manually setting the front matter page numbers
+\tableofcontents
+\setcounter{page}{4}
+
+\mainmatter
+
+%Use input to insert the chapters 
+\input{./Chapters/introduction}
+
+%You can use whatever citation style you want
+\bibliographystyle{chicago}
+\bibliography{bibliography,Extra}
+\end{document}
+
