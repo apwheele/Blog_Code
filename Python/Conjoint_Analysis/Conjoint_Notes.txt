@@ -1,0 +1,31 @@
+https://rpubs.com/ifn1411/conjoint
+
+Just regression of the ranks as far as I can tell, should adjust for repeated observations.
+
+https://www.bmj.com/content/320/7248/1530.full
+
+https://pages.uncc.edu/wp-content/uploads/sites/868/2014/12/conjoint.pdf
+
+https://link.springer.com/article/10.1023/B:JOQC.0000016700.27654.76
+
+Can maybe get that data at https://www.icpsr.umich.edu/icpsrweb/NACJD/studies/2520/datadocumentation
+
+
+https://www.icpsr.umich.edu/icpsrweb/NACJD/studies/8295
+
+#############################
+
+#Python statsmodels
+
+#Select out observations that are missing data
+
+
+#Variables I need:
+oth_vars = ['ID','Version_NSCS']
+rank_vars = ['R1_BikeTheft','R2_Robbery','R3_Truancy','R4_Stabs']
+rank_vars += ['R' + str(i) for i in range(5,26)]
+
+#Rank across rows (average rank for ties)
+
+
+
