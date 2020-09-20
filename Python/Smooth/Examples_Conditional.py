@@ -137,7 +137,7 @@ smooth.plot_form(data=DC_crime,x='TotalLic',y='TotalCrime',
                  form='TotalCrime ~ np.sqrt(TotalLic)',
                  fam=sm.families.Poisson(), marker_size=12)
 
-#Can do transforms of the X variable
+#Can do multiple transforms of the X variable
 smooth.plot_form(data=DC_crime,x='TotalLic',y='TotalCrime',
                  form='TotalCrime ~ np.log(TotalLic.clip(1)) + I(TotalLic==0)',
                  fam=sm.families.Poisson(), marker_size=12)
