@@ -14,7 +14,9 @@ import pandas as pd
 import matplotlib
 from matplotlib import pyplot as plt
 import statsmodels.api as sm
+import statsmodels.formula.api as smf
 import numpy as np
+import patsy
 from scipy.stats import beta
 
 ##########################################
@@ -189,6 +191,47 @@ def plot_rcs(data,x,y,num_knots=None,knots=None,
     if ret_data:
         return pred_vals
 
+
+#Similar function, but with a formula input
+def plot_form(data,x,y,form,fam=sm.families.Gaussian(),
+              ci=0.99,plot=True,ret_data=False, 
+             marker_size=def_size, marker_alpha=0.7):
+    #Estimating the model
+    datY, datX = patsy.dmatrices(form, data, return_type='dataframe')
+    mod = sm.GLM(datY, datX, family=fam)
+    mod_res = mod.fit()
+    #Getting the confidence intervals around the result
+    mi, mx = data[x].min(), data[x].max()
+    space_x = pd.DataFrame(np.linspace(mi,mx,100), columns=[x])
+    space_x[y] = 1 #need to pick a value that is OK for the operator
+    des_y, des_matX = patsy.dmatrices(form, space_x, return_type='dataframe')
+    predictions = mod_res.get_prediction(des_matX)
+    #may want to fill in min/max x here instead
+    #of using the original data using np.linspace
+    al = 1 - ci
+    pred_vals = predictions.summary_frame(alpha=al)
+    pred_vals['x'] = space_x[x]
+    #Now making a plot
+    if plot:
+        fig, ax = plt.subplots()
+        ax.plot(pred_vals['x'],pred_vals['mean'], 
+                zorder=3, color='darkblue',alpha=0.9)
+        ax.fill_between(pred_vals['x'],pred_vals['mean_ci_lower'],
+                        pred_vals['mean_ci_upper'],alpha=0.2,
+                        zorder=2, color='darkblue')
+        if marker_alpha > 0:
+            ax.scatter(data[x], data[y], 
+                       c='grey', edgecolor='k', 
+                       s=marker_size, alpha=marker_alpha, 
+                       zorder=4)
+        ax.set_xlabel(x)
+        ax.set_ylabel(y)
+        plt.show()
+    if ret_data:
+        return pred_vals
+
+#I need to add in group and small multiple functions
+#for formulas
 #Do a similar function, but for quantile regression
 
 #A group function to superimpose on the same chart
@@ -240,8 +283,7 @@ def group_rcs_plot(data,x,y,group,colors=None,
     if ret_data:
         ret_dat = pd.concat(comb_dat,axis=0)
         return ret_dat
-    
-        
+      
 #A function to make small multiple in seaborn easier
 def loc_error(data, x, y, num_knots=None,knots=None,
               fam=sm.families.Gaussian(),ci=0.99, 
