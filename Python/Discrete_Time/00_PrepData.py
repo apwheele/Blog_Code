@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 
 np.random.seed(10)
 
-my_dir = r'C:\Users\andre\OneDrive\Desktop\DiscreteTime_MachineLearning'
+my_dir = r'D:\Dropbox\Dropbox\PublicCode_Git\Blog_Code\Python\Discrete_Time'
 os.chdir(my_dir)
 sys.path.append(my_dir)
 import discrete_time
@@ -163,11 +163,3 @@ print( model.summary() )
 #Now save the model output
 model.save("discrete_time.pickle", remove_data=True)
 #############################################
-
-
-
-
-
-
-
-

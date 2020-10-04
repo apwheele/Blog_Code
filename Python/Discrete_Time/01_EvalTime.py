@@ -9,12 +9,14 @@ import numpy as np
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from sklearn import metrics
+import lifelines
+import math
 
 import os
 import sys
 from matplotlib import pyplot as plt
 
-my_dir = r'C:\Users\andre\OneDrive\Desktop\DiscreteTime_MachineLearning'
+my_dir = r'D:\Dropbox\Dropbox\PublicCode_Git\Blog_Code\Python\Discrete_Time'
 os.chdir(my_dir)
 sys.path.append(my_dir)
 import discrete_time
@@ -48,6 +50,7 @@ model = sm.load('discrete_time.pickle')
 
 #Expand out how many iterations I want to look at
 end_time = 52*2
+test_dat['OrigEvent'] = test_dat['EVENT']
 test_explode = discrete_time.explode_data(data=test_dat,time='WeekTot',
                                           outcome='EVENT',max_time=end_time,
                                           min_time=end_time,
@@ -181,6 +184,33 @@ for w in check_weeks:
 auc_stats = pd.DataFrame(zip(check_weeks,auc_stats),
                          columns=['Week','AUC'])
 print(auc_stats)   
-   
+
 #############################################
-    
+
+#############################################
+#Estimating ROC curve with censoring
+#http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.465.2850&rep=rep1&type=pdf
+
+auc_stats_li = []
+roc_dat = []
+for w in check_weeks:
+     roc_loc, auc_stat = discrete_time.censored_roc(test_explode,'CumHazard','Time',
+                                'OrigEvent','WeekTot',w)
+     auc_stats_li.append(auc_stat)
+     roc_dat.append(roc_loc)
+
+roc_data = pd.concat(roc_dat, axis=0)
+auc_stats['CensAUC'] = auc_stats_li
+
+print(auc_stats)  
+
+#Can do a quick and ugly plot
+fig, ax = plt.subplots(figsize=(6,6)) 
+roc_data.groupby('Time').plot(kind='line', x='FPR', y='TPR', 
+                              ax=ax, c='grey', alpha=0.5,
+                              legend=False)
+ax.plot([0,1],[0,1],color='k')
+plt.show()
+
+#############################################
+

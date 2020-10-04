@@ -7,6 +7,8 @@ Andy Wheeler
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
+import lifelines
+from sklearn import metrics
 from matplotlib import pyplot as plt
 
 #Takes time input and bins it into smaller sets, eg days to weeks
@@ -211,3 +213,67 @@ def rcs(x,knots,stub,norm=True,data=None):
 		res_df = pd.concat(spline_li,axis=1)
 		res_df.columns = labels
 		return res_df
+        
+
+#Function to scoop out non-monotonic sections
+#For ROC curve
+def check_min(data):
+    shift = data.shift(1,fill_value=0)
+    fpr_min = (data['FPR'] < shift['FPR'])
+    tpr_min = (data['TPR'] < shift['TPR'])
+    any_min = fpr_min | tpr_min
+    return any_min.sum(), any_min        
+        
+#Function to estimate censored ROC curve
+#https://onlinelibrary.wiley.com/doi/abs/10.1111/j.0006-341X.2000.00337.x
+def censored_roc(data,pred_var,time_var,orig_var,dur_var,time_val):
+    subset = data[data[time_var] == time_val]
+    #KM for full sample
+    km_full = lifelines.KaplanMeierFitter()
+    km_full.fit(subset[dur_var], subset[orig_var])
+    sf_full = list(km_full.survival_function_at_times(times=[time_val]))[0]
+    #Getting reduced set of potential thresholds
+    thresh = pd.unique(subset[pred_var].round(3))
+    thresh.sort()
+    thresh = np.flip(thresh)
+    #Estimating Curves
+    tpr = [0.0]
+    fpr = [0.0]
+    km_above = lifelines.KaplanMeierFitter()
+    km_below = lifelines.KaplanMeierFitter()
+    for tv in thresh[1:-1]:
+        above_test = (subset[pred_var] > tv)
+        #KM for sample above
+        sub_above = subset[above_test]
+        km_above.fit(sub_above[dur_var],sub_above[orig_var])
+        sf_above = list(km_above.survival_function_at_times(times=[time_val]))[0]
+        #KM for sample below
+        sub_below = subset[~above_test]
+        km_below.fit(sub_below[dur_var],sub_below[orig_var])
+        sf_below = list(km_below.survival_function_at_times(times=[time_val]))[0]
+        #Now calculating sens/spec
+        prop_above = above_test.mean()
+        sens = ((1 - sf_above)*prop_above)/(1 - sf_full)
+        spec = (sf_below*(1 - prop_above))/(sf_full)
+        tpr.append(sens)
+        fpr.append(1 - spec)
+    tpr.append(1.0)
+    fpr.append(1.0)
+    roc_dat = pd.DataFrame(zip(fpr,tpr,thresh),
+                           columns=['FPR','TPR','THRESH'])
+    #Now fudging out places that are non-monotonic
+    roc_new = roc_dat
+    roc_new['FPR'] = roc_new['FPR'].round(3)
+    roc_new['TPR'] = roc_new['TPR'].round(3)
+    nonN, any_min = check_min(roc_new)
+    while nonN > 0:
+        roc_new = roc_new[~any_min].copy()
+        nonN, any_min = check_min(roc_new)   
+    roc_new['Time'] = time_val
+    try:
+        auc_stat = metrics.auc(roc_new['FPR'], roc_new['TPR'])
+    except:
+        auc_stat = -1
+    return roc_new, auc_stat
+    
+    
