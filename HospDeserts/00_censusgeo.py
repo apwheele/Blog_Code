@@ -27,12 +27,12 @@ def split_geo(df, add, city, state, zipcode, chunk_size=500):
     df_new = df.copy()
     df_new.reset_index(inplace=True)
     splits = np.ceil( df.shape[0]/chunk_size)
-    chunk_li = np.array_split(df['index'], splits)
+    chunk_li = np.array_split(df_new['index'], splits)
     res_li = []
     pick_fi = []
     for i,c in enumerate(chunk_li):
         # Grab data, export to csv
-        sub_data = df.loc[c, ['index',add,city,state,zipcode]]
+        sub_data = df_new.loc[c, ['index',add,city,state,zipcode]]
         sub_data.to_csv('temp_geo.csv',header=False,index=False)
         # Geo the results and turn back into df
         print(f'Geocoding round {int(i)+1} of {int(splits)}, {datetime.now()}')
