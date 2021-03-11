@@ -119,7 +119,7 @@ def lp_clumpy(data, w, sel_n, crime_var, theta):
 #######################################################################
 # Loading in data and creating spatial grid
 
-os.chdir(r'C:\Users\andre\OneDrive\Desktop\Raleigh')
+os.chdir(r'D:\Dropbox\Dropbox\PublicCode_Git\Blog_Code\Python\Raleigh')
 
 # These are both via Raleigh open data platform
 area_file = r'GIS_Data\Planning_Jurisdictions.shp'
