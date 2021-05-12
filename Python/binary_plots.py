@@ -1,6 +1,6 @@
 '''
-Set of random python functions
-I find helpful
+Binary plot helper functions
+for ROC curve and calibration charts
 
 Andy Wheeler
 apwheele@gmail.com
