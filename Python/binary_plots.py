@@ -1,7 +1,6 @@
 '''
-Set of python functions 
-for plots post binrary prediction models
-calibration plots and ROC plots
+Set of random python functions
+I find helpful
 
 Andy Wheeler
 apwheele@gmail.com
@@ -46,7 +45,7 @@ def cal_data(prob, true, data, bins, plot=False, figsize=(6,4), save_plot=False)
         ax.plot(agg_bins['Bin'], agg_bins['Actual'], marker='o', markeredgecolor='w', label='Actual')
         ax.set_ylabel('Probability')
         ax.legend(loc='upper left')
-        ax.set_xlim([0,bins])
+        ax.set_xlim([0,bins+1])
         plt.xticks(None)
         plt.tick_params(length=0)
         if save_plot:
@@ -263,9 +262,9 @@ def auc_plot_wide_group(data, y_true, y_scores, group, ncols=3,
     nrows = int(np.ceil(  len(grp_list) / ncols ) )
     res_order = [(r,c) for r in range(nrows) for c in range(ncols)]
     fig, ax_grid = plt.subplots(figsize=(size*ncols, size*nrows), 
-                                nrows=nrows, ncols=ncols, constrained_layout=True,
+                                nrows=nrows, ncols=ncols,
                                 sharex=False, sharey=True, squeeze=False)
-    fig.subplots_adjust(wspace=0)
+    fig.subplots_adjust(wspace=0.05) #?constrained layout?
     tick_num = [i/10 for i in range(11)]
     tick_lab = [0.0,'',0.2,'',0.4,'',0.6,'',0.8,'',1.0]
     for g,o in zip(grp_list,res_order):
