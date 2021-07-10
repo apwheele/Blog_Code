@@ -9,7 +9,7 @@ import sys
 from datetime import datetime
 
 today = datetime.today()
-cdate = today.strftime("%Y_%d_%m")
+cdate = today.strftime("%Y_%m_%d")
 report_name = f'StatsReport_{cdate}.html'
 cmd = f'jupyter nbconvert --execute example_report.ipynb --no-input --to html'
 os.system(cmd) # generating report
