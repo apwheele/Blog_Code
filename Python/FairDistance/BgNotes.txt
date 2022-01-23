@@ -1,0 +1,19 @@
+Demographic variables are taken from the 2014 5-year American Community Survey Estimates at the Block Group Level (taken from the FTP site). Can provide code that goes from original txt files to this if requested.
+
+Here is a description of how the percentage variables are calculated based on the original data "B?????" data fields.
+
+PerPoverty = (B17010_002/B17010_001)             # % of families in poverty
+PerFemHeadHouse = (B11003_016/B11002_001)        # % female head house with kids under 18
+PerUnemploy = (B23025_005/B23025_003)            # % unemployed people of those 16 and in labor force
+PropMove =  (B07001_017/B07001_001)              # % people moved in prior year, for block groups based on imputed tables
+PerAssist = (B22010_002/B22010_001)              # % households receiving foodstamps/SNAP
+
+WhitePerc = (B03002_003/B02001_001)              # % white non-hispanic
+BlackPerc = (B03002_004 + B03002_014)/B02001_001 # % black pop (includes black hispanic)
+HispPerc = (B03002_013/B02001_001)               # % hispanic not black
+AsianPerc = (B02001_005/B02001_001)              # % asian 
+
+
+The diversity index I use is Simpson
+
+SimpsonInd = WhitePerc^2 + BlackPerc^2 + HispPerc^2 + AsianPerc^2
