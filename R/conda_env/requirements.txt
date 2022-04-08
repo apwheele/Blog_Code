@@ -1,0 +1,18 @@
+# Example creating a new environment using conda
+#conda create --name rnew 
+#conda activate rnew
+#conda install -c conda-forge r-base=4.0.5 --file requirements.txt
+#Rscript packs.R
+
+r-spatstat
+r-leaflet
+r-devtools
+r-rmarkdown
+
+# Can use
+#conda list --export
+# To get a nice list of environment
+
+# http://datacolada.org/100
+# https://rstudio.github.io/renv/articles/renv.html
+# https://news.ycombinator.com/item?id=25645224
