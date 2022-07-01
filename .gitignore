@@ -30,3 +30,4 @@ Python/Raleigh/Caplan_TimeOfDay.pdf
 Python/bls_maps/__pycache__/bls_geo.cpython-37.pyc
 Python/bls_maps/biojobs.xlsx
 Python/bls_maps/.ipynb_checkpoints/BLS_Example_Maps-checkpoint.ipynb
+*.pyc

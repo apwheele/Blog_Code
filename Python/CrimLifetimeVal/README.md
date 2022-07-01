@@ -6,7 +6,7 @@ This is an application of customer lifetime value estimates to chronic offender 
  - <http://brucehardie.com/notes/>
  - <https://lifetimes.readthedocs.io/en/latest/Quickstart.html>
 
-The data in this repo is taken from [ICPSR 07729](https://www.icpsr.umich.edu/web/NACJD/studies/7729/versions/V1), the Wolfgang *Delinquency in a Birth Cohort in Philly* data. Specifically, I downloaded the `.por` SPSS files from ICPSR, converted the study II dataset (the individual crimes) to a CSV file, and then edited the file as so. 
+The data in this repo is taken from [ICPSR 07729](https://www.icpsr.umich.edu/web/NACJD/studies/7729/versions/V1), the Wolfgang *Delinquency in a Birth Cohort in Philly* data. Specifically, I downloaded the `.por` SPSS files from ICPSR, converted the study II dataset (the individual crimes) to a CSV file, and then edited the file as so.
 
     ################
     # prep data python script
