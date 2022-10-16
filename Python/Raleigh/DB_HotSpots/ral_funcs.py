@@ -164,7 +164,7 @@ hot_spots = db_hotspots(cr,500,34,sum_fields)
 
 # Now lets make a nice folium map
 #ral_sph = ral_area.to_crs(sph_proj)
-#hot_sph = hot_spots.to_crs(sph_proj)
+hot_sph = hot_spots.to_crs(sph_proj)
 
 #hot_spots.to_file('hotspot.shp')
-hot_spots.to_file('hotspot.geojson', driver='GeoJSON')
+hot_sph.to_file('hotspot.geojson', driver='GeoJSON')
