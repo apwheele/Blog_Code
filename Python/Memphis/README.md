@@ -6,4 +6,4 @@ Google map [illustrating result](https://www.google.com/maps/d/u/0/edit?mid=1Mcn
 
 ![](Nichols_NotHotSpot.PNG)
 
-Blog post on the write up, [Scorpion was probably not doing hot spots policing]().
+Blog post on the write up, [Scorpion was probably not doing hot spots policing](https://andrewpwheeler.com/2023/02/13/scorpion-was-probably-not-doing-hot-spots-policing/).
