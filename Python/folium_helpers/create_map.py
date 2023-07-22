@@ -65,5 +65,4 @@ fh.add_choro(bm,austin_neigh,'Labs',lab_cols,['fid','sqmiles', 'neighname'],
              edge='#5A5A5A',
              edge_weight=0.5)
 
-
-fh.save_map(bm,"Austin_Map.html")
+fh.save_map(bm,"Austin_Map3.html")

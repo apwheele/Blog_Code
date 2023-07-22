@@ -88,10 +88,10 @@ def base_folium(boundary,zoom=12,weight=4,color="black",opacity=0.3, logo=False,
                       zoom_start=zoom,
                       control_scale= True,
                       tiles=None)
-    
+    #show=True,overlay=False
     cartodb = folium.TileLayer(tiles='cartodbpositron',name='CartoDB Positron Basemap',control=True)
     cartodb.add_to(mapf)
-    osm_base = folium.TileLayer(tiles='OpenStreetMap',name='OSM Basemap',control=True)
+    osm_base = folium.TileLayer(tiles='OpenStreetMap',name='OSM Basemap',control=True,show=True)
     osm_base.add_to(mapf)
     # Add in boundary
     bound2 = b2.boundary.to_json()
@@ -276,7 +276,9 @@ def add_choro(mapf,
 # This adds crime de-coder logo
 # and methods note to leaflet map
 
-logo_js = '''<script>var logo = '<a href="https://crimede-coder.com/" target="_blank">' +
+logo_js = '''
+</script>
+<script>var logo = '<a href="https://crimede-coder.com/" target="_blank">' +
 '<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 325.16 171.35">' +
 '<defs><style>.cls-1{fill:#010101;}.cls-2{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-width:3px;}' +
 '.cls-3{font-size:84.54px;font-family:Helvetica-Bold,Helvetica;font-weight:700;}.cls-3,.cls-4{fill:#fff;}' +
@@ -306,7 +308,14 @@ for (let i = 0; i < 2; i++) {
 function add_note() {
   document.querySelector("div.leaflet-control-attribution").insertAdjacentHTML("afterbegin",methods);
 }
-</script>'''
+
+// making sure the first radio button is selected
+// document.querySelectorAll('input[type=text]')
+//rad[0].checked = true;
+
+rad[0].click();
+
+'''
 
 table_css = '''<style>
 /* Alternate row coloring */
@@ -351,18 +360,13 @@ def save_map(mapf,file="temp.html",add_css=table_css,add_js=logo_js,layer=True):
     # Need to add in layercontrol at the very end
     if layer:
         folium.LayerControl(collapsed=False).add_to(mapf)
-    # Replacing part of css with table specs
-    mapf.save("XX_temp_XX.html")
-    with open('XX_temp_XX.html', 'r') as f:
-        html = f.read()
-    # Now add in logo javascript to layer control
-    html2 = html
-    if add_js is not None:
-        html2 = html + "\n" + add_js
-    # Now adding in additional CSS if I want
-    if add_css is not None:
-        html2 = html2.replace("</head>",table_css + "\n</head>")
-    # Now saving the file
-    with open(file,'w') as f:
-        f.write(html2)
-    os.remove("XX_temp_XX.html")
+    # Adding in CSS and javascript
+    css_element = folium.Element(add_css)
+    js_element = folium.Element(add_js)
+    mapf.get_root().header.add_child(css_element)
+    # now adding in javascript at the end
+    # https://github.com/python-visualization/folium/issues/86
+    html = mapf.get_root()
+    html.script.get_root().render()
+    html.script._children['XXX_LogoJavascript'] = js_element
+    mapf.save(file)
