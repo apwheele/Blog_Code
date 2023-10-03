@@ -114,11 +114,12 @@ class Synth:
         pdf['Obs'] = self.postY
         pdf['Period'] = range(eys[0])
         pdf['Period'] = pdf['Period'] + self.post
-        pdf = pdf[['Obs','Pred','Low','High']]
+        pyd = (pdf['Obs'].to_numpy() - py).reshape(eys[0],1)
+        pdf['Dif'] = pyd
+        pdf = pdf[['Obs','Pred','Low','High','Dif']]
         # Cum effects
         cs = self.mapie.conformity_scores_
         cs = np.concatenate([cs,-cs])
-        pyd = (pdf['Obs'].to_numpy() - py).reshape(eys[0],1)
         pdif = pyd + np.random.choice(cs,(eys[0],cumsim))
         pdif = np.cumsum(pdif,axis=0)
         lq, hq = alpha/2, 1 - alpha/2

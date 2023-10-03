@@ -8,7 +8,9 @@ I took the data/idea from Charles Fain Lehmans substack post, [*Did Drug Decrimi
 
 ## Steps to Reproduce
 
-A python environment with much of the usual scientific stack (sklearn, pandas, matplotlib), plus the [mapie](https://mapie.readthedocs.io/en/latest/) library for conformal inference, is the main thing you need.
+A python environment with much of the usual scientific stack (sklearn, pandas, matplotlib), plus the [mapie](https://mapie.readthedocs.io/en/latest/) library for conformal inference, is the main thing you need. So something like (using conda):
+
+    conda create --name cinf python=3.10 sklearn mapie jupyter matplotlib pandas
 
 First, to create the csv file, I cribbed this R code from Charles (and the data files from CDC Wonder):
 
@@ -41,4 +43,4 @@ First, to create the csv file, I cribbed this R code from Charles (and the data 
     
     write.csv(opioid.death.rates,'OpioidDeathRates.csv',row.names=FALSE)
 
-Second, then you can run in a python REPL the code in `OpioidAnalysis.py` (I just interactively saved the graphs).
+Second, then you can check out the notebook code, `OpioidAnalysis_Synth.ipynb`, on how to run the code and check out the results.
