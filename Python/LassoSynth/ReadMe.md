@@ -1,6 +1,6 @@
 # Using Lasso & Conformal Inference
 
-This is a set of code to go with my blogpost, ???????????
+This is a set of code to go with my blogpost, [Synthetic control in python: Opioid death increases in Oregon and Washington](https://andrewpwheeler.com/2023/10/04/synthetic-control-in-python-opioid-death-increases-in-oregon-and-washington/)
 
 This uses the lasso to estimate synthetic control weights, and conformal inference to estimate standard errors for the lasso predictions. I like this approach because it tends to have smaller intervals than placebos in state level designs. Also I like lasso as a better default optimization algorithm than the stochastic gradient descent in the original Abadie method.
 

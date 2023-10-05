@@ -37,6 +37,7 @@ def combo_legend(ax):
         hd.append(tuple(comb))
     return hd, labli
 
+
 def prep_longdata(data,timeperiod,outcome,groups):
     # sort by groups, timeperiod
     d2 = data[[timeperiod,outcome,groups]].reset_index(drop=True)
@@ -46,7 +47,6 @@ def prep_longdata(data,timeperiod,outcome,groups):
     # reshape long to wide
     # return only variables of interest
     return d2
-
 
 
 class Synth:
@@ -148,23 +148,18 @@ class Synth:
             plt.show()
         else:
             return fig, ax
-    def cumgraph(self,title,show=True,alpha=0.05,figsize=(8,6),colors=['k','blue']):
+    def cumgraph(self,title,show=True,alpha=0.05,figsize=(8,6),colors=['k','blue'],ax=None):
         postr = self.effects(alpha)
-        fig, ax = plt.subplots(figsize=figsize)
+        axN = ax is None
+        if ax is None:
+            fig, ax = plt.subplots(figsize=figsize)
         ax.plot(postr.index,postr['CumDif'],marker='s',markeredgecolor='w',color=colors[1])
         ax.fill_between(postr.index,postr['CumDifLow'],postr['CumDifHig'],alpha=0.2,color=colors[1])
         ax.axhline(y=0, color=colors[0],lw=1.5)
-        ax.set_title(title, loc='left')
+        ax.set_title(title,loc='left')
         if show:
             plt.show()
         else:
-            return fig, ax
-
-
-# instant effects are easy, mapie predict with conformal intervals
-#
-# cumulative effects are much more difficult
-#  - get resids, mapie_reg.conformity_scores_ (these are absolute values)
-#    - make +/-
-#    - make predictions, add residuals, calculate cumsum, get quantiles
+            if axN:
+                return fig, ax
 
