@@ -3,17 +3,36 @@
 from bs4 import BeautifulSoup
 import folium
 import geopandas as gpd
+from io import BytesIO
 from matplotlib import pyplot as plt
 import pandas as pd
 import pyproj
 import requests
+import re
+
+headers = {
+    'Connection': 'keep-alive',
+    'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
+    'Accept': 'application/json, text/plain, */*',
+    'DNT': '1',
+    'Content-Type': 'application/json;charset=UTF-8',
+    'sec-ch-ua-mobile': '?0',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
+    'sec-ch-ua-platform': '"Windows"',
+    'Origin': 'https://data.bls.gov',
+    'Sec-Fetch-Site': 'same-origin',
+    'Sec-Fetch-Mode': 'cors',
+    'Sec-Fetch-Dest': 'empty',
+    'Referer': 'https://data.bls.gov/oes/',
+    'Accept-Language': 'en-US,en;q=0.9',
+}
 
 # Get a pandas dataframe of occupational codes from BLS
 def ocodes():
     occ_url = r'https://www.bls.gov/oes/current/oes_stru.htm'
-    occpage = requests.get(url=occ_url)
+    occpage = requests.get(url=occ_url, headers=headers)
     soup = BeautifulSoup(occpage.content,'html.parser')
-    oe = soup.find_all("a",href=re.compile(r"oes\d{5}"))
+    oe = soup.find_all("a",href=re.compile(r"oes\d{6}"))
     res = []
     for o in oe:
         oc = o['href'].replace('oes','')[0:6]
@@ -24,28 +43,13 @@ def ocodes():
     return(res_df)
 
 # Get Pandas dataframe of metro areas occupation stats given ocode
-def oes_geo(ocode):
+# default is data scientist
+def oes_geo(ocode='152051'):
     # via https://curlconverter.com/#
     # https://data.bls.gov/oes/#/occGeo/One%20occupation%20for%20multiple%20geographical%20areas
-    headers = {
-        'Connection': 'keep-alive',
-        'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="99", "Google Chrome";v="99"',
-        'Accept': 'application/json, text/plain, */*',
-        'DNT': '1',
-        'Content-Type': 'application/json;charset=UTF-8',
-        'sec-ch-ua-mobile': '?0',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.51 Safari/537.36',
-        'sec-ch-ua-platform': '"Windows"',
-        'Origin': 'https://data.bls.gov',
-        'Sec-Fetch-Site': 'same-origin',
-        'Sec-Fetch-Mode': 'cors',
-        'Sec-Fetch-Dest': 'empty',
-        'Referer': 'https://data.bls.gov/oes/',
-        'Accept-Language': 'en-US,en;q=0.9',
-    }
     data = '''{"areaTypeCode":"M","areaCode":["xxxxxxx"],"industryCode":"000000",'''
     data += f'''"occupationCode":"{ocode}","datatype":["xxxxxx"],'''
-    data += '''"releaseDateCode":["2020A01"],"outputType":"H"}'''
+    data += '''"releaseDateCode":["2022A01"],"outputType":"H"}'''
     url = r'https://data.bls.gov/OESServices/resultsoccgeo'
     response = requests.post(url, headers=headers, data=data)
     rj = response.json()
@@ -69,7 +73,8 @@ def oes_geo(ocode):
 # Takes a bit to churn through everything
 def get_areas():
     # First get the excel data file that defines the BLS areas
-    msdf = pd.read_excel('https://www.bls.gov/oes/2020/may/area_definitions_m2020.xlsx')
+    res = requests.get('https://www.bls.gov/oes/2020/may/area_definitions_m2020.xlsx',headers=headers)
+    msdf = pd.read_excel(BytesIO(res.content))
     # Calculate GEOID
     msdf['GEOID'] = msdf['FIPS code'].astype(str).str.zfill(2) + msdf['County code'].astype(str).str.zfill(3)
     # Next get the county shapefile
