@@ -3,6 +3,7 @@ Comparison functions
 '''
 
 import numpy as np
+from scipy.optimize import minimize
 from scipy.stats import betabinom
 from scipy.stats import norm
 import matplotlib.pyplot as plt
@@ -67,7 +68,6 @@ def cov_compare(data):
 
 # Method of Moments estimate for beta-binomial
 # https://en.wikipedia.org/wiki/Beta-binomial_distribution
-
 def bb_mom(data,n):
     m1 = data.mean()
     m2 = (data**2).mean()
@@ -80,6 +80,18 @@ def bb_mom(data,n):
     else:
         bmod = betabinom(n, alpha, beta)
     return bmod
+
+# MoM is bad so I am using log likelihood here
+# https://andrewpwheeler.com/2023/10/18/fitting-beta-binomial-in-python-poisson-scan-stat-in-r/
+def bbll(parms,k,n):
+    alpha, beta = parms
+    ll = betabinom.logpmf(k,n,alpha,beta)
+    return -ll.sum()
+
+def bb_ml(data,n):
+    result = minimize(bbll,[1,1],args=(data,n),method='Nelder-Mead')
+    alpha, beta = result.x
+    return betabinom(n,alpha,beta)
 
 
 
