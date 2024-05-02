@@ -47,6 +47,11 @@ forecast = violent.get_prediction('2016','2025').summary_frame(alpha=0.05)
 forecast['Rosenfeld'] = [399.0,406.8,388.0,377.0,394.9] + [404.1,409.3,410.2,411.0,412.4]
 forecast['Observed'] = ucr['VRate']
 
+forecast['MAPE_Andy'] = 100*(forecast['mean'] - forecast['Observed'])/forecast['Observed']
+forecast['MAPE_Rick'] = 100*(forecast['Rosenfeld'] - forecast['Observed'])/forecast['Observed']
+
+print(forecast)
+
 # Given updated data until end of series, lets do 23/24/25
 violent = violent.append(ucr.loc[ucr['Year'] > 2020,'VRate'], refit=False)
 updated_forecast = violent.get_forecast(3).summary_frame(alpha=0.05)
