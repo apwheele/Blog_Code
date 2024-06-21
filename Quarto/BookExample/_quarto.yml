@@ -1,0 +1,76 @@
+project:
+  type: book
+book:
+  title: "Data Science for Crime Analysis with Python"
+  author: "Andrew P. Wheeler"
+  chapters:
+    - index.qmd
+    - c01.qmd
+    - c02.qmd
+    - c03.qmd
+    - c04.qmd
+    - c05.qmd
+    - c06.qmd
+    - c07.qmd
+    - c08.qmd
+    - c09.qmd
+    - c10.qmd
+
+format:
+  pdf:
+    pdf-engine: pdflatex
+    fontfamily: kpfonts
+    monofont: FiraMono
+    keep-tex: true
+    date: today
+    date-format: YYYY-MM-DD
+    documentclass: scrbook
+    include-in-header:
+      - file: packages.tex
+    include-before-body: 
+      - file: copyright.tex
+      - file: macros.tex
+    code-block-bg: "#D3D3D3"
+    toc: true
+    toc-depth: 2
+    toc-title: Table of Contents
+    colorlinks: true
+    papersize: letter
+    execute:
+        cache: true
+  epub:
+    epub-fonts: ["FiraMono-Regular.ttf","KpSans-Regular.otf","KpSans-Bold.otf","KpSans-Italic.otf","KpSans-BoldItalic.otf"]
+    identifier: ISBN 979-8-9903770-0-4
+    author: Andrew P. Wheeler
+    rights:  'Copyright © Andrew P. Wheeler 2024. ISBN 979-8-9903770-0-4 (ebook), ISBN 979-8-9903770-1-1 (paperback). All rights reserved. No part of this publication may be produced or transmitted in any form or by any means without prior written permission, with the exception of small excerpts for review. For permission contact Andrew P. Wheeler at <https://crimede-coder.com/contact>. 
+    
+    
+    <p>Check out my other work at [crimede-coder.com](https://crimede-coder.com/).</p>
+    
+    
+    ![](/chap_images/WLineRec_300.png)'
+    date: today
+    code-block-bg: "#D3D3D3"
+    toc: true
+    toc-depth: 2
+    toc-title: Table of Contents
+    epub-cover-image: chap_images\CoverPage.png
+    css: book.css
+    execute:
+        cache: true
+  html:
+    toc: false
+    css: book.css
+    code-block-bg: "#D3D3D3"
+    minimal: true
+    theme: none
+    embed: true
+    execute:
+        cache: true
+  docx:
+    toc: true
+    toc-depth: 2
+    toc-title: Table of Contents
+    code-block-bg: "#D3D3D3"
+    execute:
+        cache: true

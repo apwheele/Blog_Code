@@ -1,0 +1,236 @@
+---
+format:
+  docx:
+    title: "Example Template Report"
+    subtitle: "Supercool Subtitle"
+    date: today
+    date-format: YYYY-MM-DD
+    author: 
+        - "Andrew P. Wheeler, PhD"
+        - "                                                                                          "
+        - "![](Transparent_CDC.png){ width=32% }"
+    toc: true
+    toc-depth: 2
+    reference-doc: CDC_Template.docx
+    bibliography: ref.bib
+    csl: chicago-author-date.csl
+    execute:
+        cache: false
+
+execute:
+  eval: true
+  echo: false
+  warning: false
+---
+
+#### BREAK4
+
+# Introduction Section
+
+In the qmd document + the template, you can see I have a 4th level section header formatted as a linebreak.
+
+This is a simple test report to illustrate quarto is working and various libraries are installed. Lets see how a table looks!
+
+```{python}
+import pandas as pd
+from IPython.display import Markdown
+
+x = [1,2,3]
+y = ['a','b','c']
+df = pd.DataFrame(zip(x,y),columns=['x','y'])
+
+table_cap = "\n\n: Table 1: Simple Table"
+
+Markdown(df.to_markdown(index=False) + table_cap)
+```
+
+You can also reference values inline now for python, such as the mean of x is `{python} df['x'].mean()`. (Although they cannot be used with cached outputs!). This is what a table looks like when directly printing the dataframe:
+
+```{python}
+df
+```
+
+Here is a quote:
+
+> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras bibendum sapien et vestibulum viverra. Nam eros nibh, tristique at fermentum eu, rutrum id magna. Ut vulputate consectetur orci at malesuada. Maecenas finibus ligula quis ex pretium, tincidunt mattis lectus rhoncus. Praesent mi nunc, egestas nec tempor vitae, consectetur vel erat.
+
+Here is what a bullet list looks like:
+
+ - abc
+ - def
+ - xyz
+
+# Section 2
+
+Here is what a numbered list looks like:
+
+ 1) Yeah
+ 2) Super
+ 3) Cool
+
+Here is an inserted image (from online!).
+
+![Label and [Whateverlabel with a hyperlink]((https://crimede-coder.com/blogposts/2024/CompstatCounter))](https://crimede-coder.com/images/ChartDifference.png)
+
+This is what a hyperlink looks like in text, [my data science portfolio](https://andrewpwheeler.com/c-v/datascience-portfolio/), don't click the link in the word doc!
+
+You can insert extra line breaks in markdown by escaping a line. One line-break:
+
+\
+
+Two line breaks
+
+\
+\
+
+Inline code `abc = 123`. And a code block:
+
+
+    import random
+    random.random()
+    x, y = 1, 2
+    print(x,y)
+
+
+You can put a code block directly and get code highlighting:
+
+```{python}
+#| echo: true
+#| eval: false
+
+import random
+random.random()
+x, y = 1, 2
+print(x,y)
+```
+
+## A subsection!
+
+Lets see what a plot looks like:
+
+```{python}
+#| fig-cap: "A line chart caption"
+import matplotlib.pyplot as plt
+from matplotlib import rcParams
+
+# My default chart template
+theme = {'axes.grid': True,
+         'axes.axisbelow': True,
+         'grid.linestyle': '--',
+         'legend.framealpha': 1,
+         'legend.facecolor': 'white',
+         'legend.shadow': True,
+         'legend.fontsize': 14,
+         'legend.title_fontsize': 16,
+         'xtick.labelsize': 10,
+         'ytick.labelsize': 10,
+         'axes.labelsize': 12,
+         'axes.titlesize': 14,
+         'axes.titlelocation': 'left',
+         'figure.dpi': 500}
+
+# updating the default
+rcParams.update(theme)
+
+# Not sure how to do the figure caption inline
+# so it is rendered correctly
+#fig_cap = "\n\n: Figure 1: Wow look at me, I am a chart"
+#Markdown(fig_cap)
+
+fig, ax = plt.subplots()
+ax.plot([0,1,2],[1,2,1],'-o')
+plt.show()
+```
+
+When you do two plots side by side, or the more general multi-layouts, it places them via a table in Quarto. So you get the outline unfortunately inherited from my base table format.
+
+```{python}
+#| fig-cap: "Two line plots side by side"
+#| layout-ncol: 2
+
+fig, ax = plt.subplots()
+ax.plot([0,1,2],[1,2,1])
+ax.set_title('This is a plot title')
+plt.show()
+
+plt.plot([8,65,23,90])
+plt.title('2nd plot title')
+plt.show()
+```
+
+I don't know of a way to solve this nicely -- if you have need for complex layouts (but don't care about an outline for a table), that would be more acceptable.
+
+# Footnotes
+
+Here is an inline note.^[Inlines notes are easier to write,
+since you don't have to pick an identifier and move down to type the note. I have taken the examples from this section from the *Quarto* [documentation](https://quarto.org/docs/authoring/footnotes-and-citations.html).]
+
+Here is a footnote reference,[^1] and another.[^longnote]
+
+[^1]: Here is the footnote.
+
+[^longnote]: Here's one with multiple blocks.
+
+    Subsequent paragraphs are indented to show that they
+belong to the previous footnote.
+
+        { some.code }
+
+    The whole paragraph can be indented, or just the first
+    line.  In this way, multi-paragraph footnotes work like
+    multi-paragraph list items.
+
+This paragraph won't be part of the note, because it
+isn't indented.
+
+# A Superlong table
+
+This is an example of creating a table that spans multiple pages. My default template handles this gracefully!
+
+```{python}
+import random
+
+vals = ['abc','xyz','whatever','hacker','toolegit']
+n = 40
+x = list(range(n))
+y = [random.choice(vals) for _ in range(n)]
+z = [random.random() for _ in range(n)]
+
+df = pd.DataFrame(zip(x,y,z),columns=['x','y','z'])
+
+table_cap = "\n\n: Table ?: Super Long Table"
+Markdown(df.to_markdown(index=False,floatfmt=",.2f") + table_cap)
+```
+
+# Mathy
+
+So we have $x = 2$ as an example inline math. For a math equation, we have:
+
+$$\mathbb{V}(X) = \mathbb{E}(X)^2 + \mathbb{E}(X^2)$$
+
+Not sure about multi-line, or numbering equations offhand. I do not see how to set the default format for math to be a somewhat bigger font? (But default I like the math Cambria.)
+
+# Reference Notes
+
+Citation, @item1 says blah [@item1; @item2]. For a specific page quote [@item1 p. 34-35].
+
+For a list of csl files, see [here](https://github.com/citation-style-language/styles).
+
+# ToDo!
+
+Anything else I should put in here -- let me know!
+
+#### BREAK4
+
+# My References
+
+---
+nocite: |
+  @housedemo
+---
+
+
+::: {#refs}
+:::
+
+

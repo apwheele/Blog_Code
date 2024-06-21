@@ -1,0 +1,114 @@
+\begin{tikzpicture}[overlay, remember picture]
+\node[xshift=-1.5in,yshift=-1.5in] at (current page.north east) {\includegraphics{chap_images/C01_latex.png}};
+\end{tikzpicture}
+
+::: {.content-visible unless-format="pdf"}
+```{=html}
+<style>
+    #content {
+        position: relative;
+    }
+    #content img {
+        position: absolute;
+        top: -85px;
+        right: 0px;
+        z-index: -1;
+    }
+</style>
+
+<div id="content">
+    <img src="chap_images/C01.png" class="ribbon" />
+</div>
+```
+:::
+
+
+# Setting up python
+
+First, before we can get started *writing code*, we need to set up python on your local machine. My suggestion for crime analysts is to install the Anaconda version of python, which can be downloaded for your machine at <https://www.anaconda.com/download>. I am writing this book on Windows, but most of my advice should also extend to Mac and Unix users (you can download Anaconda and run python on any of those operating systems). Where it might make a difference, I will provide a callout note. For example:
+
+::: {.callout-note icon=false}
+When using different paths to file locations, windows machines use backslashes, e.g. `C:\Users\andre`, whereas Mac and Unix machines use forward slashes, `/users/andre`.
+:::
+
+Once Anaconda is installed, go ahead and open up the *Anaconda command prompt* (treat this just the same as any program you have installed on your machine, so on Windows can navigate the programs that pop up when clicking the Windows icon on the lower left). Once the Anaconda command prompt is open, it should look like something below.
+
+![](/screenshots/Ch01_00.PNG)
+
+Go ahead and type `python --version` into the command prompt, hit enter, and see what the results are. This will tell you if you have installed python correctly! My python version is `3.8.5`. Your version may be different than the one I wrote this book with, but the content I will be covering in this book it will not make a difference.
+
+![](/screenshots/Ch01_01.PNG)
+
+## Running in the REPL
+
+Now, we are going to run an interactive python session, sometimes people call this the *REPL*, read-eval-print-loop. Simply type `python` in the command prompt and hit enter. You will then be greeted with this screen, and you will be inside of a python session.
+
+![](/screenshots/Ch01_02.PNG)
+
+The cursor in the terminal should be located at the `>>>` part of the screen. Now at the prompt simply type `1 + 2`, hit enter, and it will output the answer:
+
+![](/screenshots/Ch01_03.PNG)
+
+Congrats, you have now written python code.
+
+::: {.callout-note icon=false}
+Note the location of the cursor at the terminal at this point should be on the `>>>` line. You cannot go up to a prior line in the terminal, like you can in a word editor, but you can edit items on a single line in the terminal. So you can type `1 + 2`, and then before hitting enter hit backspace, and edit the line to be `1 + 3`.
+:::
+
+## Running a python script
+
+Now lets make a simple python script, and call that script from the command line. First, navigate to any folder on your machine that you can add a file (see the note below for navigating to different locations via the command line). Here I navigated to the folder on my machine `B:\code_examples`, but your folder location will likely be different. Make a simple file, call it `hello.py`, in that same folder (you can initialize the file by simply writing `echo "" > hello.py` at the command prompt, or `touch hello.py` is easier if on a Mac/Unix machine. Or in the Windows OS make a text file and then rename the extension to `.py` instead of `.txt`).
+
+::: {.callout-note icon=false}
+I will be giving advice for working at the command line in this book. It may seem complicated at first, but I only have a handful of commands memorized. It is important for project management to know exactly *where* you run commands from. Here are a few notes on using `cd` to navigate to different folders:
+
+ - use `cd YourPath\YourFolder` to move to different folders, e.g. on windows it might be `cd D:\Dropbox\Project`, whereas on Unix it might be `cd /Project/sub_folder`. On windows, to switch to a different drive, you can just type that drive letter (no `cd` at the front, e.g. if you just type `D:`, the command prompt will switch the directory to the `D:` drive.
+ - If your path has a space in it, it needs to be quoted when using `cd`, for example `cd "C:\OneDrive\OneDrive - Uni\Folder"`. Without the quotes, the `cd` command will give an error.
+ - use `cd ..\` (or `cd ../` on Unix/Mac) to move up a folder, e.g. if you are in `D:\Project\sub_project` and you type `cd ../` you will now be in `D:\Project`.
+ - You do not need to type the full path to move down a single folder, so if you are in `D:\Project` and you type `cd .\sub_project` you will move down into the `D:\Project\sub_project` directory.
+ - use the `pwd` command to print out the current directory.
+:::
+
+In that `hello.py` file (which is just a text file), open it using whatever text editor you want. Then type these lines of code into that file, and save the file:
+
+```{python}
+#| echo: true
+#| eval: false
+# This is a comment line
+x = 'hello world'
+print(x)
+
+y = 3/2
+print(y)
+```
+
+Now back at the command prompt, type in `python hello.py` and hit enter. You should see that it ran your python file, and printed out the results.
+
+![](/screenshots/Ch01_04.PNG)
+
+Certain scenarios will dictate whether you are writing code in an interactive REPL session, or running code via scripts. Most of my work, I debug initial code using the REPL, and then save the finalized code and run the entire set of procedures through a script.
+
+## Some Extra Notes
+
+I use [Notepad++](https://notepad-plus-plus.org/) to write much of my code. Here is what the prior set of code looks like, showing Notepad++ and the file itself:
+
+![](/screenshots/Ch01_05.PNG)
+
+Notepad++ knows that a `.py` file is a python file, and so gives nice code formatting. It also allows you to set an option to see whitespace, which will become more important later when writing conditional code blocks in python. (You should not write code in a program that formats your text, such as Microsoft Word, as its auto-formatting can cause errors in your code.)
+
+But there are other options to help you write python code. On occasion at my work I use Visual Studio (VS) Code, which is an entire IDE (integrated development environment). This just means it has extra stuff (like an embedded command prompt and github support). VS Code has extensions for python as well as several other languages. Another popular IDE for python is PyCharm. These again are mostly exchangeable, I like Notepad++ for its simplicity.
+
+::: {.callout-note icon=false}
+Here are a few additional command line commands I use on a regular basis:
+
+ - On Windows, to clear the terminal you can use `cls`, on Unix/MAC you can use `clear`
+ - you can use `cat file.py` to print out the contents of a file to the terminal
+ - you can use `mkdir` to make a new folder
+ - you can pipe output to a file, e.g. `python hello.py > log.txt` would save the output of the command above to the `log.txt` file instead of printing to the terminal.
+ - if you use `python script.py >> log.txt` this *appends* the output to log text file. Which is useful for repeated tasks that update over time.
+:::
+
+Another option to write python code (especially for individuals who do scientific computing) is to use Jupyter Notebooks. Many beginner python tutorials will suggest this. I will have a later chapter showing how to make a standardized report using Jupyter Notebooks, but I do not suggest this tool for beginners when first getting started. Many of the pieces of information I will discuss in this book about project management are difficult to control with Jupyter.
+
+Now that you have the background to run python code, next chapter will cover more of the basics of how to write python code.
+
