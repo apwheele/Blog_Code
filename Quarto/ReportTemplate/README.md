@@ -39,7 +39,9 @@ So if you do
 
     quarto pandoc -o custom-reference-doc.docx --print-default-data-file reference.docx
 
-That will produce a default template. I don't even know how I figured out how to get the tables to inherit correctly anymore (it is not straightforward, 
+That will produce a default template. I don't even know how I figured out how to get the tables to inherit correctly anymore (it is not straightforward, something to do with the change in the default Table vs TableNormal or something like that in the newer docx).
+
+Tables to me are super-important, so I spent much time getting a nice looking default table that works nicely with Quarto/Pandoc. So you can set the column format mostly the in Python side using the Ipython function `Markdown`, and they turn into nice word tables. Tables and different elements in the default template share certain things, so if you change one they sometimes propogate to the other (so I can't figure out how to make a table have a different default font for example).
 
 See some of the notes about multi-column layouts in the qmd file. If you want multi-column *without* borders, you need to not have a border in your default tables.
 
@@ -58,7 +60,7 @@ Now, above in a fully automated process relies on word being installed, which is
 
     soffice --headless --convert-to pdf test.docx
 
-And works decently with this template (I intentionally changed some aspects of the header/footer so they do work out nice). Now really the only thing I have not figured out in this way is that the *table of contents* is not auto-renders (and I cannot figure out how to do that). So if you know how to make a python (or some other script) to auto-render the TOC in this file I would appreciate letting me know!
+And works decently with this template (I intentionally changed some aspects of the header/footer so they do work out nice). Now really the only thing I have not figured out in this way is that the *table of contents* is not auto-rendered (and I cannot figure out how to do that). So if you know how to make a python (or some other script) to auto-render the TOC in this file I would appreciate letting me know!
 
 Otherwise you can open the docx file in libreoffice, manually create the TOC, and export to PDF. Here is my current attempt to write a python script to do this, but is unsuccessful, first you need to run:
 
@@ -102,3 +104,5 @@ And then in a seperate process start up python:
     #toc.update()
 
 And this to be clear does not work to update the TOC! It does work to insert a "hello world" string in the document.
+
+Or if you have an alternate (would like a way in Unix to go `word -> nice pdf`, to create automated reports in different environments).
