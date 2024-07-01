@@ -1,8 +1,8 @@
 # Notes on Creating your own book
 
-These are the my quarto config files I used to create [*Data Science for Crime Analysis with Python*](https://crimede-coder.com/blogposts/2023/EarlyReleasePython).
+These are the my quarto config files I used to create [*Data Science for Crime Analysis with Python*](https://crimede-coder.com/store). Check out the first first few chapters (and motivation to write the book) [here](https://crimede-coder.com/blogposts/2023/EarlyReleasePython).
 
-Part of these are how I do the Epub and LaTeX pdf separately, but are still somewhat cohesive with each other.
+These notes are how I do the Epub and LaTeX pdf separately, but are still somewhat cohesive with each other. (The content is the same, but I will discuss design/aesthetic choices between the two.)
 
 ## Cache
 
@@ -19,7 +19,7 @@ To get an minimal python environment to replicate, use something like:
 
 Note the cache in the quarto config yaml! (Although you cannot use cache if you have inline code snippets, at least for python).
 
-For long projects, cacheing is necessary to speed up iterations to see how things look (although compiling Latex is still redone from scratch every time and takes forever, Epub is fast though).
+For long projects, cacheing is necessary to speed up iterations to see how things look (although compiling LaTeX is still redone from scratch every time and takes forever, Epub is fast though).
 
 ## Chapter Glpyhs
 
@@ -49,7 +49,7 @@ To get chapter glyphs I use this:
     ```
     :::
 
-This renders nicely in both the Epub and the PDF version. Epub
+This renders nicely in the PDF version. EPub unfortunately changes for different e-readers, I optimized to look nice the free IceCream e-book reader, but does not look as nice in Calibre. (And does not work at all for the Kindle version translation.)
 
 ![](EpubGlyph.PNG)
 
@@ -124,8 +124,7 @@ It is blue by default using this css.
 
 Note that I do not have the same fonts for the Epub (Verdana for most stuff and Lucida Console for code), and the PDF (kpfonts for most stuff and FiraMono for code). I think fonts that look good in one look like garbage in the other!
 
-For the PDF, for scientific publications with figures/tables, you should use `\raggedbottom`, which I have in the macros.tex file.
-
+For the PDF, for scientific publications with figures/tables, you should use `\raggedbottom`, which I have in the macros.tex file. I also set the footnote to obey the geometry of the margins, which is necessary for some printers to not have text in the bleed.
 
 ## Python tricks
 
@@ -142,7 +141,7 @@ I use on occasion a default cell before the chapter to init python in a way that
     warnings.filterwarnings("ignore")
     ```
 
-I did not use it in the end, but you can also do sneaky things like monkey-patch the `print` function this way, to get it to print in your book format how you want.
+You can also do sneaky things like monkey-patch the `print` function this way, to get it to print in your book format how you want. (I did that at least once in the book.)
 
 # Formatting Epub for Amazon
 
@@ -178,8 +177,53 @@ I had to fix *all* of the errors before Amazon would accept my epub. Most are ju
 
 Note that Kindle has a previewer you can download locally. This lets you see somewhat better error messages, but mostly is much quicker than submitting online Epub and waiting a few minutes for Amazon to say "it cannot convert due to errors".
 
+# Making a Cover Using Python
+
+Of course I made my cover using python. The PDF print books need specific sizes. So the code looks something like:
+
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots(figsize=(18,11.25))
+    plt.xlim(0,px)
+    plt.ylim(0,py)
+    plt.tight_layout(pad=0)
+    # leave these on if you want to see how your graph
+    # fits into the overall plot area
+    ax.autoscale_view('tight')
+    ax.axis('off')
+    ax.set_xticks([])
+    ax.set_yticks([])
+    ... plot code ...
+    ... after the plot code, you may need to do xlim/ylim/tight_layout again ...
+    plt.savefig('CoverPagePaper_LuLu.pdf',pad_inches=0)
+
+LuLu gifted me a PNG image for the barcode to use. You can add in an image onto the plot using something like:
+
+    from matplotlib.pyplot import imread
+    def add_image(ax, loc=[0.78,0.78], size=0.2, loc=im):
+        im = imread(loc)
+        xrange = ax.get_xlim()
+        yrange = ax.get_ylim()
+        xdif = xrange[1] - xrange[0]
+        ydif = yrange[1] - yrange[0]
+        startx = loc[0]*xdif + xrange[0]
+        starty = loc[1]*ydif + yrange[0]
+        coords = [startx,starty,size*xdif,size*ydif]
+        axin = ax.inset_axes(coords,transform=ax.transData)
+        axin.imshow(im)
+        axin.axis('off')
+
+Which I am sure is partially cribbed from stackoverflow posts. Note that you 
+
 # Merging Files Together
 
 For the PDF output, you may wish to add in a cover page. Although for Amazon (or other on demand publishers, I have used [LuLu](https://www.lulu.com/)), they make you make a for print cover in PDF. You can use ghostscript to combine the cover page and the PDF. This retains the links in the TOC, whereas other tools often strip the links. Here is how I created my sample for the first few chapters using ghostscript.
 
-    gswin64 -q -sDEVICE=pdfwrite -o DS_PythonCrimeAnalysis_EarlyRelease.pdf -dLastPage=39 CoverPage.pdf Data-Science-for-Crime-Analysis-with-Python.pdf 
+    gswin64 -q -sDEVICE=pdfwrite -o DS_PythonCrimeAnalysis_EarlyRelease.pdf -dLastPage=39 CoverPage.pdf Data-Science-for-Crime-Analysis-with-Python.pdf
+
+I did not use it here, but [this command line tool](https://community.coherentpdf.com/) for PDFs could be useful to crop the PDF for the cover so they are all the same. So something like (you will need to update the metrics):
+
+    cpdf -page-info CoverPage.pdf
+    cpdf -cropbox "13 13 258.671870 258.671870" CoverPage.pdf -o CoverPageCrop.pdf
+    cpdf -scale-page "10.180108709312556 10.180108709312556" CoverPageCrop.pdf -o CoverPageResize.pdf
+
+And you could do that for both the front/back covers to merge into your PDF with ghostscript.
