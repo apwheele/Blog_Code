@@ -89,9 +89,9 @@ def base_folium(boundary,zoom=12,weight=4,color="black",opacity=0.3, logo=False,
                       control_scale= True,
                       tiles=None)
     #show=True,overlay=False
-    cartodb = folium.TileLayer(tiles='cartodbpositron',name='CartoDB Positron Basemap',control=True)
+    cartodb = folium.TileLayer(tiles='cartodbpositron',name='CartoDB Positron Basemap',control=True,show=True)
     cartodb.add_to(mapf)
-    osm_base = folium.TileLayer(tiles='OpenStreetMap',name='OSM Basemap',control=True,show=True)
+    osm_base = folium.TileLayer(tiles='OpenStreetMap',name='OSM Basemap',control=True)
     osm_base.add_to(mapf)
     # Add in boundary
     bound2 = b2.boundary.to_json()
