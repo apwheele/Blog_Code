@@ -1,0 +1,10 @@
+# conda create --name chatapp python=3.12 pip
+boto3
+panel
+watchfiles
+pygments
+pandas
+matplotlib
+duckdb
+PyYAML
+pytest
