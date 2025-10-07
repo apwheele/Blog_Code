@@ -1,0 +1,113 @@
+\begin{tikzpicture}[overlay, remember picture]
+\node[xshift=-1.5in,yshift=-1.5in] at (current page.north east) {\includegraphics{chap_images/C01_latex.png}};
+\end{tikzpicture}
+
+::: {.content-visible unless-format="pdf"}
+```{=html}
+<style>
+    #content {
+        position: relative;
+    }
+    #content img {
+        position: absolute;
+        top: -85px;
+        right: 0px;
+        z-index: -1;
+    }
+</style>
+
+<div id="content">
+    <img src="chap_images/C01.png" class="ribbon" />
+</div>
+```
+:::
+
+# Configuración de Python
+
+Primero, antes de poder empezar a *escribir código*, necesitamos configurar python en tu equipo local. Mi recomendación para los analistas del crimen es instalar la versión de python de Anaconda, que se puede descargar para tu equipo en <https://www.anaconda.com/download>. Estoy escribiendo este libro en Windows, pero la mayoría de mis consejos también deberían aplicarse a usuarios de Mac y Unix (puedes descargar Anaconda y ejecutar python en cualquiera de esos sistemas operativos). Cuando pueda haber alguna diferencia, proporcionaré una nota destacada. Por ejemplo:
+
+::: {.callout-note icon=false}
+Al usar diferentes rutas a ubicaciones de archivos, las máquinas Windows usan barras invertidas, p. ej., `C:\Users\andre`, mientras que las máquinas Mac y Unix usan barras diagonales, `/users/andre`.
+:::
+
+Una vez que Anaconda esté instalado, abre el *símbolo del sistema de Anaconda* (trátalo igual que cualquier programa que tengas instalado en tu equipo; en Windows puedes navegar por los programas que aparecen al hacer clic en el icono de Windows en la esquina inferior izquierda). Una vez que el símbolo del sistema de Anaconda esté abierto, debería verse parecido a lo siguiente.
+
+![](/screenshots/Ch01_00.PNG)
+
+Adelante, escribe `python --version` en la línea de comandos, presiona Enter y observa el resultado. Esto te dirá si has instalado Python correctamente. Mi versión de Python es `3.8.5`. Tu versión puede ser diferente de la que utilicé para escribir este libro, pero para el contenido que abordaré en este libro no supondrá ninguna diferencia.
+
+![](/screenshots/Ch01_01.PNG)
+
+## Ejecución en el REPL
+
+Ahora vamos a ejecutar una sesión interactiva de Python; a veces la gente la llama el *REPL*, bucle leer-evaluar-imprimir. Simplemente escribe `python` en el símbolo del sistema y presiona Enter. Entonces verás esta pantalla y estarás dentro de una sesión de Python.
+
+![](/screenshots/Ch01_02.PNG)
+
+El cursor en la terminal debería estar ubicado en la parte `>>>` de la pantalla. Ahora, en el prompt, simplemente escribe `1 + 2`, presiona Enter y mostrará la respuesta:
+
+![](/screenshots/Ch01_03.PNG)
+
+Felicidades, ahora has escrito código en Python.
+
+::: {.callout-note icon=false}
+Observe que la ubicación del cursor en la terminal en este punto debería estar en la línea `>>>`. No puede subir a una línea anterior en la terminal, como puede hacerlo en un editor de texto, pero sí puede editar elementos en una sola línea en la terminal. Así que puede escribir `1 + 2` y, antes de pulsar Enter, presione la tecla de retroceso y edite la línea para que sea `1 + 3`.
+:::
+
+## Ejecutar un script de Python
+
+Ahora hagamos un script de Python sencillo y llamemos a ese script desde la línea de comandos. Primero, navega a cualquier carpeta de tu equipo en la que puedas añadir un archivo (consulta la nota de abajo para navegar a diferentes ubicaciones mediante la línea de comandos). Aquí navegué a la carpeta en mi equipo `B:\code_examples`, pero la ubicación de tu carpeta probablemente será diferente. Crea un archivo simple, llámalo `hello.py`, en esa misma carpeta (puedes inicializar el archivo simplemente escribiendo `echo "" > hello.py` en el símbolo del sistema, o `touch hello.py` es más fácil si estás en una máquina Mac/Unix. O en el sistema operativo Windows crea un archivo de texto y luego cambia la extensión a `.py` en lugar de `.txt`).
+
+::: {.callout-note icon=false}
+Daré consejos para trabajar en la línea de comandos en este libro. Puede parecer complicado al principio, pero solo tengo memorizados unos pocos comandos. Para la gestión de proyectos, es importante saber exactamente *dónde* ejecutas los comandos. Aquí hay algunas notas sobre el uso de `cd` para navegar a diferentes directorios:
+
+ - usa `cd YourPath\YourFolder` para moverte a diferentes carpetas, p. ej., en Windows podría ser `cd D:\Dropbox\Project`, mientras que en Unix podría ser `cd /Project/sub_folder`. En Windows, para cambiar a una unidad diferente, puedes simplemente escribir esa letra de unidad (sin `cd` al principio; p. ej., si solo escribes `D:`, el símbolo del sistema cambiará el directorio a la unidad `D:`).
+ - Si tu ruta tiene un espacio, debe ir entre comillas al usar `cd`, por ejemplo `cd "C:\OneDrive\OneDrive - Uni\Folder"`. Sin las comillas, el comando `cd` dará un error.
+ - usa `cd ..\` (o `cd ../` en Unix/Mac) para subir una carpeta; p. ej., si estás en `D:\Project\sub_project` y escribes `cd ../`, ahora estarás en `D:\Project`.
+ - No necesitas escribir la ruta completa para bajar a una sola carpeta, así que si estás en `D:\Project` y escribes `cd .\sub_project` bajarás al directorio `D:\Project\sub_project`.
+ - usa el comando `pwd` para mostrar el directorio actual.
+:::
+
+En ese archivo `hello.py` (que es solo un archivo de texto), ábrelo con el editor de texto que prefieras. Luego escribe estas líneas de código en ese archivo y guarda el archivo:
+
+```{python}
+#| echo: true
+#| eval: false
+# This is a comment line
+x = 'hello world'
+print(x)
+
+y = 3/2
+print(y)
+```
+
+Ahora, de vuelta en el símbolo del sistema, escribe `python hello.py` y presiona Enter. Deberías ver que se ejecutó tu archivo de Python y que se imprimieron los resultados.
+
+![](/screenshots/Ch01_04.PNG)
+
+Ciertos escenarios determinarán si estás escribiendo código en una sesión interactiva de REPL o ejecutando código mediante scripts. En la mayor parte de mi trabajo, depuro el código inicial usando el REPL y luego guardo el código final y ejecuto todo el conjunto de procedimientos mediante un script.
+
+## Algunas notas adicionales
+
+Uso [Notepad++](https://notepad-plus-plus.org/) para escribir gran parte de mi código. Aquí se muestra cómo se ve el bloque de código anterior, con Notepad++ y el propio archivo:
+
+![](/screenshots/Ch01_05.PNG)
+
+Notepad++ sabe que un archivo `.py` es un archivo de Python, y por lo tanto ofrece un buen formato de código. También permite configurar una opción para ver los espacios en blanco, lo cual será más importante más adelante al escribir bloques de código condicional en Python. (No deberías escribir código en un programa que formatea tu texto, como Microsoft Word, ya que su autoformato puede causar errores en tu código.)
+
+Pero hay otras opciones que pueden ayudarte a escribir código en Python. En ocasiones, en mi trabajo utilizo Visual Studio (VS) Code, que es todo un IDE (entorno de desarrollo integrado). Esto solo significa que tiene cosas adicionales (como una consola de comandos integrada y soporte para GitHub). VS Code tiene extensiones para Python, así como para varios otros lenguajes. Otro IDE popular para Python es PyCharm. Estos, nuevamente, son en su mayoría intercambiables; a mí me gusta Notepad++ por su sencillez.
+
+::: {.callout-note icon=false}
+Aquí hay algunos comandos adicionales de la línea de comandos que uso habitualmente:
+
+ - En Windows, para limpiar la terminal puedes usar `cls`; en Unix/Mac puedes usar `clear`
+ - puedes usar `cat file.py` para mostrar en la terminal el contenido de un archivo
+ - puedes usar `mkdir` para crear una nueva carpeta
+ - puedes redirigir la salida a un archivo; p. ej., `python hello.py > log.txt` guardaría la salida del comando anterior en el archivo `log.txt` en lugar de mostrarla en la terminal.
+ - si usas `python script.py >> log.txt`, esto *anexa* la salida al archivo de registro. Lo cual es útil para tareas repetitivas que se actualizan con el tiempo.
+:::
+
+Otra opción para escribir código de Python (especialmente para quienes realizan computación científica) es usar Jupyter Notebooks. Muchos tutoriales de Python para principiantes sugieren esto. Más adelante incluiré un capítulo que muestra cómo crear un informe estandarizado con Jupyter Notebooks, pero no recomiendo esta herramienta para quienes recién comienzan. Muchos de los aspectos sobre gestión de proyectos que trataré en este libro son difíciles de controlar con Jupyter.
+
+Ahora que tienes los conocimientos para ejecutar código de Python, el próximo capítulo cubrirá más conceptos básicos sobre cómo escribir código de Python.
+

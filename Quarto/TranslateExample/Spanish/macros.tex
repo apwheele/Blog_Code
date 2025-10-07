@@ -1,0 +1,32 @@
+% macros file to define verbatim environment
+% which is the output of code samples
+% https://tex.stackexchange.com/a/141128/8217
+
+%\usepackage{fancyvrb,newverbs,xcolor}
+%\usepackage{soul}
+
+%\definecolor{cverbbg}{gray}{0.93}
+\definecolor{cverbbg}{HTML}{ADD8E6}
+
+\renewenvironment{verbatim}
+ {\SaveVerbatim{cverb}}
+ {\endSaveVerbatim
+  \flushleft\fboxrule=0pt\fboxsep=.5em
+  \colorbox{cverbbg}{%
+    \makebox[\dimexpr\linewidth-2\fboxsep][l]{\BUseVerbatim{cverb}}%
+  }
+  \endflushleft
+}
+
+% https://gist.github.com/wusunlab/9c85fcb7472308a474e7c3fb443639ee
+\definecolor{inlineBG}{HTML}{D3D3D3}
+\sethlcolor{inlineBG}
+\let\OldTexttt\texttt
+\renewcommand{\texttt}[1]{\sethlcolor{inlineBG}{\ttfamily\hl{\mbox{#1}}}}
+
+% https://tex.stackexchange.com/a/86702/8217
+% to draw tikz in background
+
+%https://tex.stackexchange.com/questions/70547/how-can-i-renew-includegraphics-to-always-use-shadowbox
+
+\raggedbottom

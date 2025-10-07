@@ -1,0 +1,113 @@
+\begin{tikzpicture}[overlay, remember picture]
+\node[xshift=-1.5in,yshift=-1.5in] at (current page.north east) {\includegraphics{chap_images/C01_latex.png}};
+\end{tikzpicture}
+
+::: {.content-visible unless-format="pdf"}
+```{=html}
+<style>
+    #content {
+        position: relative;
+    }
+    #content img {
+        position: absolute;
+        top: -85px;
+        right: 0px;
+        z-index: -1;
+    }
+</style>
+
+<div id="content">
+    <img src="chap_images/C01.png" class="ribbon" />
+</div>
+```
+:::
+
+# Configuration de Python
+
+Tout d'abord, avant de pouvoir commencer à *écrire du code*, nous devons installer Python sur votre machine locale. Ma suggestion pour les analystes du crime est d'installer la version Anaconda de Python, que vous pouvez télécharger pour votre machine à l'adresse <https://www.anaconda.com/download>. J'écris ce livre sous Windows, mais la plupart de mes conseils devraient également s'appliquer aux utilisateurs de Mac et d'Unix (vous pouvez télécharger Anaconda et exécuter Python sur n'importe lequel de ces systèmes d'exploitation). Lorsque cela peut faire une différence, je fournirai une note en encadré. Par exemple :
+
+::: {.callout-note icon=false}
+Lors de l’utilisation de chemins différents vers des emplacements de fichiers, les machines Windows utilisent des barres obliques inverses, p. ex. `C:\Users\andre`, tandis que les machines Mac et Unix utilisent des barres obliques, `/users/andre`.
+:::
+
+Une fois Anaconda installé, ouvrez l’*Invite de commandes Anaconda* (traitez-la comme n’importe quel programme installé sur votre machine; sous Windows, vous pouvez parcourir les programmes qui s’affichent lorsque vous cliquez sur l’icône Windows en bas à gauche). Une fois l’Invite de commandes Anaconda ouverte, elle devrait ressembler à quelque chose comme ci-dessous.
+
+![](/screenshots/Ch01_00.PNG)
+
+Allez-y et tapez `python --version` dans l’invite de commandes, appuyez sur Entrée, et voyez le résultat. Cela vous indiquera si vous avez installé Python correctement ! Ma version de Python est `3.8.5`. Votre version peut être différente de celle avec laquelle j’ai écrit ce livre, mais pour le contenu que je vais couvrir dans ce livre, cela ne fera aucune différence.
+
+![](/screenshots/Ch01_01.PNG)
+
+## Exécution dans le REPL
+
+Maintenant, nous allons lancer une session Python interactive, que certains appellent le REPL, boucle lire‑évaluer‑afficher. Tapez simplement `python` dans l’invite de commande et appuyez sur Entrée. Vous verrez alors cet écran et vous serez dans une session Python.
+
+![](/screenshots/Ch01_02.PNG)
+
+Le curseur dans le terminal doit se trouver à l’emplacement `>>>` de l’écran. Maintenant, à l’invite, tapez simplement `1 + 2`, appuyez sur Entrée, et il affichera la réponse :
+
+![](/screenshots/Ch01_03.PNG)
+
+Félicitations, vous avez maintenant écrit du code Python.
+
+::: {.callout-note icon=false}
+Notez que l’emplacement du curseur dans le terminal, à ce stade, doit se trouver sur la ligne `>>>`. Vous ne pouvez pas remonter à une ligne précédente dans le terminal, comme vous pouvez le faire dans un éditeur de texte, mais vous pouvez modifier des éléments sur une seule ligne dans le terminal. Ainsi, vous pouvez taper `1 + 2`, puis, avant d’appuyer sur Entrée, appuyer sur Retour arrière, et modifier la ligne pour qu’elle devienne `1 + 3`.
+:::
+
+## Exécution d'un script Python
+
+Créons maintenant un script Python simple et exécutons ce script depuis la ligne de commande. Tout d’abord, accédez à n’importe quel dossier de votre machine dans lequel vous pouvez ajouter un fichier (voir la note ci-dessous pour naviguer vers différents emplacements via la ligne de commande). Ici, je me suis rendu dans le dossier sur ma machine `B:\code_examples`, mais l’emplacement de votre dossier sera probablement différent. Créez un fichier simple, appelez-le `hello.py`, dans ce même dossier (vous pouvez initialiser le fichier en tapant simplement `echo "" > hello.py` à l’invite de commande, ou `touch hello.py` est plus facile sur une machine Mac/Unix. Ou, sous Windows, créez un fichier texte puis renommez l’extension en `.py` au lieu de `.txt`).
+
+::: {.callout-note icon=false}
+Dans ce livre, je donnerai des conseils pour travailler en ligne de commande. Cela peut sembler compliqué au début, mais je n’ai mémorisé qu’une poignée de commandes. Il est important pour la gestion de projet de savoir exactement *où* vous exécutez les commandes. Voici quelques notes sur l’utilisation de `cd` pour se déplacer dans différents dossiers :
+
+ - utilisez `cd YourPath\YourFolder` pour vous déplacer entre différents dossiers, par exemple, sous Windows cela peut être `cd D:\Dropbox\Project`, tandis que sous Unix cela peut être `cd /Project/sub_folder`. Sous Windows, pour changer de lecteur, vous pouvez simplement taper la lettre de ce lecteur (pas de `cd` devant; par exemple, si vous tapez simplement `D:`, l'invite de commandes passera au lecteur `D:`).
+ - Si votre chemin contient un espace, il doit être entouré de guillemets lors de l'utilisation de `cd`, par exemple `cd "C:\OneDrive\OneDrive - Uni\Folder"`. Sans les guillemets, la commande `cd` renverra une erreur.
+ - utilisez `cd ..\` (ou `cd ../` sur Unix/Mac) pour remonter d'un dossier; par exemple, si vous êtes dans `D:\Project\sub_project` et que vous tapez `cd ../`, vous serez maintenant dans `D:\Project`.
+ - Il n'est pas nécessaire de taper le chemin complet pour descendre d'un seul dossier; ainsi, si vous êtes dans `D:\Project` et que vous tapez `cd .\sub_project`, vous descendrez dans le dossier `D:\Project\sub_project`.
+ - utilisez la commande `pwd` pour afficher le répertoire courant.
+:::
+
+Dans ce fichier `hello.py` (qui n’est qu’un fichier texte), ouvrez-le avec l’éditeur de texte de votre choix. Saisissez ensuite ces lignes de code dans ce fichier, puis enregistrez le fichier :
+
+```{python}
+#| echo: true
+#| eval: false
+# This is a comment line
+x = 'hello world'
+print(x)
+
+y = 3/2
+print(y)
+```
+
+De retour à l’invite de commande, saisissez `python hello.py` puis appuyez sur Entrée. Vous devriez voir qu’il a exécuté votre fichier Python et affiché les résultats.
+
+![](/screenshots/Ch01_04.PNG)
+
+Certains scénarios détermineront si vous écrivez du code dans une session REPL interactive ou si vous exécutez du code via des scripts. La plupart du temps, je débogue le code initial à l’aide du REPL, puis j’enregistre le code finalisé et exécute l’ensemble des procédures au moyen d’un script.
+
+## Quelques notes supplémentaires
+
+J’utilise [Notepad++](https://notepad-plus-plus.org/) pour écrire une grande partie de mon code. Voici à quoi ressemble le bloc de code précédent, montrant Notepad++ et le fichier lui-même :
+
+![](/screenshots/Ch01_05.PNG)
+
+Notepad++ sait qu’un fichier `.py` est un fichier Python et offre donc une belle mise en forme du code. Il permet aussi d’activer une option pour afficher les espaces blancs, ce qui deviendra plus important plus tard lors de l’écriture de blocs de code conditionnels en Python. (Vous ne devriez pas écrire du code dans un programme qui met en forme votre texte, comme Microsoft Word, car sa mise en forme automatique peut provoquer des erreurs dans votre code.)
+
+Mais il existe d’autres options pour vous aider à écrire du code Python. À l’occasion, au travail, j’utilise Visual Studio Code (VS Code), qui est un IDE complet (environnement de développement intégré). Cela signifie simplement qu’il offre des fonctionnalités supplémentaires (comme un terminal intégré et la prise en charge de GitHub). VS Code propose des extensions pour Python ainsi que pour plusieurs autres langages. Un autre IDE populaire pour Python est PyCharm. Ces outils sont en grande partie interchangeables; j’aime Notepad++ pour sa simplicité.
+
+::: {.callout-note icon=false}
+Voici quelques commandes supplémentaires de la ligne de commande que j'utilise régulièrement:
+
+- Sous Windows, pour effacer le terminal, vous pouvez utiliser `cls`, sous Unix/Mac vous pouvez utiliser `clear`
+- vous pouvez utiliser `cat file.py` pour afficher le contenu d’un fichier dans le terminal
+- vous pouvez utiliser `mkdir` pour créer un nouveau dossier
+- vous pouvez rediriger la sortie vers un fichier, par exemple `python hello.py > log.txt` enregistrera la sortie de la commande ci-dessus dans le fichier `log.txt` au lieu de l’afficher dans le terminal.
+- si vous utilisez `python script.py >> log.txt`, cela *ajoute* la sortie au fichier journal. Ce qui est utile pour des tâches répétées qui se mettent à jour au fil du temps.
+:::
+
+Une autre option pour écrire du code python (surtout pour les personnes qui font du calcul scientifique) est d'utiliser Jupyter Notebooks. De nombreux tutoriels python pour débutants le suggéreront. J'aurai un chapitre ultérieur montrant comment réaliser un rapport standardisé avec Jupyter Notebooks, mais je ne recommande pas cet outil aux débutants lorsqu'ils se lancent. Bon nombre des informations sur la gestion de projet que j'aborderai dans ce livre sont difficiles à gérer avec Jupyter.
+
+Maintenant que vous disposez des bases pour exécuter du code Python, le prochain chapitre abordera plus en détail la manière d’écrire du code Python.
+

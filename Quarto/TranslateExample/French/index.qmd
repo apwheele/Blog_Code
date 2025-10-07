@@ -1,0 +1,140 @@
+# Préface {.unnumbered}
+
+Python est un langage de programmation informatique open source et gratuit. Il vous permet d’écrire des programmes simples (ou complexes) pour que votre ordinateur accomplisse des tâches. À titre d’exemple bref, voici un extrait de code Python qui indique la différence en nombre de jours entre deux dates. Les lignes qui commencent par `#` sont des commentaires en Python, les autres lignes effectuent différentes opérations dans le code Python. Le texte dans la partie grisée ci-dessous correspond au code Python, et le texte de la section bleue est la sortie du programme.
+
+```{python}
+# importing library to calculate times
+from datetime import datetime
+
+# creating two datetime objects
+begin = datetime(2022,1,16)
+end = datetime(2023,1,16)
+
+# calculating the difference
+dif = end - begin
+
+# printing the result
+print(dif.days)
+```
+
+Il s’agit donc d’un programme trivial -- vous pourriez déterminer le nombre de jours entre les deux dates en utilisant divers outils. L’intérêt de pouvoir programmer en Python est que vous pouvez écrire du code informatique pour effectuer (presque) n’importe quel calcul que vous souhaitez. Un exemple courant pour un analyste criminel peut être d’interroger une base de données et de créer un tableau des nombres de crimes cumulés depuis le début de l’année, cette année par rapport à l’année dernière. Vous pouvez ensuite exécuter le code à volonté, et il mettra à jour les statistiques cumulées depuis le début de l’année à la fréquence que vous souhaitez. Un tel rapport, en pratique, consistera simplement à chaîner de courts exemples de code comme ci-dessus en des séries d’opérations plus complexes.
+
+## À qui s'adresse ce livre ?
+
+Ce livre s’adresse aux personnes n’ayant aucune (ou débutante) expérience en programmation, mais qui souhaitent utiliser du code pour mener des analyses quantitatives et automatiser des tâches. Le principal public visé par le livre est constitué des analystes criminels, mais toute personne souhaitant se lancer dans le codage et l’analyse de données devrait trouver le contenu du livre utile. Outre les analystes criminels, celles et ceux qui souhaitent faire progresser leur carrière vers un rôle en science des données ou entreprendre des recherches de troisième cycle (qui ont une formation en justice pénale) trouveront le livre et ses exemples utiles.
+
+Il existe de nombreuses ressources actuelles sur l’utilisation de Python sur Internet — on peut utiliser un moteur de recherche pour trouver diverses ressources entièrement gratuites en ligne. Je blogue fréquemment sur l’informatique technique sur [andrewpwheeler.com](https://andrewpwheeler.com/), que tout le monde peut lire gratuitement. Ces ressources gratuites sont toutefois souvent décousues et très difficiles à comprendre et à prendre en main pour les débutants. Des questions comme « Comment exécuter un simple script Python » ou « Comment installer une bibliothèque Python » ne sont généralement pas des sujets abordés, même dans les supports d’introduction à Python en ligne. Ce livre a pour but de constituer une ressource unique pour permettre aux personnes travaillant en analyse criminelle de se lancer.
+
+Mon intention, avec ce livre, n’est pas seulement de présenter des exemples de code en Python, mais aussi de décrire d’autres étapes nécessaires pour les débutants, telles que la configuration d’environnements Python et l’automatisation de tâches à l’aide de scripts shell. Ne vous inquiétez pas si vous ne comprenez pas encore de quoi il s’agit — tout sera expliqué ! Je consacre même du temps à décrire une structure de projet typique, assez standard dans le développement logiciel professionnel. Ce ne sont pas des éléments directement liés au code, mais ils sont nécessaires pour bien démarrer avec Python et l’utiliser efficacement.
+
+Ce livre comble un créneau — une introduction à la réalisation de tâches en Python pertinentes pour les analystes en criminalité. Le livre contient par la suite :
+
+- installation et création d’environnements Python
+- introduction à la programmation en Python
+- manipulation de données tabulaires à l’aide de bibliothèques scientifiques
+- utilisation de SQL pour interroger des bases de données
+- automatisation de la création de rapports et production de tableaux et graphiques de haute qualité
+
+Ce sont les éléments nécessaires, tant en matière de programmation que de réalisation de projets plus réalistes, qui permettent de gagner en productivité dans les tâches courantes avec Python.
+
+## Ce que ce livre n’est pas
+
+Lorsqu’on aborde l’apprentissage du code et de l’analyse de données, de nombreux ouvrages incluent *les deux* en même temps. C’est souvent une erreur, car cela peut alourdir considérablement la charge pour celles et ceux qui souhaitent apprendre la matière. Ce livre *n’est pas* conçu comme une introduction à l’analyse criminelle en tant que sujet général. Pour celles et ceux qui souhaitent apprendre les statistiques de base et les analyses que réalisent les analystes criminels, je vous suggère de consulter les supports de cours sur mon site personnel, ainsi que les ressources de l’International Association of Crime Analysts (IACA). Si la demande est suffisante, je pourrais rédiger de futurs ouvrages pour couvrir plus en détail les statistiques d’introduction destinées aux analystes criminels, alors dites‑moi si cela vous intéresse !
+
+Ce livre a pour but de vous initier à l’écriture de code et à son application à des tâches concrètes que les analystes de la criminalité doivent accomplir. J’utilise des exemples réalistes qu’un analyste de la criminalité pourrait être intéressé à réaliser, comme l’envoi d’e-mails automatisés, la création de tableaux cumulés depuis le début de l’année et la réalisation de graphiques en courbes. En revanche, je n’aborde pas en détail des sujets comme la loi de Poisson pour analyser les taux de criminalité ou les raisons pour lesquelles l’analyse des points chauds est importante.
+
+Bien que le contenu soit assurément pertinent pour *tout le monde* qui a besoin d’effectuer des analyses de données avec python, j’espère utiliser des exemples d’analyse criminelle plus réalistes afin de mieux illustrer l’utilité de python pour réaliser des analyses dans vos tâches quotidiennes en tant qu’analyste en criminalité.
+
+## Pourquoi apprendre à coder ?
+
+Les analystes du crime effectuent une grande partie de leur travail quantitatif dans des tableurs (p. ex. Excel), et un plus petit nombre utilise des outils supplémentaires, tels que des bases de données (p. ex. Access, SQLServer), des documents mis en forme (Word, Powerpoint, PDF) et des outils SIG (comme ArcMap d'ESRI). Pourquoi s'embêter à apprendre Python ? Je reconnais qu’Excel permet de faire des choses incroyables avec les données, et de nombreuses tâches sont *interchangeables* entre Python et un, voire plusieurs, autres outils.
+
+Les avantages de l’utilisation de la programmation, par opposition aux outils utilisant une interface graphique (p. ex., pointer-cliquer dans la *GUI*), sont :
+
+ - les tâches peuvent être entièrement automatisées
+ - les tâches sont entièrement documentées
+
+Le premier point de la liste est un argument reposant sur les économies de temps potentielles liées à l’automatisation des tâches. Disons qu’il vous faut 30 minutes pour accomplir une tâche chaque jour. Si vous passez 100 heures à écrire du code Python pour automatiser entièrement cette tâche, vous aurez récupéré votre investissement de temps en 50 jours grâce au processus automatisé.
+
+Pour de nombreux rapports réguliers sur lesquels travaillent les analystes criminels, cet argument d’économies de temps peut toutefois ne pas être convaincant. Par exemple, lorsque je travaillais comme analyste, j’avais un rapport mensuel CompStat avec divers graphiques et cartes. En utilisant des outils avec interface graphique, cela me prenait peut‑être 24 heures (trois jours ouvrables) pour l’achever. Une fois que j’ai écrit du code pour créer automatiquement les graphiques, c’était une tâche de moins d’une journée. Mais j’ai peut‑être passé plus de 160 heures à écrire du code pour automatiser cette tâche. Il faudrait plus d’un an pour atteindre le point mort en termes d’économies de temps.
+
+De nombreux rapports réguliers que rédigent les analystes en criminalité ressembleront à ces derniers; ils ne seront que semi-réguliers, et l’argument du gain de temps en faveur de l’automatisation par le code n’est donc pas aussi convaincant. (L’automatisation par le code est plus pertinente, en termes de gain de temps, pour les tâches qui doivent être effectuées plus souvent.) Même dans ces cas de rapports semi-réguliers, toutefois, je pense qu’il vaut quand même la peine d’écrire du code pour automatiser autant que possible.
+
+Cela s’explique par le deuxième point de la liste — les tâches, lorsqu’elles sont écrites sous forme de code, sont par nature entièrement documentées. Cela permet à un analyste, a posteriori, de se dire des choses comme « ce nombre semble étrange, comment l’ai-je calculé ? », ou, lorsqu’un nouvel analyste arrive et reprend le poste, de dire « allez simplement consulter les scripts dans le dossier X ». Disposer d’un code standardisé offre un environnement bien plus professionnel et transparent, ce qui est utile pour vous en tant qu’analyste ainsi que pour l’organisation dans son ensemble.
+
+Cela vous permet également de mettre votre travail à l’échelle. Si vous devez consacrer votre temps indéfiniment à une tâche particulière, même si ce n’est qu’une seule journée par mois pour un rapport donné, vous ne pouvez élargir la portée de votre travail que jusqu’à un certain point. Pouvoir automatiser les tâches ennuyeuses est une étape nécessaire pour libérer du temps afin de mener d’autres projets. Cela vous permet même de partir en vacances, tout en continuant à satisfaire aux exigences en matière de rapports. En fin de compte, apprendre à coder vous rendra probablement plus productif lors d’analyses de données ad hoc, et vous rendra également plus attractif pour un éventail plus large d’emplois (comme des postes en science des données dans le secteur privé).
+
+## Pourquoi Python ?
+
+La section ci-dessus décrit seulement pourquoi on voudrait écrire du code pour automatiser des tâches; elle ne détaille pas pourquoi utiliser Python spécifiquement (plutôt que, disons, R ou un autre logiciel statistique). En plus de Python, j’ai utilisé SPSS (un programme payant) et R (un autre logiciel statistique open source) assez largement au cours de ma carrière. J’ai par exemple un package R, [ptools](https://github.com/apwheele/ptools), qui regroupe des fonctions courantes d’intérêt pour les analystes en criminalité.
+
+J’ai presque entièrement migré mon codage personnel vers Python et je n’utilise plus très souvent ces autres outils. Encore une fois, Python est largement interchangeable avec R pour de nombreuses tâches, mais je préfère Python à ce stade de ma carrière en raison de sa capacité à gérer des projets entiers, pas seulement à accomplir une tâche unique. De plus, de nombreux postes en science des données dans le secteur privé se concentrent presque entièrement sur Python (et moins sur R). Je pense donc que, en termes de développement professionnel, surtout si vous avez pour objectif d’élargir vos compétences afin de viser des postes en science des données dans le secteur privé, Python est un meilleur choix que R.
+
+Il existe également des situations où les outils payants sont appropriés. Les logiciels statistiques comme SPSS et SAS ne stockent pas l’intégralité de leur jeu de données en mémoire, ils peuvent donc être très pratiques pour certaines tâches impliquant de grands volumes de données. Les outils SIG d’ESRI (*Système d’information géographique*) peuvent être plus pratiques que de nombreuses solutions open source pour des tâches cartographiques spécifiques (comme le calcul des distances sur un réseau ou le géocodage). (Et les outils d’ESRI peuvent également être automatisés à l’aide de code Python, ce qui n’est pas mutuellement exclusif.) Cela dit, je peux m’appuyer sur Python pour près de 100 % de mes tâches quotidiennes. C’est particulièrement important pour les analystes de la criminalité du secteur public, car vous n’avez peut‑être pas de budget pour acheter des logiciels propriétaires. Python est 100 % gratuit et open source.
+
+## Comment lire ce livre
+
+Je pense que la meilleure façon d’aborder le contenu de ce livre consiste en un processus en deux étapes. Votre niveau d’expérience avec Python (un peu ou pas du tout) influencera les éléments sur lesquels vous concentrer et ceux que vous pourrez probablement ignorer. Pour tout le monde, je suggère de *parcourir rapidement* chaque chapitre dès le départ et de comprendre les objectifs généraux que chaque chapitre cherche à enseigner.
+
+Voici comment je consomme personnellement du contenu technique. Vous devez comprendre les objectifs de haut niveau qu’un morceau de code donné cherche à atteindre avant de pouvoir en saisir les détails techniques plus fins. Si vous ne comprenez pas les objectifs de haut niveau, il sera très difficile de comprendre les détails techniques. Il est également utile de savoir ce qui est possible — vous n’avez pas besoin de pointer et cliquer dans Excel pour recréer ce rapport CompStat chaque mois; vous pouvez écrire du code pour automatiser cela (voir le chapitre 10).
+
+La deuxième partie, après le survol, dépend de votre niveau : êtes-vous néophyte en Python ou avez-vous déjà une certaine expérience en programmation ? Pour les néophytes sans expérience, je vous suggère d’étudier en détail les chapitres d’introduction 1 à 4 du livre. L’un des principaux obstacles lorsqu’on apprend à exécuter du code est le problème du « démarrage avec un exemple simple » : télécharger un programme et exécuter des commandes est difficile pour ceux qui ne l’ont jamais fait auparavant.
+
+Cette partie -- comprendre comment installer Python et exécuter une commande simple peut être l’obstacle le plus difficile pour démarrer. Une partie de la difficulté, en tant qu’auteur, est que les systèmes de chacun sont légèrement différents et évoluent au fil du temps. Les instructions pour démarrer ont tendance à être propres à votre ordinateur personnel. L’une des raisons pour lesquelles j’écris ce livre est que la plupart des ressources pour débutants n’essaient même pas d’aborder ce sujet et utilisent des astuces (comme le recours à des plateformes en ligne) pour aider les gens à démarrer.
+
+Pour accomplir les tâches concrètes dont les analystes criminels ont besoin dans leur travail, vous ne pouvez pas utiliser les plateformes en ligne. De nombreuses personnes à qui l’on enseigne Python dans des cours universitaires utilisent ces plateformes en ligne (par exemple, si vous n’avez d’expérience qu’avec les notebooks Jupyter ou uniquement avec les notebooks Google Collab). Vous devez savoir comment télécharger Python et l’exécuter localement sur votre ordinateur personnel afin de pouvoir l’utiliser pour des tâches professionnelles. Mais ne désespérez pas si vous avez des difficultés à démarrer ! Une technique utilisée par les ingénieurs logiciels professionnels s’appelle le pair-programming -- trouvez un ami qui sait exécuter du code Python (cela peut être moi, ou quelqu’un d’autre dans votre réseau), regardez par-dessus son épaule, puis demandez-lui de regarder par-dessus la vôtre. Cela vous aidera à vous lancer au chapitre 1.
+
+Les chapitres 2 à 4 présentent les objets de base (chaînes de caractères, nombres, listes, dictionnaires) et les actions (instructions conditionnelles, boucles, substitution de chaînes). Ce sont des notions de base de Python très ennuyeuses — comme l’apprentissage de la loi normale est ennuyeux dans votre cours d’introduction aux statistiques, ou comme l’apprentissage de l’algèbre l’est en mathématiques. Elles constituent toutefois des éléments nécessaires pour comprendre comment écrire du code Python efficacement. Ceux qui ont déjà quelques notions pourront se sentir à l’aise de survoler les chapitres 2 à 4; je suggère néanmoins de les examiner au moins de manière superficielle — il y a probablement quelques éléments que vous ne connaissiez pas encore et qui seront présentés.
+
+Le chapitre 5 aborde un thème auquel même celles et ceux qui n’ont qu’une expérience d’initiation sont souvent peu exposés. Écrire ses propres fonctions et comprendre comment importer ces fonctions constituent une étape importante pour passer du code de loisir à la création d’un environnement professionnel permettant de développer des projets professionnels au fil du temps. Là encore, de nombreuses personnes ayant suivi un cours universitaire de programmation Python n’y sont pas exposées.
+
+Les chapitres 6 à 9 sont axés sur la présentation d’exemples concrets de traitement et de présentation de données qui intéresseront un large public, non seulement les spécialistes de l’analyse de la criminalité, mais aussi toute personne exerçant une fonction orientée vers les données. Le chapitre 6 présente les deux principales bibliothèques pour travailler avec des données tabulaires -- `numpy` et `pandas`. Comprendre en particulier la bibliothèque pandas est une compétence importante pour ceux qui utilisent Python pour effectuer des analyses de données.
+
+Le chapitre 7 montre comment utiliser python pour générer des requêtes SQL. Pour ceux qui ne sont pas familiers avec SQL, *Structured Query Language*, SQL est utilisé pour extraire des données d’une base de données externe vers un dataframe pandas. Dans ce chapitre, je présenterai également différentes instructions SQL, car, dans certains scénarios, il est préférable d’effectuer certaines tâches d’analyse de données dans la base de données *avant* de charger les données dans un dataframe pandas en mémoire.
+
+Le chapitre 8 présente la bibliothèque de graphiques `matplotlib` en Python. Créer des graphiques au rendu professionnel est une compétence importante pour les analystes de données. Produire des graphiques de haute qualité envoie un signal aux destinataires quant à la qualité du travail (pour les analystes criminels, il peut s’agir de policiers, de personnel de commandement ou du grand public). Générer de tels graphiques par du code en Python est un bon moyen de maîtriser l’apparence et la cohérence des graphiques que vous produisez.
+
+Le chapitre 9 présente les notebooks Jupyter -- les notebooks offrent un environnement différent de celui du terminal pour exécuter du code. Les notebooks Jupyter peuvent mêler du texte descriptif, des cellules de code exécutables, et les résultats de ces exécutions de code (par exemple, des graphiques et des tableaux). Ce livre, sous le capot, est compilé à partir d’une série de notebooks Jupyter. Je présente Jupyter, car c’est un moyen pratique de créer des rapports standardisés qui contiennent différents éléments d’analyse de données.
+
+Le chapitre 10, le dernier, *organisation de projet*, aborde des aspects de la gestion de projet et de l’automatisation des flux de travail -- les derniers éléments nécessaires pour pouvoir prendre des projets simples et vraiment tirer parti de Python pour vous aider à faire votre travail d’analyste en criminalité. Maintenant que vous savez écrire du code, à quoi ressemble un projet ? Il existe des façons standard d’organiser votre projet, afin que, lorsque vous devez réexécuter le code, ou que d’autres doivent le faire, ils puissent comprendre les éléments nécessaires. Cela implique, entre autres, de créer un fichier README contenant les informations pour reproduire l’environnement nécessaire à l’exécution du code, d’avoir des fonctions documentées et stockées à un emplacement spécifique, et un point d’entrée clair qui exécute le code de manière automatisée.
+
+Le contenu global du livre vise à aller au-delà de "comment écrire du code Python", pour offrir aux lecteurs une expérience de bout en bout de création de projets réalistes qui peuvent aider les analystes criminels à faire leur travail. Cela implique bien plus que d’exécuter un seul script, mais aussi de savoir comment les professionnels procèdent pour, par exemple, interroger une base de données, créer des fonctions réutilisables et mettre en place des projets afin d’automatiser, au fil du temps, différentes tâches d’analyse de données.
+
+Ces aspects non liés à l’écriture du code font cruellement défaut dans les tutoriels actuels de programmation Python et constituent la principale motivation pour écrire ce livre.
+
+## Mon parcours
+
+Pendant que je préparais mon doctorat en justice pénale à la SUNY Albany (entre 2008 et 2015), j’ai occupé plusieurs postes d’analyste. D’abord, à la Division of Criminal Justice Services de l’État de New York. Ce poste consistait principalement à rédiger des rapports standardisés à partir de la base de données de l’historique des arrestations pénales de l’État de New York. Ensuite, pendant plusieurs années, j’ai travaillé au sein du service de police de Troy (NY) en tant que leur unique analyste en criminalité. Enfin, j’ai travaillé comme analyste de recherche au Finn Institute for Public Safety, une organisation à but non lucratif qui collaborait à des projets de recherche avec des services de police dans le nord de l’État de New York.
+
+J’ai ensuite été professeur de criminologie pendant plusieurs années à l’Université du Texas à Dallas, de 2016 à 2019. Pendant cette période, j’ai rédigé une quarantaine de publications évaluées par les pairs et j’ai collaboré à des projets quantitatifs avec des services de police à travers les États-Unis. J’ai régulièrement présenté ces travaux lors de la conférence de l’IACA et, pendant une brève période, j’ai dirigé le comité des publications de l’IACA.
+
+Actuellement (depuis fin 2019), je travaille comme data scientist (dans le secteur privé) pour une entreprise du secteur de la santé. Mon travail consiste désormais à développer des logiciels, avec un accent sur l'utilisation de modèles prédictifs appliqués aux données de réclamations d'assurance maladie. Même si la santé peut sembler très différente de l'analyse de la criminalité, de nombreux problèmes sont fondamentalement les mêmes (travailler avec des réclamations d'assurance maladie n'est pas très différent de travailler avec des rapports de crimes). Parmi les choses que j'ai réalisées à mon poste actuel dans le secteur privé figurent des modèles prédictifs permettant d'identifier les réclamations surpayées, ou les individus présentant un risque élevé de subir un nouvel infarctus.
+
+Les compétences requises pour construire ces modèles prédictifs ne diffèrent en rien du travail que j’ai effectué pour prévoir la criminalité dans différentes zones, ou pour identifier des délinquants chroniques présentant un risque élevé de commettre de nouvelles violences. Mes expériences personnelles en tant qu’analyste criminel, chercheur, puis data scientist dans le secteur privé m’ont donc motivé à écrire ce livre. Je souhaite voir certains travaux plus avancés issus du monde universitaire, ainsi que les pratiques d’ingénierie logicielle du secteur privé, se diffuser plus largement dans la profession d’analyse criminelle. Je crois qu’un ouvrage introductif est le meilleur moyen d’atteindre cet objectif.
+
+## Commentaires sur le livre
+
+Pour tout retour sur le contenu du livre, vous pouvez m’envoyer un message à <https://crimede-coder.com/contact>. N’hésitez pas à me faire part de vos commentaires, à suggérer des sujets supplémentaires ou à me signaler des erreurs. Si vous êtes intéressé par des services plus directs, tels que des formations en présentiel pour vos analystes ou du conseil direct sur les projets sur lesquels vous travaillez, n’hésitez pas à m’envoyer un e-mail également. Parmi les exemples de travaux que j’ai réalisés pour divers organismes de justice pénale figurent l’évaluation de programmes, le redécoupage électoral, l’automatisation de différents processus, le conseil en contentieux civil et la génération de modèles prédictifs.
+
+J’ai également des projets futurs visant à générer du contenu Python plus avancé. Cela inclut des livres sur :
+
+ - programmation plus avancée, données et gestion des paquets
+ - modélisation par régression
+ - applications de l'apprentissage automatique en analyse criminelle
+ - analyse SIG avec Python
+
+Vos retours sur le contenu et le fait de me faire savoir ce qui vous intéresse m'aident à établir des priorités pour mes travaux futurs. Et davantage de ventes de ce livre en particulier me donnent aussi la motivation d'écrire davantage -- alors parlez-en à vos amis si vous l'aimez.
+
+## Merci
+
+Des remerciements s’imposent à plusieurs amis pour avoir relu les premières versions du livre et fourni des retours critiques. Renee Mitchell m’a donné de premiers retours sur des brouillons et a été l’un des principaux éléments déclencheurs pour lancer cette idée et la mener à terme. Dae‑Young Kim a fait preuve d’une grande assiduité en me donnant des commentaires très détaillés sur chaque chapitre, surtout lorsque je dois expliquer le code plus en détail ou que mon récit n’est pas cohérent avec les exemples de code. Et je remercie ma femme pour ses premiers retours sur les chapitres initiaux consacrés à l’écriture de code Python. (De loin, la partie la plus difficile du codage consiste à comprendre comment exécuter le code, et non à écrire le code lui‑même. Un bon test pour savoir si votre documentation est suffisante consiste à demander à quelqu’un qui n’est *pas* programmeur s’il peut la comprendre.)
+
+Merci à toutes et à tous pour votre soutien, et à toutes celles et ceux qui ont acheté des versions préliminaires du livre.
+
+::: {.content-visible when-format="pdf"}
+Ce livre n’est possible que grâce à diverses contributions open source. J’utilise le moteur Quarto pour générer ce livre dans différents environnements (PDF et EPUB), qui, lui-même, s’appuie sur \LaTeX\ et Pandoc sous le capot. Python est lui aussi open source, et j’utilise abondamment les outils d’Anaconda. Mes remerciements vont à toutes celles et tous ceux qui contribuent, dans l’ombre, à faire tourner le monde.
+:::
+
+::: {.content-visible unless-format="pdf"}
+Ce livre n'est possible que grâce à diverses contributions open source. J'utilise le moteur Quarto pour générer ce livre dans différents environnements (PDF et EPUB), qui s'appuie lui-même sur <span class="latex">L<sup>a</sup>T<sub>e</sub>X</span> et Pandoc sous le capot. Python lui-même est open source, et j'utilise largement les outils d'Anaconda. Mes remerciements vont à toutes les personnes qui contribuent, en coulisses, à faire tourner le monde.
+:::

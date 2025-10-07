@@ -1,0 +1,172 @@
+/* 
+@font-face {
+  font-family: DejaVuSans;
+  font-style: normal;
+  font-weight: normal;
+  src:url("DejaVuSans-Regular.ttf");
+}
+
+@font-face {
+  font-family: Consolas, monospace;
+}
+
+.serif {
+  font-family: Times, "Times New Roman", Georgia, serif;
+}
+
+# Cell block
+class="sourceCode cell-code"
+
+# Output
+<code>365</code
+
+*/
+
+/* 
+body {
+  font-family: Georgia;
+}
+
+<link href='https://fonts.googleapis.com/css?family=Fira Mono' rel='stylesheet'>
+
+body {
+  font-family: Verdana, sans-serif;
+}
+
+@import 'https://fonts.googleapis.com/css?family=Fira%20Mono';
+
+*/
+
+
+/* KpSans does not look as nice, need to set Cover.png
+   to Verdana then
+
+@font-face {
+  font-family: KpSans;
+  font-style: normal;
+  src:url("KpSans-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: KpSans;
+  font-style: bold;
+  src:url("KpSans-Bold.otf") format("opentype");
+}
+
+@font-face {
+  font-family: KpSans;
+  font-style: italic;
+  src:url("KpSans-Italic.otf") format("opentype");
+}
+
+body {
+  font-family: KpSans, sans-serif;
+}
+
+code {
+  font-family: 'Fira Mono', monospace;
+}
+
+class="sourceCode python"
+
+
+*/
+
+body {
+  font-family: Verdana, sans-serif;
+}
+
+/* 
+code {
+      background-color: #DCDCDC;
+      width: 500px;
+     }  
+pre {
+      background-color: #DCDCDC;
+      width: 500px;
+      padding-right: 35%
+     }  
+
+*/
+
+
+/* Stretch here does not work in epub
+
+  background-position: center; 
+  background-size: cover
+
+*/
+
+/*
+
+div.cell-output {
+  margin-right: 0px;
+  width: 100%;
+  background-color: #ADD8E6;
+}
+
+*/
+
+code {
+  font-family: "Lucida Console", monospace;
+  background-color: #D3D3D3;
+}
+
+
+div > pre > code {
+  font-family: "Lucida Console", monospace;
+  background-color: #ADD8E6;
+  width: 100%;
+  margin-right: 0px;
+  display: block
+}
+
+/*
+
+.cell-output {
+  font-family: "Lucida Console";
+  background-color: #ADD8E6;
+  width: 100%;
+}
+
+*/
+
+/*
+pre {
+  font-family: "Lucida Console";
+  background-color: #ADD8E6;
+}
+
+*/
+
+.sourceCode {
+  font-family: "Lucida Console", monospace;
+  background-color: #D3D3D3;
+}
+
+
+.tex sub, .latex sub, .latex sup {
+      text-transform: uppercase;
+    }
+
+.latex sup {
+  font-size: 0.85em;
+  vertical-align: 0.15em;
+  margin-left: -0.36em;
+  margin-right: -0.15em;
+}
+
+/* 
+https://tess.oconnor.cx/2007/08/tex-poshlet
+
+<span class="latex">T<L<sup>a</sup>T<sub>e</sub>X</span>
+
+*/
+
+/* This seems to have no effect
+
+figure {
+  max-width: 50px;
+}
+
+*/

@@ -1,0 +1,907 @@
+\begin{tikzpicture}[overlay, remember picture]
+\node[xshift=-1.5in,yshift=-1.5in] at (current page.north east) {\includegraphics{chap_images/C02_latex.png}};
+\end{tikzpicture}
+
+
+::: {.content-visible unless-format="pdf"}
+```{=html}
+<style>
+    #content {
+        position: relative;
+    }
+    #content img {
+        position: absolute;
+        top: -85px;
+        right: 0px;
+        z-index: -1;
+    }
+</style>
+
+<div id="content">
+    <img src="chap_images/C02.png" class="ribbon" />
+</div>
+```
+:::
+
+# Primeros pasos para escribir código en Python {#sec-started}
+
+Aunque el capítulo anterior te mostró cómo ejecutar código, ya sea en el REPL o mediante scripts, este capítulo te pondrá en marcha escribiendo código de Python propiamente dicho. Recomiendo teclear los ejemplos de código que aparecen en los recuadros en una sesión de REPL para seguirlos, aunque también puedes guardarlos en scripts `.py` y ejecutarlos directamente. Las partes en gris son lo que escribirías en la terminal, y los recuadros azules son lo que debería imprimirse.
+
+Este capítulo presentará una introducción al trabajo con números, cadenas, booleanos, listas y diccionarios. Estos *objetos* son los componentes básicos de prácticamente todo el código en Python.
+
+::: {.callout-note icon=false}
+En una primera lectura, este capítulo (quizá todos) parecerá mucha información y probablemente te resultará aburrido. Sugiero que lo sigas en el REPL, pero que *los leas por encima* con bastante rapidez (especialmente los capítulos 2, 3 y 4 sobre los conceptos básicos de objetos, cadenas y bucles). He intentado intencionalmente ser bastante exhaustivo con lo básico. Al trabajar en proyectos reales, puede que necesites volver a los capítulos para entender y volver a familiarizarte con los temas. No te conviertes en experto por leer un capítulo una sola vez, sino por escribir código repetidamente para tus propios proyectos con el tiempo.
+:::
+
+## Valores numéricos
+
+Para empezar, puedes pensar en el código de Python como *objetos* y *operaciones* aplicadas a esos objetos. Por ejemplo, si ejecutas el código de Python:
+
+```{python}
+#| echo: true
+#| eval: true
+x = 1
+y = x + 1
+print(y)
+```
+
+Aquí primero creamos un objeto, `x` que es *asignado* un valor de 1 mediante el símbolo `=`. Luego creamos un segundo objeto, `y`, que es asignado el valor `x + 1`. Y finalmente, hacemos `print` del valor del objeto `y`. `print` es una función cuya única finalidad es mostrar el valor (o, más específicamente, la representación en forma de cadena de ese objeto) en la terminal (o en cualquier ubicación a la que le indiques a python que envíe sus resultados).
+
+::: {.callout-note icon=false}
+En el REPL, también es posible escribir un solo elemento en una línea y se imprimirá la salida en la terminal. Así que, en lugar de `print(y)`, en una sesión de REPL podrías simplemente escribir `y` y obtendrás el mismo resultado. En un script, sin embargo, solo `print(y)` envía la salida a la terminal.
+:::
+
+En el ejemplo anterior, los objetos eran valores enteros. También puedes tener objetos numéricos de punto flotante. Python, a diferencia de algunos lenguajes de programación, no te obliga a definir de antemano el tipo de objeto.
+
+```{python}
+#| echo: true
+#| eval: true
+x = -1
+y = 3.2
+z = x/y
+print(z)
+```
+
+Cuando se trabaja con valores numéricos, Python es inteligente y convierte `z` aquí en un valor de tipo float, aunque use un entero como entrada (incluso con dos enteros, p. ej., `z = 1/2`, en Python `z` será un float). Puedes ver que aquí hice una división; la mayoría de las operaciones matemáticas son similares a lo que escribirías en cualquier calculadora, con la excepción de que las potencias usan `**` en lugar de `^`:
+
+```{python}
+#| echo: true
+#| eval: true
+# Showing off the different
+# math operations
+x = 2
+print(x - 1)
+print(x + 1)
+print(x/2)
+print(x*2)
+print(x**3)      # x to the third power
+print(x**(1/2))  # x to the 1/2 power (square root)
+```
+
+Uno de los operadores especiales en Python sirve para modificar el valor numérico de un objeto. Por ejemplo, para incrementar el valor de un objeto en uno, podrías hacer:
+
+```{python}
+#| echo: true
+#| eval: true
+x = 1
+x = x + 1
+print(x)
+```
+
+Pero es más fácil usar la notación especial de `x += 1`:
+
+```{python}
+#| echo: true
+#| eval: true
+x = 1
+x += 1
+print(x)
+```
+
+Ten en cuenta que también puedes realizar otras operaciones matemáticas, como restar `x -= 1`, multiplicar `x *= 2`, dividir `x /= 2` o elevar a una potencia `x **= 2`.
+
+Los últimos ejemplos numéricos básicos que se deben presentar son `//`, la división entera, y `%`, el operador de módulo. La división entera solo devuelve los números enteros en un problema de división, y el módulo es el resto del problema de división.
+
+```{python}
+#| echo: true
+#| eval: true
+x = 5
+print(x//2)
+print(x % 2)
+```
+
+En capítulos posteriores en los que se analizan bibliotecas destinadas a trabajar con datos tabulares (numpy y pandas), abordaré el procesamiento de datos numéricos con mayor detalle. Como a menudo no se desea hacer cálculos sobre un solo objeto, sino sobre un vector de múltiples objetos.
+
+## Cadenas  {#subsec-strings}
+
+Otro objeto básico que usarás a menudo en Python son las cadenas de caracteres. Si encierras un conjunto de caracteres entre comillas, eso da como resultado un objeto cadena. Aquí incluso realizo la suma de objetos cadena, lo que concatena las dos cadenas.
+
+```{python}
+#| echo: true
+#| eval: true
+x = "ABC"
+y = "de"
+z = x + y
+print(z)
+```
+
+Las cadenas pueden contener cualquier carácter alfanumérico, por lo que pueden albergar representaciones textuales de números. Ten en cuenta que sumar dos cadenas no es lo mismo que sumar dos valores numéricos: ¡concatena las dos cadenas!
+
+```{python}
+#| echo: true
+#| eval: true
+x = "1"
+y = "3"
+z = x + y
+print(z)
+```
+
+Puedes convertir cadenas a valores numéricos mediante las funciones `int` y `float`.
+
+```{python}
+#| echo: true
+#| eval: true
+x = "1"
+xi = int(x)
+xf = float(x)
+print(xi,",",xf) # can print multiple objects at once
+```
+
+Y, viceversa, puedes convertir valores numéricos en cadenas mediante la función `str`.
+
+```{python}
+#| echo: true
+#| eval: true
+xi = 1
+xf = 1.0 # if you use decimal, will be float
+
+xsi = str(xi)
+xsf = str(xf)
+
+print(xsi + "|" + xsf) #concat the strings
+```
+
+::: {.callout-note icon=false}
+He presentado tres funciones hasta ahora, `print`, `int`, `float` y `str`. Las funciones en python adoptan la forma `function(input)`, es decir, un nombre particular seguido de dos paréntesis.
+:::
+
+Las cadenas pueden encerrarse con comillas simples o dobles. Sin embargo, ten en cuenta que los caracteres especiales en las cadenas pueden causar problemas. Las barras invertidas en las variables de ruta de Windows son un ejemplo común:
+
+```{python}
+#| echo: true
+#| eval: true
+project_path = "C:\Project\SubFolder"
+project_path # Note no print statement
+```
+
+::: {.callout-note icon=false}
+Lo que se imprime en la consola no es necesariamente la misma representación textual del objeto en sí. Por ejemplo, prueba `x = "Line1\nLine2"` y luego escribe solo `x` en la terminal y observa qué se imprime, a diferencia de escribir `print(x)`. En este ejemplo, print interpreta los saltos de línea en la cadena, mientras que simplemente escribir `x` en una sesión REPL no lo hace.
+:::
+
+¡Puedes ver que python insertó barras invertidas adicionales! Si quieres que la cadena quede exactamente como la escribiste, puedes usar la opción de cadena `r""`, que significa cadena *real*.
+
+```{python}
+#| echo: true
+#| eval: true
+project_path = r"C:\NoExtra\BackSlashes"
+print(project_path)
+```
+
+Si quieres una cadena de varias líneas en Python, puedes usar comillas triples. Ten en cuenta que esta cadena tiene saltos de línea en el objeto de cadena.
+
+```{python}
+#| echo: true
+#| eval: true
+
+long_note = '''
+This is a long
+string note
+over multiple lines
+'''
+
+print(long_note)
+```
+
+Si tienes una cadena muy larga, como una URL, en la que no quieres insertar saltos de línea, puedes envolver la cadena entre paréntesis. El intérprete de Python, al final, simplemente lo convierte en una cadena:
+
+```{python}
+#| echo: true
+#| eval: true
+
+long_url = ("Pretend I am a super "
+            "long url on a single line")
+
+print(long_url)
+```
+
+Tengo todo un capítulo, el Capítulo 3, dedicado al uso más avanzado de las cadenas de texto.
+
+## Booleanos {#sec-bool}
+
+Los objetos booleanos solo pueden tener dos valores, `True` o `False`.
+
+```{python}
+#| echo: true
+#| eval: true
+
+print(1 == 1)
+print(2 == 3)
+```
+
+Puedes ver que uso `==` para hacer una comparación de igualdad. Recuerda que un solo `=` es para asignación. Para indicar que no es igual, el símbolo es `!=`:
+
+```{python}
+#| echo: true
+#| eval: true
+
+print('a' != 'a')
+print('b' != 'c')
+```
+
+Y luego también se puede usar la lógica de menor que y mayor que:
+
+```{python}
+#| echo: true
+#| eval: true
+
+print(1 < 1)
+print(1 <= 1)
+print(2 > 1)
+print(2 >= 1)
+```
+
+Nota: también se pueden hacer comparaciones de menor que con cadenas; por ejemplo, `'a' < 'b'` es `True`, pero no utilizo esto muy frecuentemente. El ejemplo de abajo muestra un caso que probablemente no era el pretendido, ya que accidentalmente compara representaciones en cadena de números en lugar de números directamente.
+
+```{python}
+#| echo: true
+#| eval: true
+
+print('10' < '2')
+```
+
+A menudo se utiliza un booleano para realizar lógica condicional en código de Python. Así puedes tener una instrucción `if` como se muestra a continuación:
+
+```{python}
+#| echo: true
+#| eval: true
+
+a = 1
+
+if a == 1:
+  print(a + 1)
+```
+
+Una característica particular de la sintaxis de python es que el espacio en blanco es significativo. Para indicar que la línea `print` está dentro de la sentencia if, anteponemos varios espacios al principio. El número de espacios no importa, aunque debe ser consistente. (Y técnicamente también puedes usar tabulaciones en lugar de espacios, pero lo desaconsejo encarecidamente, ya que puede hacer que editar los archivos sea un fastidio.)
+
+Python usa `if`, `elif`, `else` para las sentencias condicionales. Aquí hay un ejemplo con if y else:
+
+```{python}
+#| echo: true
+#| eval: true
+
+a = 1
+
+if a != 1:
+  print('a does not equal 1')
+  print(a + 1)
+else:
+  print('I am in the else part')
+```
+
+La forma en que funcionan estas instrucciones es que se verifica si la primera instrucción `if` es verdadera. Si esa instrucción es verdadera, ejecuta el código anidado en la parte del if, *y luego sale del bloque de código*. Si la instrucción `if` se evalúa como False, entonces ejecuta el bloque de la instrucción `else` para todos los demás casos.
+
+A veces querrás encadenar varias comprobaciones, p. ej., "si A, haz Y; de lo contrario, si B, haz X". Para hacer eso en código de Python, usarías `if` y luego `elif`.
+
+```{python}
+#| echo: true
+#| eval: true
+
+a = 1
+
+if a != 1:
+  print('a does not equal 1')
+  print(a + 1)
+elif a == 1:
+  print('I am in the elif part')
+else:
+  print('I am in the else part')
+```
+
+Si un `elif` es verdadero, ejecuta ese bloque y luego sale, igual que la instrucción `if`. Así que, en el fragmento de código anterior, como la instrucción `elif` es verdadera, nunca llega a la parte `else` de la lógica condicional.
+
+No hay nada que conecte las distintas sentencias condicionales entre sí, por lo que no es necesario que todas las secciones hagan referencia al mismo elemento:
+
+```{python}
+#| echo: true
+#| eval: true
+
+a = 1
+b = 'X'
+
+if a != 1:
+  print('a does not equal 1')
+elif a == 2:
+  print('a equals 2')
+elif b == 'X':
+  print('I am in the b check elif part')
+else:
+  print('I am in the else part')
+```
+
+Y también puedes escribir lógica condicional adicional dentro de una estructura condicional.
+
+```{python}
+#| echo: true
+#| eval: true
+
+a = 1
+b = 'X'
+
+if a != 1:
+  print('a does not equal 1')
+  if b == 'X':
+    print('b check in first if')
+else:
+  print('I am in the else part')
+  if b == 'X':
+    print('b check in elif')
+```
+
+A veces, en una parte de la condición, no quieres hacer nada. En esos casos, puedes usar `pass` dentro de la condición.
+
+```{python}
+#| echo: true
+#| eval: true
+
+a = 1
+
+if a == 1:
+  pass # This snippet will print nothing
+else:
+  print('I am in the else part')
+```
+
+Normalmente se desea poner primero las condiciones más comunes en una serie de sentencias if, y dejar las menos comunes más abajo. Así, si en la condición más común no haces nada y solo en condiciones más raras realizas alguna acción, esta es una manera perfectamente razonable de escribir tus sentencias if.
+
+Estos ejemplos comparan solo dos objetos, pero puedes combinar múltiples sentencias condicionales usando `and` y `or`.
+
+```{python}
+#| echo: true
+#| eval: true
+
+# and example
+a = (1 == 1) and (2 == 2)
+print(a)
+
+b = (1 == 1) and (2 == 3)
+print(b)
+
+# or example
+c = (1 == 1) or (2 == 3)
+print(c)
+```
+
+Sin embargo, hay operadores abreviados: la y comercial para `and` y la barra vertical para `or`:
+
+```{python}
+#| echo: true
+#| eval: true
+
+# ampersand for and
+a = (1 == 1) & (2 == 2)
+print(a)
+
+b = (1 == 1) & (2 == 3)
+print(b)
+
+# pipe for or
+c = (1 == 1) | (2 == 3)
+print(c)
+```
+
+Técnicamente no necesitas los paréntesis en los ejemplos anteriores, pero a mí me resulta mucho más fácil leer el código así y mantener juntos distintos términos:
+
+```{python}
+#| echo: true
+#| eval: true
+
+#       This is false        But this is true
+a = ((1 == 2) & (2 == 2)) | (4 == 4)
+print(a)
+```
+
+Pero la mayor parte del tiempo, si es posible, simplemente lo descompongo en código y hago que la línea final de la instrucción if sea lo más simple posible.
+
+```{python}
+#| echo: true
+#| eval: true
+
+check1 = (1 == 2) & (2 == 2) # This is false
+check2 = (4 == 4)            # This is true
+
+if check1 & check2:
+  print('Both check1 and check2 are true')
+elif check1 | check2:
+  print('At least one of check1 or check2 are true')
+else:
+  print('Neither check1 or check2 are true')
+```
+
+En ocasiones no se utilizan los operadores matemáticos para generar las expresiones booleanas, sino `is` o `is not`. Quizás el uso más común de esto es con el objeto `None`, que puede considerarse un valor faltante en Python.
+
+```{python}
+#| echo: true
+#| eval: true
+
+x = None
+
+if x is None:
+  print('x has no value')
+else:
+  print('x has some value')
+```
+
+Técnicamente, cuando escribes `a is b`, no solo verifica los valores de los objetos, sino también que haga referencia al *mismo objeto exacto* en memoria. Técnicamente, `x == None` funcionará en el ejemplo anterior, pero es práctica común escribirlo de la forma `x is None`. También puedes comprobar la condición opuesta mediante `is not None`:
+
+```{python}
+#| echo: true
+#| eval: true
+
+x = None
+
+if x is not None:
+  print('x has some value')
+else:
+  print('x is None')
+```
+
+Como ejemplo final, se pueden omitir por completo los operadores de comparación o las sentencias if. Si pasas un objeto "vacío" a una sentencia if, Python comprueba si el objeto tiene algún elemento y devuelve `True` si es así. Así que si pasas una cadena vacía, la sentencia if devuelve `False` aquí:
+
+```{python}
+#| echo: true
+#| eval: true
+
+x = ''
+
+if x:
+  print('x has some value')
+else:
+  print('x is an empty string')
+```
+
+Esto funciona para otros objetos de Python, como listas y diccionarios vacíos, lo cual se ilustrará en la sección siguiente.
+
+## Listas
+
+Es importante para los principiantes comprender los diferentes objetos que son contenedores de otros objetos. El primero es un objeto de tipo *lista*. Una lista contiene varios otros objetos, y se crea una lista colocando elementos dentro de corchetes y separando los elementos con comas. ¡Es más fácil mostrarlo que explicarlo con palabras!
+
+```{python}
+#| echo: true
+#| eval: true
+x = [1,2,3]
+print(x)
+```
+
+Las listas pueden contener distintos tipos de objetos; por ejemplo, pueden incluir tanto cadenas como valores numéricos en la misma lista. Aquí también muestro que las listas pueden contener otros objetos de Python definidos previamente.
+
+```{python}
+#| echo: true
+#| eval: true
+a = 1
+b = 'z'
+x = [a,b,3]
+print(x)
+```
+
+Puedes dividir los elementos de una lista en varias líneas en el intérprete de Python; detecta el corchete de cierre para saber que la entrada de la lista ha terminado. Así que la lista resultante a continuación es exactamente la misma que `x = [1,2,3]`, solo que es otra forma de escribirla (puede ser útil dividir listas muy largas en varias líneas para mejorar la legibilidad de tu código).
+
+```{python}
+#| echo: true
+#| eval: true
+# it is ok to define lists
+# over multiple lines
+x = [1,
+     2,
+     3]
+
+# it is the same as earlier
+# on a single line
+print(x)
+```
+
+Un error común al trabajar con listas es olvidar la coma. Con valores numéricos, esto a menudo dará como resultado un error, pero con cadenas a veces puede no dar lugar a un error, ya que Python simplemente concatenará implícitamente las cadenas. Por ejemplo:
+
+```{python}
+#| echo: true
+#| eval: true
+# This is probably not what was intended
+x = ['a' 'b', 'c']
+print(x)
+```
+
+Entonces, aquí se omitió la coma entre las dos primeras cadenas, por lo que la lista resultante tiene solo dos elementos, y el primero es `'ab'`.
+
+::: {.callout-note icon=false}
+Una ventaja de escribir listas en varias líneas es que puedes usar edición en *columna* en varios editores de texto. En Notepad++, puedes mantener presionada la tecla Alt y seleccionar varias líneas para editarlas a la vez. La mayoría de los editores de texto avanzados tienen una función similar.
+:::
+
+Puedes acceder a elementos individuales de una lista mediante su índice. Ten en cuenta que en Python los índices de las listas comienzan en 0, no en 1, por lo que el primer elemento de una lista tiene índice 0, el segundo elemento tiene índice 1, etc.
+
+```{python}
+#| echo: true
+#| eval: true
+y = ['a','b','c']
+print(y[0])
+print(y[1])
+print(y[2])
+```
+
+También puedes usar índices *negativos* para acceder a los elementos en orden inverso en una lista. Así, -1 accede al último elemento de una lista, -2 al penúltimo, etc.
+
+```{python}
+#| echo: true
+#| eval: true
+y = ['a','b','c']
+print(y[-1])
+print(y[-2])
+```
+
+Por último, en cuanto al acceso a varios elementos de una lista, puedes usar la notación de corte (slice). Así, `x[1:3]` accedería al segundo y tercer elemento de la lista (es equivalente a la notación `[,)` en matemáticas, por lo que el extremo izquierdo del corte es cerrado y el extremo derecho es abierto).
+
+```{python}
+#| echo: true
+#| eval: true
+y = ['a','b','c']
+print(y[1:3]) # note it returns a list!
+```
+
+También puedes usar `x[1:]` para indicar, "dame el segundo elemento de la lista hasta el final", o `x[:3]` para "dame los primeros 3 elementos de la lista.
+
+Se puede crear una lista vacía simplemente asignando `[]` a un valor. Otro truco útil que conviene conocer es que se puede hacer una comprobación booleana para una lista vacía.
+
+```{python}
+#| echo: true
+#| eval: true
+x = []
+
+if x:
+  print('The x list is not empty')
+else:
+  print('x is empty')
+```
+
+Una lista vacía no tiene elementos, así que si intentas acceder a uno generará un error. Como se mostró arriba, si intentas usar `x[0]`, obtendrás el error `index out of range`.
+
+Otra operación booleana sobre listas consiste en comprobar si un elemento está contenido en esa lista.
+
+```{python}
+#| echo: true
+#| eval: true
+x = ['a','b','c']
+
+if 'd' in x:
+  print('The list has a d element')
+elif 'c' in x:
+  print('The list has a c element')
+else:
+  print('x has neither d or c')
+```
+
+Un dato importante que debes conocer sobre las listas es que son *mutables*. ¿Qué significa eso exactamente? Significa que podemos modificar el contenido de una lista. Así, por ejemplo, podemos reemplazar un único elemento en una lista.
+
+```{python}
+#| echo: true
+#| eval: true
+y = ['a','b','c']
+print(y)
+
+y[1] = 'Z'
+print(y)
+```
+
+Para un ejemplo más complicado, las listas pueden apuntar a otras listas. Como las listas son mutables, puedes modificar la lista interna aquí y la lista externa refleja este cambio.
+
+```{python}
+#| echo: true
+#| eval: true
+x = ['a','b','c']
+y = [1, x]
+print(y)
+
+# if we alter x
+# y points to 
+# the altered x list
+x[1] = 'Z'
+print(y)
+```
+
+La forma de pensar en esto es que la lista `y` aquí no contiene realmente el contenido de `x`, simplemente *apunta al* objeto `x`. Así que, si el objeto `x` cambia, apunta a ese nuevo objeto `x`.
+
+Esto puede parecer muy técnico, pero es una característica importante del lenguaje de programación Python. Permite escribir muchos algoritmos distintos de forma más sencilla cuando se pueden modificar listas en su lugar.
+
+Puedes concatenar dos listas sumándolas:
+
+```{python}
+#| echo: true
+#| eval: true
+x = ['a','b','c']
+y = [1,2]
+z = x + y
+print(z)
+```
+
+También puedes crear una lista repetida mediante multiplicación:
+
+```{python}
+#| echo: true
+#| eval: true
+x = ['a','b','c']
+y = [1]
+print(y*3 + x*2)
+```
+
+Las listas tienen varios *métodos* para modificar su contenido; dos de los más comunes son ordenar e invertir:
+
+```{python}
+#| echo: true
+#| eval: true
+x = [3,1,2]
+
+x.sort() # sorting the list
+print(x)
+
+x.reverse() # reverse ordering
+print(x)
+```
+
+::: {.callout-note icon=false}
+Cuando ordenas o inviertes una lista, realiza esa operación y modifica la lista *en el lugar*. Así que el código `y = x.sort()` probablemente sea incorrecto, ya que `x.sort()` no devuelve nada. Por lo tanto, `y` no es igual a la lista ordenada, sino que es `None`.
+:::
+
+Los métodos son funciones especiales que están vinculadas a objetos específicos. Tienen la forma `object.method(input)`. Siempre estarán separados del objeto base por un punto -- esto significa que no puedes usar un punto en un nombre de variable. Por ejemplo, si escribes `q.i = 1` en la terminal, mostrará un error indicando que `q is not defined`. Estos métodos pueden aceptar argumentos adicionales (son como funciones), pero estos ejemplos solo usan los valores predeterminados. Por ejemplo, puedes ordenar en orden descendente:
+
+```{python}
+#| echo: true
+#| eval: true
+x = [3,1,2]
+
+x.sort(reverse=True) # passing arg
+print(x)
+```
+
+::: {.callout-note icon=false}
+Este es el primer ejemplo que he mostrado de una función que tiene un argumento de *palabra clave*, por lo que en lugar de `function(input)` es `function(keyword=input)`. Las funciones pueden tomar múltiples argumentos, como `function(input1,input2)`. En este escenario el orden de los argumentos importa, y puedes usar argumentos de palabra clave para distinguir entre las entradas. Entraré en más detalles sobre esto en un capítulo posterior sobre cómo definir tus propias funciones.
+:::
+
+También puedes agregar o eliminar elementos de listas:
+
+```{python}
+#| echo: true
+#| eval: true
+x = [3,1,2]
+
+x.append('a') # appending an item to end of list
+print(x)
+
+x.remove(1) # removing an item
+print(x)
+```
+
+Para encontrar la ubicación específica de un elemento en una lista, puedes usar el método index:
+
+```{python}
+#| echo: true
+#| eval: true
+x = ['a','b','c']
+
+# will be 1, the 2nd item in a list
+bindex = x.index('b')
+print(bindex)
+```
+
+Hay otros métodos de las listas que no he mostrado aquí; si ejecutas el comando `dir` en un objeto, mostrará todos sus posibles métodos. Te animo a experimentar por tu cuenta y ver cómo funcionan los demás métodos, como `count` o `pop`.
+
+```{python}
+#| echo: true
+#| eval: true
+x = ['a','b','c']
+
+# you can look at the methods
+# for a object using dir(object)
+me = dir(x)
+
+# there are many more! only
+# printing a few to save space
+print(me[-6:])
+```
+
+A veces quieres un objeto similar a una lista, pero no quieres que sea mutable (de modo que no puedas realizar operaciones como cambiar un solo valor, agregar elementos o ordenar la lista). Esto puede ocurrir si tienes un conjunto de constantes en tu script y sabes que nunca deberían alterarse. Colocarlas en una *tupla* es una forma de asegurarte de que no se modifiquen accidentalmente. Las tuplas se ven casi igual que una lista, pero usan paréntesis en lugar de corchetes:
+
+```{python}
+#| echo: true
+#| eval: true
+#| error: true
+y = (1,2,3)
+y[1] = 5 # this will give an error
+```
+
+Puede convertir una lista en una tupla mediante el comando `tuple`:
+
+```{python}
+#| echo: true
+#| eval: true
+#| error: true
+y = [1,2,3]
+z = tuple(y)
+y[1] = 5 # this is ok
+print(y) # can see y list is updated
+z[1] = 5 # this is not, again cannot modify tuple
+```
+
+O, a la inversa, convierta una tupla en una lista mediante el comando `list`:
+
+```{python}
+#| echo: true
+#| eval: true
+#| error: true
+z = (1,2,3)
+y = list(z)
+y[1] = 5 # this is ok
+print(y)
+z[1] = 5 # this is not, again cannot modify tuple
+```
+
+Una última nota sobre las tuplas: puedes asignar varios objetos al mismo tiempo. Así que puedes hacer:
+
+```{python}
+#| echo: true
+#| eval: true
+#| error: true
+x, y = 1, 2
+print(x,y)
+```
+
+Esto se llama *desempaquetado de tuplas*. La razón por la que se llama así es que, cuando *no* se desempaquetan los múltiples valores separados por una coma, se devuelve una tupla.
+
+```{python}
+#| echo: true
+#| eval: true
+#| error: true
+t = 1, 2
+print(t)
+```
+
+Y puedes asignar más de dos valores:
+
+```{python}
+#| echo: true
+#| eval: true
+#| error: true
+a,b,c,d = (1,'a',6,-1.2)
+print(a,b,c,d)
+```
+
+Esto puede ser conveniente en varios ejemplos de bucles for (como se muestra en el Capítulo 4), y cuando las funciones devuelven múltiples valores (como se muestra en el Capítulo 5). Aparte de esto, sin embargo, en mi experiencia las tuplas no se usan tan comúnmente como las listas. Pero un ejemplo de uso que tienen se ilustra en la siguiente sección, donde se necesita usar tuplas inmutables para diccionarios.
+
+## Diccionarios
+
+```{python}
+#| echo: false
+#| eval: true
+
+# Function to wrap text
+# inside of output box
+
+import pandas as pd
+from copy import copy
+from io import StringIO
+import textwrap
+import numpy as np
+import warnings
+
+warnings.filterwarnings('ignore')
+
+
+# Do an example with indexing, so 
+
+porig = copy(print)
+
+def print(*args,wrap=70):
+    if type(args[0]) == pd.core.frame.DataFrame:
+        porig(args[0])
+    elif type(args[0]) == np.ndarray:
+        porig(args[0])
+    else:
+        s = StringIO()
+        porig(*args,file=s)
+        res = s.getvalue()
+        porig(textwrap.fill(res,wrap,max_lines=8))
+```
+
+El segundo contenedor principal de elementos en python es un diccionario. Así, para acceder a los elementos de una lista, basta con un orden establecido: el primer elemento es `mylist[0]`, el segundo elemento es `mylist[1]`, etc. A veces quieres poder acceder a los elementos mediante nombres más simples; por ejemplo, imagina que tuvieras una lista para contener la información de una persona:
+
+```{python}
+#| echo: true
+#| eval: true
+
+# using a list to hold data
+x = ['Andy Wheeler','Data Scientist','2019']
+```
+
+Para acceder al elemento nombre, necesitas saber que está en el índice 0; el elemento título está en el índice 1, etcétera. Probablemente sea más fácil referirse a estos datos mediante un diccionario.
+
+```{python}
+#| echo: true
+#| eval: true
+
+# using a list to hold data
+d = {'name': 'Andy Wheeler',
+     'title':'Data Scientist',
+     'start_year': 2019}
+
+print(d)
+```
+
+Ahora, es más fácil acceder a un elemento individual mediante `dict[key]`, así que si solo quiero el nombre, simplemente lo referencio explícitamente:
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Grabbing the specific name element
+print(d['name'])
+```
+
+La terminología para los diccionarios es que tienen *claves* que hacen referencia a *valores*. Los valores pueden ser cualquier cosa: valores numéricos, cadenas, listas, otros diccionarios, etc. Sin embargo, las claves deben ser *inmutables*, aunque los diccionarios en sí sean mutables (por lo que no puedes usar una lista como clave, pero sí puedes usar una tupla). Aquí podemos modificar los valores del diccionario original `d` que creé. También puedes añadir un nuevo elemento una vez creado el diccionario.
+
+```{python}
+#| echo: true
+#| eval: true
+
+# Modifying the start_year element
+d['start_year'] = 2020
+
+# Adding in a new element tenure
+d['tenure'] = 3
+
+print(d['name'])
+print(d['title'])
+print(d['start_year'])
+print(d['tenure'])
+```
+
+La mayoría de las veces la gente usa cadenas como claves, ya que el principal beneficio de los diccionarios frente a las listas es tener un nombre para referirse a objetos específicos. Pero también puede ser un número. Así que, si tuvieras identificadores numéricos en otra base de datos que hacen referencia a ubicaciones específicas, podría tener sentido escribir tu diccionario usando esos mismos identificadores numéricos.
+
+```{python}
+#| echo: true
+#| eval: true
+
+# You can have numeric values
+# as a dictionary key
+d = {} # can init a dict as empty
+d[101] = {'address': 'Penny Lane', 'tot_crimes': 1}
+d[202] = {'address': 'Outer Space', 'tot_crimes': 42}
+
+# These show a dictionary inside of a dictionary
+print(d[101])
+print(d[202])
+```
+
+Y, al igual que las listas vacías, un diccionario vacío devolverá `False` en una sentencia if booleana:
+
+```{python}
+#| echo: true
+#| eval: true
+
+d = {} # can init a dict as empty
+
+if d:
+  print('The dictionary d is not empty')
+else:
+  print('The dictionary d is empty')
+```
+
+Hay *muchos* tipos de objetos más complicados en python; el primer ejemplo del prefacio mostraba cómo trabajar con objetos *datetime*. Pero, bajo el capó, a menudo no son más que contenedores para realizar distintas operaciones con los objetos que enumeré antes: valores numéricos, cadenas, listas y diccionarios.
+
+
+

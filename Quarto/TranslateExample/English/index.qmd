@@ -1,0 +1,140 @@
+# Preface {.unnumbered}
+
+Python is an open-source, free, computer programming language. It allows you to write simple (or complex) programs, to allow your computer to accomplish tasks. For a brief example, here is a python code snippet that tells you the difference in the number of days between two dates. The lines that start with `#` are comments in python, the other lines perform different operations in python code. The text in the grey portion below is the python code, and the blue section text is the output of the program.
+
+```{python}
+# importing library to calculate times
+from datetime import datetime
+
+# creating two datetime objects
+begin = datetime(2022,1,16)
+end = datetime(2023,1,16)
+
+# calculating the difference
+dif = end - begin
+
+# printing the result
+print(dif.days)
+```
+
+So this is a trivial program -- you could figure out the number of days between the two dates using various tools. The power of being able to program in python is that you can write computer code to do (close to) any computation you want. A common example for a crime analyst may be querying a database and creating a table of crime counts year-to-date this year vs last. You can then run the code at will, and it will update the year-to-date stats on whatever frequency you want. Such a report in practice will just be chaining together short code examples like above into more complicated series of operations.
+
+## Who is this book for?
+
+This book is aimed at individuals with no (or beginner) background in programming, but who are interested in using code to conduct quantitative analysis and automate tasks. The main intended audience of the book are crime analysts, but any individual looking to get started in coding and data analysis should find the content of the book useful. Besides crime analysts, those wishing to advance their career in a data science role or pursue graduate level research (who have a background in criminal justice), will find the book and its examples useful.
+
+There are many current resources on using python on the internet -- one can use a search engine to find various entirely free resources online. I commonly blog on technical computing at [andrewpwheeler.com](https://andrewpwheeler.com/), which is free for anyone to read. These free resources are often haphazard though, and are very difficult for newcomers to understand and get started. Things like "How do I run a simple python script" or "How do I install a python library" are not typical topics covered in even introductory python materials online. This book is intended to make a singular resource for individuals in crime analysis to get started.
+
+I intend this book to not only introduce code examples in python, but to also describe other necessary steps for beginners, such as setting up python environments and automating tasks using shell scripts. Don't worry if you do not understand what those are at the moment -- they will be explained! I even spend time describing a typical project structure that is fairly standard across more professional software development. These are things not related to coding directly, but are necessary to be able to get started using python and use it effectively.
+
+So this book fills a niche -- an introduction to doing tasks in python of relevance to crime analysts. The book subsequently contains:
+
+ - installing and creating python environments
+ - an introduction to python programming
+ - working with tabular data using scientific libraries
+ - using SQL to query databases
+ - automating report creation and creating high quality tables and graphs
+
+These are the necessary ingredients, both in terms of coding and doing more realistic projects, that allow one to become more productive in their regular tasks using python.
+
+## What this book is not
+
+When approaching learning to code and data analysis, many books include *both* at the same time. This is often a mistake, as it can greatly increase the burden on those wishing to learn the material. This book *is not* meant as an introduction to crime analysis as a topic in general. For those who wish to learn basic statistics and analyses that crime analysts conduct, I would suggest to check out the course materials on my personal website, as well as the materials from the International Association of Crime Analysts (IACA). If demand is sufficient, I may create future books to cover intro statistics for crime analysts more thoroughly, so let me know if that is something you are interested in!
+
+This book is aimed to get you started writing code and applying it to real tasks crime analysts need to conduct. I use realistic examples that a crime analyst may be interested in conducting, such as sending automated emails, making year-to-date tables, and creating line charts. But I do not discuss in detail things like the Poisson distribution for analyzing crime rates or why hotspot analyses is important.
+
+While the material is definitely relevant to *everyone* who needs to conduct data analysis using python, I hope to use more realistic crime analysis examples to better illustrate the utility of using python to conduct analyses in your day-to-day tasks as a crime analyst.
+
+## Why learn to code?
+
+Crime analysts do much of their quantitative work in spreadsheets (e.g. Excel), and then a smaller number use additional tools, such as databases (e.g. Access, SQLServer), formatted documents (Word, Powerpoint, PDF), and GIS tools (such as ESRIs ArcMap). Why bother to learn python? I agree that Excel can be used to do amazing things with data, and many tasks are *exchangeable* between python and one (if not several) different tools.
+
+The power of using programming, as opposed to tools that use a graphical user interface (e.g. point and click in the *GUI*), are:
+
+ - tasks can be fully automated
+ - tasks are fully documented
+
+The first bullet point is an argument based on potential time savings for automating tasks. Say it takes you 30 minutes to do a task on a daily basis. If you take 100 hours to write python code to automate the task entirely, you have saved yourself time within 50 days from the automated process.
+
+Many regular reports that crime analysts work on this time savings argument may not be compelling though. For example, when I worked as an analyst I had a monthly CompStat report with various graphs and maps. Using GUI tools it maybe took me 24 hours (three working days) to complete. Once I wrote code to automatically create the graphs, it was under a day task. But I maybe spent over 160 hours writing code to automate that task. It would take over a year to break even in terms of time savings.
+
+Many regular reports crime analysts write will look like the latter; they will only be semi-regular, and so the time savings argument for automating via code is not as impressive. (Code automation makes more sense for time savings for things that need to be done more often.) Even in those cases of semi-regular reports though, I believe writing code to automate as much as possible is still worth it.
+
+This is because of the second bullet point -- tasks when written in code are by their nature fully documented. This provides the ability for an analyst to retrospectively say things like "this number looks weird, how did I calculate that?", or when a new analyst comes in and takes over the job, you can say "just go look at the scripts in folder X". Having standardized code provides a much more professional and transparent environment, which is helpful for you as an analyst as well as the organization as a whole.
+
+It additionally allows you to scale your work. If you need to loan out your time forever for a particular task, even if only a single day per month for a particular report, you can only expand the scope of the work you do a certain amount. Being able to automate the boring stuff is a necessary step to free up your time to pursue other projects. It even allows you to go on vacation, and reporting requirements can still be fulfilled. Ultimately learning to code will likely make you more productive when conducting ad-hoc data analysis, as well as make you more marketable in a wider array of jobs (such as private sector data science jobs).
+
+## Why python?
+
+The section above only describes why one would want to write code to automate tasks, it does not detail why to use python specifically (over say R or another statistical program). In addition to python, I have used SPSS (a program you need to pay for), and R (another open source statistical program) fairly extensively over my career. I have an R package, [ptools](https://github.com/apwheele/ptools), for regular functions of interest to crime analysts for example. 
+
+I have almost entirely migrated my personal coding to python, and do not use these other tools very often anymore. Again, python is very exchangeable with R for many tasks, but I prefer python at this point in my career due to its ability to manage entire projects, not just do a single task. In addition to this, many private sector data science positions focus almost entirely on python (and less so on R). So I believe in terms of professional development, especially if you have a goal for expanding your skills to pursue private sector data science positions, python is a better choice than R.
+
+There are situations when paid for tools are appropriate as well. Statistical programs like SPSS and SAS do not store their entire dataset in memory, so can be very convenient for some large data tasks. ESRI's GIS (*Geographic Information System*) tools can be more convenient for specific mapping tasks (such as calculating network distances or geocoding) than many of the open source solutions. (And ESRI's tools you can automate by using python code as well, so it is not mutually exclusive.) But that being said, I can leverage python for nearly 100% of my day to day tasks. This is especially important for public sector crime analysts, as you may not have a budget to purchase closed source programs. Python is 100% free and open source.
+
+## How to read this book
+
+I believe the optimal way to consume the material in this book is via a two step process. Your level of experience with python (either some or zero), will alter what materials you focus on and what ones you can likely skip. For everyone, I would suggest *skimming* each chapter briefly from the start, and understanding the high level goals each chapter is trying to teach.
+
+This is how I personally consume technical material. You need to understand the high level goals that any particular piece of code is trying to accomplish before you can understand the finer technical details. If you cannot understand the high level goals, it will be very difficult to understand the technical details. It is also useful to understand what is possible -- you do not need to point and click in excel to regenerate that CompStat report every month, you can write code to automate that (see Chapter 10).
+
+The second part, after the skimming, is where it depends on whether you are neophyte to python, or whether you have some background experience in programming. For those neophytes with no experience, I would suggest you study in detail the entry chapters 1 through 4 in the book. A large problem in learning to run code is the "getting started running a simple example" problem -- downloading a program and running commands is challenging for those who have never done it before.
+
+This part -- figuring out how to install python and run a simple command can be the most challenging hurdle to get started. Part of the challenge, as the author, is that everyone's systems is slightly different and changing over time. Instructions to get started tend to be idiosyncratic to your personal computer. Part of the reason I am writing this book is that most beginner materials do not even try to discuss this issue, and use tricks (such as using online platforms) to help people get started. 
+
+To accomplish real tasks crime analysts need for their jobs though, you cannot use the online platforms. Many individuals who are taught python in university courses use said online platforms (e.g. if you only have experience using Jupyter notebooks or only experience with Google Collab notebooks). You need to know how to download python and run it locally on your personal computer to be able to use it for work related tasks. But do not despair if you are having problems getting started! One technique professional software engineers use is called pair-programming -- grab a friend who knows how to run python code (which can be me, or someone else in your network), look over their shoulder, and then have them look over your shoulder. This will help you get started in Chapter 1.
+
+Chapters 2 through 4 introduce basic objects (strings, numbers, lists, dictionaries), and actions (conditional statements, looping, string substitution). These are very boring python basics -- similar to how learning the normal distribution is boring in your introductory stats class, or learning algebra is boring in mathematics. They are the necessary building blocks though for understanding how to effectively write python code. Those with more entry level experience may feel comfortable skimming chapters 2-4; I would suggest to examine them in a cursory fashion at least though -- there are likely a few things you did not know that will be introduced.
+
+Chapter 5 is a section that even those with introductory experience often are not exposed. Writing your own functions and understanding how to import those functions are an important step from writing hobby code to creating a professional environment to develop work projects over time. Again, many individuals who have had a course in college on python programming are not exposed to this.
+
+Chapters 6 through 9 are oriented around showing specific examples of working and presenting data that will be of wide interest, not only to those in crime analysis but those in any data oriented role. Chapter 6 shows the two main libraries to work with tabular data -- `numpy` and `pandas`. Understanding the pandas library in particular is an important skill for those using python to conduct data analysis. 
+
+Chapter 7 shows how to use python to generate SQL queries. For those who are not familiar with SQL, *Structured Query Language*, SQL is used to pull data from an external database and into a pandas dataframe. This chapter I will also introduce different SQL statements, as in some scenarios it is better to do certain data analysis tasks in the database *before* you load the data into an in-memory pandas dataframe.
+
+Chapter 8 introduces the `matplotlib` graphing library in python. Creating professional looking graphics is an important skill for data analysts. Generating high quality graphs is a signal to consumers of the quality of the work (for crime analysts these might be police officers, command staff, or the general public). Generating such graphs via code in python is a good way to control the look and consistency of graphs you produce.
+
+Chapter 9 introduces Jupyter notebooks -- notebooks offer a different environment than the terminal to run code. Jupyter notebooks can intermix plain text description, executable cells for code, and the output from those code executions (e.g. graphs and tables). This book, under the hood, is compiled from a series of Jupyter notebooks. I introduce Jupyter, as it is a convenient way to create standardized reports that contain different elements of data analysis.
+
+The final chapter 10, *project organization*, discusses aspects of project management and workflow automation -- the final necessary components to be able to take simple projects and really leverage python to help you do your job as a crime analyst. Now that you know how to write code, what does a project look like? There are standard ways you should organize your project, so when either you need to re-run the code, or others need to, they can understand the necessary components. This involves things like creating a README that has information to replicate the necessary environment to run the code, having functions documented and stored in a specific location, and a clear entry point that runs the code in an automated fashion.
+
+The overall contents of the book are intended to go beyond "how to write python code", to giving individuals the end-to-end experience of creating realistic projects that can help crime analysts do their job. This involves more than just running a single script, but knowing how professionals do things like query a database, create reusable functions, and set up projects to automate different data analysis tasks over time.
+
+These not writing code portions are what is severely lacking in current python programming how-tos, and is the main motivation to write the book.
+
+## My background
+
+While getting my doctorate degree in criminal justice at SUNY Albany (between 2008 and 2015), I worked in several analyst roles. First, at the Division of Criminal Justice Services for New York state. That job mainly involved writing standardized reports based on the New York states criminal arrest history database. Then for several years I worked in-house at the Troy, NY police department as their lone crime analyst. Finally, I worked as a research analyst at the Finn Institute for Public Safety, a non-profit who collaborated in research projects with police departments in upstate New York.
+
+I then was a professor of criminology for several years at the University of Texas at Dallas, from 2016 through 2019. During that time I wrote around 40 peer reviewed publications and collaborated on quantitative projects with police departments across the United States. I regularly presented this work at the IACA conference, and for a brief period was the head of the publications committee for IACA.
+
+Currently (since late 2019), I have worked as a data scientist (in the private sector) for a healthcare company. My job now is to write software, focused on using predictive models in relation to healthcare claims data. While healthcare may seem quite different than crime analysis, many of the problems are fundamentally the same (working with health insurance claims is not all that different than working with crime reports). Examples of things I have built at my current private sector job are predictive models to identify when claims are overpaid, or when individuals are at high risk of a follow up heart attack.
+
+The skills to build those predictive models are no different from work I have done forecasting crime in different areas, or identifying chronic offenders at high risk of committing future violence. So my personal experience as a crime analyst, a researcher, and then a private sector data scientist are what motivated me to write this book. I want to see some of the more advanced work in academia, as well as the software engineering practices in the private sector, trickle down more broadly into the crime analysis profession. An introductory book I believe is the best method to accomplish that goal.
+
+## Feedback on the book
+
+For feedback on the contents of the book, you can send a message to me at <https://crimede-coder.com/contact>. Always feel free to send me feedback, suggest additional topics, or let me know of errors. If you are interested in more direct services, such as in person training for your analysts or direct consulting on projects you are working on,  feel free to email me as well. Examples of past work I have conducted for various criminal justice agencies are program evaluation, redistricting, automating different processes, civil litigation consulting, and generating predictive models.
+
+I have future plans as well to generate more advanced python content. These include books on:
+
+ - more advanced programming, data, and package management
+ - regression modeling
+ - machine learning applications in crime analysis
+ - GIS analysis with python
+
+Feedback on content and letting me know what you are interested in helps me prioritize on this future work. And more sales of this individual book also give me motivation to write more -- so tell your friends if you like it.
+
+## Thank you
+
+Thanks are in order for several friends for reviewing early drafts of the book and providing critical feedback. Renee Mitchell gave me early feedback on drafts, and was one of the major impetuses to start this idea and finish it. Dae-Young Kim has been diligent in giving me very detailed feedback on each chapter, most importantly when I need to explain the code in more detail or my narrative is not consistent with the code examples. And I thank my wife for early feedback on the beginning chapters writing python code. (Easily the hardest part of coding is understanding how to run the code, not writing the code itself. A good test to see if your documentation is sufficient is to have someone who is *not* a programmer see if they can understand.)
+
+Thank you all for the support, and for all of those who purchased pre-versions of the book. 
+
+::: {.content-visible when-format="pdf"}
+This book is only possible based on various open source contributions. I am using the Quarto engine to render this book to different environments (PDF and EPUB), which itself uses \LaTeX\ and Pandoc under the hood. Python itself is open source, and I extensively use tools by Anaconda. My thanks to all those individuals who help make the world go round behind the scenes.
+:::
+
+::: {.content-visible unless-format="pdf"}
+This book is only possible based on various open source contributions. I am using the Quarto engine to render this book to different environments (PDF and EPUB), which itself uses <span class="latex">L<sup>a</sup>T<sub>e</sub>X</span> and Pandoc under the hood. Python itself is open source, and I extensively use tools by Anaconda. My thanks to all those individuals who help make the world go round behind the scenes.
+:::
