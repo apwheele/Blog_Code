@@ -1,0 +1,21 @@
+complaint,agency,completion_tokens,prompt_tokens,cost,time
+Shelters stealing phones,Department of Homeless Services,28,405,4.47e-05,0.8007
+Private lights disturbing neighbors,Department of Buildings,26,386,4.25e-05,0.515328
+Dangerous icy walkway,Department of Sanitation,28,389,4.31e-05,0.587337
+Icy sidewalk from melted water,Department of Sanitation,29,412,4.555e-05,0.72369
+Idling vehicle health hazard,Department of Environmental Protection,28,487,5.29e-05,0.849852
+Abandoned police barricades,Department of Sanitation,28,1006,0.0001048,0.564921
+Stolen packages and meds,Department of Consumer and Worker Protection,30,392,4.37e-05,0.720041
+Filthy unmopped hallways,Department of Sanitation,29,402,4.455e-05,0.612777
+Report reckless driving,New York City Police Department,27,382,4.225e-05,0.543802
+Add exhaust noise option,Department of Transportation,26,505,5.44e-05,0.458304
+Law 157 detector installation,Department of Buildings,29,390,4.335e-05,0.475864
+Mopeds on park paths,Department of Parks and Recreation,30,376,4.21e-05,1.148707
+Suggestion for app feature,Department of Consumer and Worker Protection,30,578,6.23e-05,0.631506
+Request for new complaint forms,Department of Consumer and Worker Protection,30,568,6.13e-05,1.161821
+Garage lighting complaint,Department of Buildings,26,454,4.93e-05,2.09483
+Cars blocking EV charging,Department of Transportation,26,377,4.16e-05,2.911282
+Industrial light glare,Department of Buildings,25,391,4.285e-05,0.743469
+Car noise exceeding limits,Department of Consumer and Worker Protection,29,440,4.835e-05,0.644761
+Website content update request,Department of Consumer and Worker Protection,29,498,5.415e-05,0.564922
+Discolored drinking water,Department of Environmental Protection,28,409,4.51e-05,0.580527
