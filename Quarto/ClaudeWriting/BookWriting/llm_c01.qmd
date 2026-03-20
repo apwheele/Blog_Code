@@ -1,0 +1,341 @@
+\begin{tikzpicture}[overlay, remember picture]
+\node[xshift=-1.5in,yshift=-1.5in] at (current page.north east) {\includegraphics{chap_images/C01_latex.png}};
+\end{tikzpicture}
+
+::: {.content-visible unless-format="pdf"}
+{{< include /chap_images/C01.md >}}
+:::
+
+# Basics of Large Language Models
+
+Before we dive into using commercial LLM APIs, it is helpful to understand what large language models actually are and how they work. This chapter provides a practical introduction to LLM fundamentals by building a simple language model from scratch using PyTorch.
+
+The goal here is not to teach you how to train production language models -- that requires significantly more resources and expertise. Instead, this chapter gives you insight into the core concepts: how models predict the next word based on prior words, and how to set up a basic model to conduct this task.
+
+::: {.callout-tip icon=false}
+This chapter is optional if you only want to use LLMs through APIs. You can skip to Chapter 3 and start working with commercial models immediately. However, I think understanding the basics of how LLMs work is important. Some individuals attribute anthropomorphic traits to LLMs (i.e. pretend LLMs are human), when really they are just advanced statistical models to predict future text from prior text.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+This does not detract from what these models can do, but I do not personally think they are intelligent the same way that humans are intelligent.
+:::
+
+## What is a language model?
+
+A language model is a statistical model that predicts the next word in a sequence based on the words that came before it. For example, given the text "the suspect fled the", a language model might predict "scene" as the next word with high probability.
+
+Language models learn these probabilities from training data. If you train a model on thousands of police reports, it learns patterns like "suspect fled the scene" appears frequently, while "suspect fled the banana" does not. The model does not understand language in the way humans do -- it learns statistical patterns in text.
+
+Large language models like GPT or Claude work on the same fundamental principle, but at massive scale. They are trained on enormous datasets (billions of words) using neural networks with billions of parameters.
+
+## A simple language model in PyTorch
+
+We are going to build a simple language model to predict the next word in crime-related sentences. This example uses PyTorch, one of the most popular deep learning frameworks for research and production applications.
+
+::: {.callout-tip icon=false}
+PyTorch is an open-source Python library, popular to build deep learning applications. It was initially developed by Meta. The `torch` library is very similar to the `numpy` Python library, but allows the ability to do computations on GPUs (graphical processing units). This is important, as GPUs can be substantially faster than the traditional CPU (central processing unit) for training deep learning models.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+Other frameworks exist, particularly TensorFlow. For those interested in deeper exploration of neural networks, I recommend Andrej Karpathy's YouTube series on building language models from scratch, <https://www.youtube.com/andrejkarpathy>, and François Chollet's book *Deep Learning with Python*, which uses TensorFlow. PyTorch has become the dominant framework in research and increasingly in production, so I use it as my example in this chapter.
+:::
+
+First, install PyTorch (and numpy) if you do not have it already. You can install it via pip from the command line:
+
+```{python}
+#| echo: true
+#| eval: false
+pip install torch numpy
+```
+
+::: {.callout-tip icon=false}
+If you do not understand what the pip tool is doing here (installing a library into a Python environment), I would suggest you pick up and work through my book, *Data Science for Crime Analysis with Python*, <https://crimede-coder.com/store>. This goes over the basics of Python, like installing packages and environment management.
+:::
+
+Now let's create a simple training dataset. For this example, we will use a small set of crime-related sentences:
+
+```{python}
+#| echo: true
+#| eval: true
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import numpy as np
+
+# simple training data - crime related sentences
+sentences = [
+    "suspect fled the scene",
+    "suspect entered the building",
+    "suspect took the laptop",
+    "victim reported the crime",
+    "victim called the police",
+    "officer arrived at scene",
+    "officer took the report",
+    "witness saw the suspect",
+    "witness described the vehicle"
+]
+
+print(f"Training on {len(sentences)} sentences")
+```
+
+Next, we need to convert words to numbers. Neural networks work with numbers, not words. We create a vocabulary that maps each unique word to an integer:
+
+```{python}
+#| echo: true
+#| eval: true
+# build vocabulary
+words = set()
+for sentence in sentences:
+    words.update(sentence.split())
+
+# create word to index mapping
+word_to_idx = {word: i for i, word in enumerate(sorted(words))}
+idx_to_word = {i: word for word, i in word_to_idx.items()}
+
+vocab_size = len(word_to_idx)
+print(f"Vocabulary size: {vocab_size}")
+print("Sample mappings")
+for word,index in word_to_idx.items():
+  print(f'{word}-{index}')
+```
+
+::: {.callout-tip icon=false}
+LLMs in practice call these *tokens*, not words. Tokens can include many things that are not words, such as punctuation, line breaks, hyphens, and special tokens to denote to stop generating additional words. Tokenizers will often even break up words, in Chapter 3 I show OpenAI's tokenizer turns the word *Robbery* into two tokens, *Rob* and *bery*.
+:::
+
+Now we create training examples. For each sentence, we use the first N words to predict the N+1 word. So from "suspect fled the scene", we create training examples:
+
+ - Input: "suspect" → Target: "fled"
+ - Input: "suspect fled" → Target: "the"
+ - Input: "suspect fled the" → Target: "scene"
+
+```{python}
+#| echo: true
+#| eval: true
+# create training examples
+X = []  # input sequences
+y = []  # target next word
+
+for sentence in sentences:
+    words_in_sentence = sentence.split()
+    for i in range(len(words_in_sentence) - 1):
+        # input is all words up to position i
+        input_seq = words_in_sentence[:i+1]
+        # target is the next word
+        target = words_in_sentence[i+1]
+
+        # convert to indices
+        input_indices = [word_to_idx[w] for w in input_seq]
+        target_idx = word_to_idx[target]
+
+        X.append(input_indices)
+        y.append(target_idx)
+
+xs, ys = idx_to_word[X[0][0]], idx_to_word[y[0]]
+print(f"Created {len(X)} training examples")
+print(f"First example - Input: {X[0]} -> Target: {y[0]}")
+print(f"Strings - Input: {xs} -> Target: {ys}")
+```
+
+## Defining the neural network
+
+Now we define our neural network model. This is a simple recurrent neural network (RNN) that processes sequences of words:
+
+```{python}
+#| echo: true
+#| eval: true
+class SimpleLM(nn.Module):
+    def __init__(self, vocab_size, embedding_dim, hidden_dim):
+        super(SimpleLM, self).__init__()
+        # embedding layer converts word indices to dense vectors
+        self.embedding = nn.Embedding(vocab_size, embedding_dim)
+        # RNN processes the sequence
+        self.rnn = nn.RNN(embedding_dim, hidden_dim, batch_first=True)
+        # output layer predicts next word
+        self.fc = nn.Linear(hidden_dim, vocab_size)
+
+    def forward(self, x):
+        # x shape: (batch_size, sequence_length)
+        embedded = self.embedding(x)
+        # embedded shape: (batch_size, sequence_length, embedding_dim)
+        output, hidden = self.rnn(embedded)
+        # take the last output
+        last_output = output[:, -1, :]
+        # predict next word
+        logits = self.fc(last_output)
+        return logits
+
+# create model
+embedding_dim = 10
+hidden_dim = 20
+model = SimpleLM(vocab_size, embedding_dim, hidden_dim)
+
+n_parms = sum(p.numel() for p in model.parameters())
+print(f"Model created with {n_parms} parameters")
+```
+
+Let's break down what this model does:
+
+1. **Embedding layer** -- Converts each word index to a dense vector. Instead of representing "suspect" as index 15, we represent it as a vector of 10 numbers. This allows the model to learn relationships between words. (In later chapters, we will show using embeddings for different tasks, like searching for semantic similarity.)
+
+2. **RNN layer** -- Processes the sequence of word vectors. RNNs are designed to handle sequences by maintaining a hidden state that captures information about previous words.
+
+3. **Output layer** -- Takes the RNN's final output and produces a probability distribution over all words in the vocabulary.
+
+::: {.callout-tip icon=false}
+Modern large language models do not use RNNs. They use transformer architectures based on attention mechanisms, see the paper *Attention is All you Need* by Ashish Vaswani and colleagues, for the basics. Using the attention architecture, it is not necessary to expand the 9 original sentences to 27 training examples for predicting the next word, you can just keep the data the way it is. Which makes training much simpler and faster.
+:::
+
+Even just creating a simple toy model brings with it several complications those with just a basic class in statistics or computer programming are not going to be familiar with. But you can think of this at a high level of just building a big, complicated statistical model to predict future words from past words.
+
+Most LLM models go through the basic steps of tokenization (turning letters and words into a specific set of numbers), and then embeddings. Current foundation models typically have token counts in the hundreds of thousands. Imagine you had a sentence of 10 words, and a vocabulary that had a total of 30,000 tokens. That single sentence can potentially be represented by 10\*30,000 = 300,000 numbers. LLMs reduce the space of the words by creating an *embedding* layer. So they learn to map those tokens in that sentence to a much smaller set of numbers.
+
+This process of *tokenization* is important to understand, even if using the commercial APIs, as is the concept of embeddings, as they both are used in other common applications.
+
+## Training the model
+
+Training means adjusting the model's parameters so it makes better predictions. We do this by:
+
+1. Making predictions on training examples
+2. Calculating how wrong the predictions are (loss)
+3. Adjusting parameters to reduce the loss by a small amount
+4. Repeating this process many times
+
+```{python}
+#| echo: true
+#| eval: true
+# function to pad sequences to same length
+def pad_sequences(sequences, max_len):
+    padded = np.zeros((len(sequences), max_len), dtype=np.int64)
+    for i, seq in enumerate(sequences):
+        padded[i, :len(seq)] = seq
+    return padded
+
+# pad input sequences
+max_len = max(len(seq) for seq in X)
+X_padded = pad_sequences(X, max_len)
+
+# convert to tensors
+X_tensor = torch.LongTensor(X_padded)
+y_tensor = torch.LongTensor(y)
+
+# define loss and optimizer
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.Adam(model.parameters(), lr=0.01)
+
+# training loop
+num_epochs = 200
+for epoch in range(num_epochs):
+    # forward pass
+    outputs = model(X_tensor)
+    loss = criterion(outputs, y_tensor)
+
+    # backward pass and optimize
+    optimizer.zero_grad()
+    loss.backward()
+    optimizer.step()
+
+    if (epoch + 1) % 50 == 0:
+        print(f'Epoch {epoch+1}, Loss: {loss.item():.4f}')
+```
+
+The loss should decrease over time, indicating the model is learning to predict the next word better. With this small dataset and simple model, the loss should drop significantly.
+
+::: {.callout-tip icon=false}
+For those with some background in statistics, this approach is fundamentally the same as maximum likelihood estimation for regression models. It uses a different optimizer popular in PyTorch (the Adam optimizer), and PyTorch can be a convenient library to estimate more traditional statistical models as well.
+:::
+
+## Testing the model
+
+Now let's test our trained model by giving it a sequence and seeing what word it predicts next:
+
+```{python}
+#| echo: true
+#| eval: true
+def predict_next_word(model, input_text, word_to_idx, idx_to_word):
+    # convert input to indices
+    words = input_text.split()
+    input_indices = [word_to_idx[w] for w in words if w in word_to_idx]
+
+    if len(input_indices) == 0:
+        return "unknown"
+
+    # pad to max_len
+    input_padded = np.zeros((1, max_len), dtype=np.int64)
+    input_padded[0, :len(input_indices)] = input_indices
+    input_tensor = torch.LongTensor(input_padded)
+
+    # get prediction
+    model.eval()
+    with torch.no_grad():
+        output = model(input_tensor)
+        predicted_idx = torch.argmax(output, dim=1).item()
+
+    return idx_to_word[predicted_idx]
+
+# test predictions
+test_inputs = [
+    "suspect fled the",
+    "suspect took the",
+    "officer arrived at",
+    "witness saw the"
+]
+
+for text in test_inputs:
+    predicted = predict_next_word(model, text, word_to_idx, idx_to_word)
+    print(f"'{text}' → '{predicted}'")
+```
+
+The model should predict reasonable next words based on the patterns it learned from training data. For "suspect fled the", it should predict "scene" since that sequence appeared in training.
+
+## Recapping what we just built
+
+This simple example demonstrates the core principle behind all language models:
+
+1. Convert words to numbers (tokenization and embedding)
+2. Process sequences to capture context
+3. Predict probability distribution over next words
+4. Train by showing many examples and adjusting parameters
+
+Large foundation models work in a similar way, but tokenize hundreds of thousands of words and characters, are trained on billions of parameters (not 1000 like this example), use billions of training examples, use a more complicated architecture (attention mechanisms, positional embeddings, mixture of experts, LoRA post-training examples to align the model), and use massive computational resources (thousands of GPUs).
+
+The fundamental task however is the same -- predict the next word given prior words.
+
+::: {.callout-tip icon=false}
+The example in this chapter is small enough to train on your CPU. In practice with larger datasets and models, you will want to use a GPU to significantly improve training times.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+To use a GPU with PyTorch, you first check if one is available, then move your model and data to the GPU. Here I show an example with an NVIDIA CUDA GPU.
+
+```{python}
+#| echo: true
+#| eval: false
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+# move model to GPU
+model = model.to(device)
+
+# move data to GPU
+X_tensor = X_tensor.to(device)
+y_tensor = y_tensor.to(device)
+
+# training loop remains the same
+# PyTorch automatically uses GPU for computations
+```
+
+This requires that you installed the PyTorch library in a specific way to be able to access your GPU.
+:::
+
+You do not need to understand every detail of neural network training to use LLMs effectively through APIs. Understanding how tokenization and embeddings work can be useful in some contexts, but I believe this chapter is mostly useful to pull back the curtain on LLMs. It is just building a model that uses prior words to predict future words.
+
+The next chapter will discuss specific tasks you can do with small local LLMs you can download and run on your computer -- special classification tasks, generating embeddings, and named entity recognition.

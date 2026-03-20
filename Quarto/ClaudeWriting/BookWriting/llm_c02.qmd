@@ -1,0 +1,403 @@
+\begin{tikzpicture}[overlay, remember picture]
+\node[xshift=-1.5in,yshift=-1.5in] at (current page.north east) {\includegraphics{chap_images/C02_latex.png}};
+\end{tikzpicture}
+
+::: {.content-visible unless-format="pdf"}
+{{< include /chap_images/C02.md >}}
+:::
+
+# Running Local Models from Hugging Face
+
+```{python}
+#| echo: false
+#| eval: true
+import warnings
+from transformers import logging
+warnings.filterwarnings("ignore", category=UserWarning)
+logging.set_verbosity_error()
+
+from huggingface_hub.utils import disable_progress_bars
+disable_progress_bars()
+
+# monkey patching print to wrap text
+import copy
+import textwrap
+from io import StringIO
+import numpy as np
+
+# Trying to prevent warning for async
+import os
+os.environ["OPENAI_AGENTS_TRACING"] = "false"
+
+import logging
+logging.getLogger("openai.agents.tracing").setLevel(logging.ERROR)
+logging.getLogger("google.adk").setLevel(logging.ERROR)
+logging.getLogger("google.adk.runners").setLevel(logging.ERROR)
+logging.getLogger("google.adk.runners.in_memory_runner").setLevel(logging.ERROR)
+logging.basicConfig(level=logging.ERROR)
+
+import warnings
+warnings.filterwarnings(
+    "ignore",
+    message="ImportError while loading the `logfire-plugin` Pydantic plugin"
+)
+
+porig = copy.copy(print)
+
+def print(*args,wrap=70):
+    if type(args[0]) == np.ndarray:
+        porig(args[0])
+    else:
+        s = StringIO()
+        porig(*args,file=s)
+        res = s.getvalue()
+        # Split by newlines, wrap each line, then rejoin
+        wrapped_lines = []
+        for line in res.split('\n'):
+            if line:
+                wrapped = textwrap.fill(line, wrap)
+                wrapped_lines.append(wrapped)
+            else:
+                wrapped_lines.append('')
+        # Limit total output to 9 lines
+        if len(wrapped_lines) > 9:
+            wrapped_lines = wrapped_lines[:8]
+            wrapped_lines.append('[...]')
+        porig('\n'.join(wrapped_lines).strip())
+```
+
+The prior chapter showed how to build a simple language model from scratch. In practice, for some tasks you do not need to train models yourself. Thousands of pre-trained models are freely available through Hugging Face, a platform for sharing open-source machine learning models and datasets.
+
+This chapter covers how to download and use pre-trained models locally for common text analysis tasks. We will work through practical examples relevant to crime analysts and social scientists: text classification, generating embeddings for similarity analysis, labelling entities in text, and generating text.
+
+Running models locally has advantages and disadvantages compared to using commercial APIs. The main advantage is cost -- once you download a model, you can process unlimited text without per-request charges. (Assuming you have the necessary compute available to run the model, which in some circumstances may practically require a GPU with sufficient memory.) The main disadvantage is performance -- local models are typically smaller and less capable for certain tasks than commercial models like GPT, Gemini, or Claude.
+
+::: {.callout-tip icon=false}
+This chapter requires more computational resources than the prior chapter. The examples will run on most modern computer CPUs (I would suggest at least 16 gigabytes of RAM), but some operations may be slow. Some of the code also downloads models to your local computer, which the first time you download may be slow.
+:::
+
+## Installing required libraries
+
+First, install the Hugging Face transformers library and related tools to run the code in this chapter.
+
+```{python}
+#| echo: true
+#| eval: false
+pip install transformers sentence-transformers gliner
+```
+
+The `transformers` library provides access to thousands of pre-trained models, hosted by the company Hugging Face. The `sentence-transformers` library specializes in generating text embeddings. The `gliner` library provides models for named entity recognition without requiring labeled training data.
+
+::: {.callout-tip icon=false}
+You may need a newer Python version as well, such as 3.12 or later, to run these examples. I use the conda distribution of python, and so an example of creating an environment may look like:
+
+    conda create --name llm_book python=3.12 gliner sentence-transformers
+
+See <https://github.com/apwheele/LLMsForAnalysts> for materials for the book and instructions to replicate the Python environment.
+:::
+
+## Downloading and using Hugging Face models
+
+Hugging Face hosts models for various tasks: text generation, classification, question answering, translation, and more. Each model has a unique identifier. For example, `distilbert-base-uncased` is a smaller, faster version of BERT trained for general language understanding. BERT stands for Bidirectional Encoder Representations from Transformers, and was a popular LLM model developed by Google in 2018. While it cannot generate quality prose the same way ChatGPT can, it can be used or slightly modified for many different tasks. It is still a popular model to do what we are showing in this chapter, lightweight tasks that can be run on consumer hardware.
+
+For a basic start, let's download a model and use it for sentiment analysis:
+
+```{python}
+#| echo: true
+#| eval: true
+from transformers import pipeline
+
+# create sentiment analysis pipeline
+# this downloads the model on first run
+classifier = pipeline("sentiment-analysis",
+                      model="distilbert-base-uncased")
+
+# test on crime-related text
+texts = [
+    "The officer provided excellent assistance to the victim",
+    "The response time was unacceptably slow",
+    "Witness cooperation made the investigation straightforward"
+]
+
+results = classifier(texts)
+for text, res in zip(texts, results):
+    print(f"Text: {text}")
+    print(f"Sentiment: {res['label']}, Score: {res['score']:.3f}\n")
+```
+
+The `pipeline` function automatically downloads the appropriate model and tokenizer. The first time you run this code, it will download several hundred megabytes of model files to your local machine. (These are open source models you can download, view the learned weights, and run on your local computer.) Subsequent runs use the cached local copy.
+
+This default model classifies text as positive or negative. The result `LABEL_0` refers to the negative class in this example. For the majority of analysis tasks, you likely want different labels. Despite the popularity of sentiment analysis in academic papers and tutorials, I don't have a single use case for a real example. (And you can see this model does not do very well on the sample inputs.) So for a more realistic example, say you want to classify crime incident narratives by crime type, severity, or whether they mention specific factors.
+
+::: {.callout-tip icon=false}
+*Potential* legitimate use cases for sentiment analysis may be classifying exit interviews, comments on social media, product reviews, or open ended survey items. Later chapters show when classifying text, how to evaluate whether it is accurate using a ground truth dataset. This is as true for sentiment analysis as it is more classifying text into any particular category.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+My experience is many researchers force a binary positive/negative for sentiment analysis, when there are likely less superficial ways to analyze the data, either through additional categories or extracting out key themes.
+:::
+
+Hugging Face provides zero-shot classification models that can classify text into arbitrary categories without training. Here is an example using a model developed by researchers at Facebook (now Meta):
+
+```{python}
+#| echo: true
+#| eval: true
+from transformers import pipeline
+
+# create zero-shot classifier
+classifier = pipeline("zero-shot-classification",
+                     model="facebook/bart-large-mnli")
+
+# crime narrative
+narrative = """Victim reported hearing glass breaking at 
+rear of residence. Upon investigation, discovered rear sliding 
+door shattered. Living room ransacked, TV and laptop missing 
+from entertainment center."""
+
+# categories to classify into
+candidate_labels = ["burglary", "robbery", 
+                    "theft from vehicle","assault"]
+
+result = classifier(narrative, candidate_labels)
+
+print("Narrative classification:")
+for label, score in zip(result['labels'], result['scores']):
+    print(f"  {label}: {score:.3f}")
+```
+
+The model ranks the candidate labels by how well they match the input text. For this narrative describing forced entry and stolen property, "burglary" should score highest.
+
+This zero-shot approach is useful when you do not want to spend the time and effort to train your own large model, do not have historical data, or have dynamic categories at runtime you want to classify text into. The model uses its general language understanding to classify text based on semantic similarity to the category labels.
+
+::: {.callout-tip icon=false}
+Zero-shot classification can sometimes work well, but depending on your use case you may want to fine-tune a model on labeled examples from your specific domain. If you want to see an example of fine tuning your own model for specific classes, use the code generation tools later in the book and ask something like "Using Hugging Face, build an example of training your own model to predict specific classes using AutoModelForSequenceClassification." (Or ask the free GUI tools, like ChatGPT or Claude.)
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+The Hugging Face documentation I find particularly challenging, but the coding tools have seen so many examples of their use they can generate a simple example of this and walk through the implementation details. Just remember my lesson from the introduction though, training your own model may not be worth the effort!
+:::
+
+## Generating embeddings with sentence transformers
+
+Embeddings are numeric representations of text that capture semantic meaning. Texts with similar meanings have similar embeddings. This is useful for finding similar incidents, clustering related cases, or detecting duplicate reports. (I go into a bit more mathematical detail on embeddings later in the book in Chapter 5.)
+
+The sentence-transformers library provides open-source models for generating embeddings:
+
+```{python}
+#| echo: true
+#| eval: true
+from sentence_transformers import SentenceTransformer
+
+# load embedding model
+model = SentenceTransformer('all-MiniLM-L6-v2')
+
+# crime incident descriptions
+incidents = [
+    "Suspect forced entry through rear door, stole electronics",
+    "Rear door pried open, TV and laptop taken",
+    "Front window broken, jewelry box stolen from bedroom",
+    "Vehicle window smashed, nothing taken from interior"
+]
+
+# generate embeddings
+embeddings = model.encode(incidents)
+
+ds = embeddings.shape[1]
+print(f"Generated embeddings shape: {embeddings.shape}")
+print(f"Each incident represented as {ds}-dimensional vector")
+```
+
+Each incident is now represented as a 384-dimensional vector. Incidents with similar descriptions will have similar vectors. We can measure similarity using cosine similarity:
+
+```{python}
+#| echo: true
+#| eval: true
+from sklearn.metrics.pairwise import cosine_similarity
+
+# calculate similarity between first incident and all others
+similarities = cosine_similarity([embeddings[0]], embeddings)[0]
+
+print("Similarity to first incident (forced entry, stole electronics):")
+for i, (incident, sim) in enumerate(zip(incidents, similarities)):
+    print(f"  {i}: {sim:.3f} - {incident[:50]}...")
+```
+
+The first line in the printed results shows the text "Suspect forced entry through rear door, stole electronics" compared to itself. So its cosine similarity is 1.00. The second incident is then compared to the first, which shows a higher similarity (relative to the other entries). This is because both describe forced entry through a rear door and stolen electronics. The third incident (different entry point, different stolen items) is closer than the last incident (a vehicle window broken in but not items taken), as it has stolen items in the narrative.
+
+::: {.callout-tip icon=false}
+Cosine similarity is one way to calculate the distance between two vectors of numbers. Another calculation analysts are likely more familiar with is the Euclidean distance between coordinates. Cosine tends to be more popular in LLM applications as it is already normalized to be between a value of -1 and 1, but for the most part this is not something you need to worry about. You could often swap out the Euclidean distance instead of the cosine similarity for many applications if you wanted.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+You do often need to figure out how close is close when using Cosine distances. Like in this example, the similar incident has a similarity of 0.599, and the dissimilar incident is 0.401. You likely need to collect some data to be able to determine a threshold of where to draw the line with what counts as similar vs dissimilar in many applications.
+:::
+
+Later on in the book I will discuss embeddings in a common use application, retrieval-augmented-generation (RAG) applications. It is a common tool used in applications like "answer this question given information in this policy document" or "give me the 10 most similar cases to this narrative".
+
+::: {.callout-tip icon=false}
+Embeddings can also be used as features for machine learning models. Instead of using raw text, convert text to embeddings and use those as input to classification or regression models. This often improves model performance compared to simpler text representations like bag-of-words.
+:::
+
+## Named entity recognition with GLiNER
+
+Named entity recognition (NER) extracts structured information from text -- person names, locations, dates, organizations, etc. GLiNER (Generalist and Lightweight Model for Named Entity Recognition) is a library where you do not need to train a custom model for your specific entities. 
+
+While the majority of these models are trained to extract proper nouns (person and business names), I know of none that are explicitly trained to extract stolen items. With GLiNER, you can specify the entity types you want to extract at inference time:
+
+```{python}
+#| echo: true
+#| eval: true
+from gliner import GLiNER
+
+# load GLiNER model
+model = GLiNER.from_pretrained("urchade/gliner_small-v2")
+
+# police incident narrative
+narrative = """On 11/15/2024 at approximately 1430 hours, 
+Officer Rodriguez responded to 123 Main Street regarding a 
+burglary report. Victim Sarah Johnson stated that sometime 
+between 0800 and 1400 hours, unknown suspect(s) forced entry
+through the rear door. Taken were one Dell laptop computer, 
+valued at $800, and jewelry from the master bedroom.
+A mirror was damaged. Witness Michael Chen from 
+125 Main Street reported seeing a white Ford pickup truck 
+in the alley around 11:00 AM."""
+
+# define entities to extract
+labels = ["officer","victim","witness","offender","date","time",
+          "stolen item","vehicle","address"]
+
+# extract entities
+entities = model.predict_entities(narrative, labels)
+
+print("Extracted entities:")
+for entity in entities:
+    print(f"  {entity['label']:15s} - {entity['text']}")
+```
+
+::: {.callout-tip icon=false}
+Because these libraries download models to your local computer, sometimes you need to run the code in an environment with sufficient permissions to save files. So you may need to specify the directory for *where* to save the model.
+
+```{python}
+#| echo: true
+#| eval: false
+# save model to specific location
+model = GLiNER.from_pretrained("urchade/gliner_small-v2",
+    cache_dir="./model")
+```
+:::
+
+While most NER models are trained to extract names, this example shows you can be even more specific -- here I differentiate between officers, victims, suspects, and witnesses, and they are all properly classified.
+
+The GLiNER model is smart enough to consider additional words around the entity being discussed to determine its label. For example, this *did not* classify a mirror as a stolen object (since it was described as damaged). If you change the text from "A mirror was damaged." to "A mirror was stolen.", it would classify a mirror as a stolen item in this passage.
+
+The model handles variations in how information is expressed. "1430 hours" and "11:00 AM" are both recognized as times. 
+
+One of the most common uses of NER is to identify personally identifiable information (PII) in text. For some applications, you need to redact that information *before* it can be stored permanently or sent to other applications (like calling the LLM libraries I will be showing in later chapters). Running models locally solves this problem. The data never leaves your machine.
+
+Here is an example of using GLiNER to identify and redact PII before sharing data:
+
+```{python}
+#| echo: true
+#| eval: true
+# narrative with PII
+narrative = """Victim John Smith, SSN 123-45-6789, residing at 
+456 Oak Ave, reported that on 10/15/2024 his credit card ending
+in 4532 was used fraudulently. Contact number 555-123-4567."""
+
+# extract PII entities
+pii_labels = ["person", "ssn", "address", "phone number", "credit card"]
+entities = model.predict_entities(narrative, pii_labels)
+
+# create redacted version
+redacted = narrative
+for entity in sorted(entities, key=lambda x: x['start'], reverse=True):
+    start, end = entity['start'], entity['end']
+    label = entity['label'].upper()
+    redacted = redacted[:start] + f"[{label}]" + redacted[end:]
+
+print("Original:")
+print(narrative)
+print("\nRedacted:")
+print(redacted)
+```
+
+## Text Generation
+
+Most of the book focuses on using served models through APIs. But you can also run text generation models locally. These models are typically smaller and less capable than commercial models. Here is a smaller model, Qwen, that can run on a CPU, using AutoModelForCausalLM (using prior text to predict the next words):
+
+```{python}
+#| echo: true
+#| eval: true
+
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+model_id = "Qwen/Qwen2.5-0.5B-Instruct"
+
+tokenizer = AutoTokenizer.from_pretrained(model_id)
+model = AutoModelForCausalLM.from_pretrained(
+    model_id,
+    device_map="cpu"
+)
+
+prompt = """
+Victim reported that on 11/15/2024 at approximately
+1430 hours, suspect forced entry through rear door of 
+residence located at 123 Main St. Suspect took laptop
+computer, jewelry, and cash.
+
+Instructions:
+Return a list of the following info based on 
+the narrative above:
+ - date
+ - time
+ - location
+ - method of entry
+ - list of items stolen
+"""
+
+inputs = tokenizer(prompt, return_tensors="pt")
+
+# do_sample=False makes output deterministic
+outputs = model.generate(**inputs,
+  do_sample=False,
+  max_new_tokens=100)
+
+# Slice off the prompt tokens
+generated_tokens = outputs[0, inputs["input_ids"].shape[-1]:]
+generated_text = tokenizer.decode(generated_tokens, 
+                  skip_special_tokens=True)
+
+print(generated_text)
+```
+
+You can see the output here for the classification is mixed. It did well for the actual categories we asked for, but generated an entirely hallucinated victim description. At the beginning of the output, you can see it generated an additional list item `- victim's description`. Chapter 4 on structured outputs will go over prompt engineering techniques to prevent such unintended outputs. And Chapter 3 will show how to call more capable models served by OpenAI, Claude, and Google that are less likely to generate hallucinations (at least on this example).
+
+This example uses the Qwen2.5-0.5B model (an open source model created by Alibaba, a Chinese tech company roughly equivalent to Amazon), which contains approximately 500 million parameters. In its standard 16-bit floating-point form, this corresponds to roughly 1–1.2 GB of system memory, making it feasible to run on a typical laptop or desktop CPU without specialized hardware. When executed on a CPU, text generation throughput is often on the order of 5–15 tokens per second, depending on the processor. 
+
+On a modest GPU, such as a 4 to 8 GB consumer NVIDIA card, the same model can fit into memory and can achieve several times higher throughput. For interactive applications the difference is very noticeable. On systems with more capable GPUs and ample memory—such as Apple Silicon devices (e.g., M1/M2) or larger NVIDIA GPUs—throughput can increase further, often reaching dozens to over a hundred tokens per second, making generation feel effectively instantaneous for short prompts.
+
+::: {.callout-tip icon=false}
+A popular library for serving models locally, similar to calling foundation model APIs, is *ollama*. I do not show an example of calling ollama here, as it requires having a separate server running on your local computer. But if you want to run local models with an API interface similar to commercial APIs, it is worth checking out.
+:::
+
+## Practical limitations of local models
+
+Local models offer cost and privacy benefits, but have practical limitations compared to commercial APIs. The examples I show in this chapter are some of the more common tools still popular in use. There are many additional open source models, such as Meta's Llama models. But these models are difficult to run on consumer-grade hardware given their size.
+
+The examples I show in this chapter are ones that can be run in reasonable time on a CPU. Many of the larger open source models need a GPU (often a large GPU, with 16 gigabytes or more of RAM, or a Mac's M1 shared GPU) to be able to run at all. The major foundation models I will show in the subsequent chapter likely have *trillions* of parameters and potentially need a *terabyte* of RAM (or more) to be able to conduct inference on. To run them at all, they are totally outside of the realm of consumer hardware.
+
+The majority of use cases I deal with require considering "how will I run this in production" from the start. It doesn't matter if I have a single large GPU to tinker with, but then when it comes to production if you cannot process your inputs fast enough, the local model approach may not be feasible. That is an important consideration when deciding if a local model makes sense for your application from the start.
+
+As such, I do not spend any more time on optimizing locally running models. For many use cases, even if *you can* train a local model to be more accurate than one of the foundation LLMs (or use a pre-trained model just as effectively) it may still not be feasible to run in production. That said, it is common to use these tools mixed with calling the foundation models in real life scenarios, so they are still worth understanding.
+
+The next chapter introduces commercial APIs. So instead of downloading a model on your local computer and running the computation, we will send a prompt to an external API and then receive the response. I will discuss what additional capabilities these foundation models provide and when the cost and complexity of API integration is justified.

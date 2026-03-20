@@ -1,0 +1,28 @@
+# Using Claude Code to help me write
+
+ - not about specific tools, Copilot or Google or OpenAI alternative tools could also be used
+ - my book, LLMs for Mortals, https://crimede-coder.com/blogposts/2026/LLMsForMortals, I used Sonnet 4.1 to write around 50% of the book. Took total writing time compared to prior book from a year to two months
+ - pangram pic, Pangram_FalseNegative.PNG, the book does not read as written by a LLM
+ - it is a tool -- can use it well or use it poorly. Here are my notes on how I use it well.
+
+## Copy Editing
+
+ - one aspect that almost all will not complain about -- copy-editing
+   - show example of Crime De-Coder blog post https://crimede-coder.com/blogposts/2026/LocalvsAPI 
+   - link to copy edit https://claude.ai/share/cef7040d-edd2-4ab7-ba10-8e9f670c5437, embed the ClaudeEdits.PNG image
+
+## Writing New Content
+
+ - plain text markdown, both prior writing and current
+ - have it review prior writing first
+ - screenshot from book (reviewing prior code base, but works the same with writing)
+ - then ask it to generate new writing, write in small bits (one chapter at a time, one section at a time)
+ - still tends to be marketing for many short forms (blog posts and social media posts). 
+ - But technical writing (like for course notes, technical labs)
+
+## Extra about Citations
+
+ - they do not work at all without some sort of verification
+ - if using markdown and bibtex, can just have LLM do inline citations to works that actually exist
+ - you should manually review them
+ - in future, may build an MCP https://api.semanticscholar.org

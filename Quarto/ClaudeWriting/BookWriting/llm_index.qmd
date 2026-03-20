@@ -1,0 +1,273 @@
+# Preface {.unnumbered}
+
+```{python}
+#| echo: false
+#| eval: true
+
+# arb change to trigger chapter update
+
+# monkey patching print to wrap text xxx
+import copy
+import textwrap
+from io import StringIO
+import numpy as np
+
+# Trying to prevent warning for async
+import os
+os.environ["OPENAI_AGENTS_TRACING"] = "false"
+
+import logging
+logging.getLogger("openai.agents.tracing").setLevel(logging.ERROR)
+logging.getLogger("google.adk").setLevel(logging.ERROR)
+logging.getLogger("google.adk.runners").setLevel(logging.ERROR)
+logging.getLogger("google.adk.runners.in_memory_runner").setLevel(logging.ERROR)
+logging.basicConfig(level=logging.ERROR)
+
+import warnings
+warnings.filterwarnings(
+    "ignore",
+    message="ImportError while loading the `logfire-plugin` Pydantic plugin"
+)
+
+import os
+os.environ["OPENAI_AGENTS_TRACING"] = "false"
+os.environ["PYDANTIC_DISABLE_PLUGINS"] = "1"
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+
+porig = copy.copy(print)
+
+def print(*args,wrap=70,tot_lines=100):
+    if type(args[0]) == np.ndarray:
+        porig(args[0])
+    else:
+        s = StringIO()
+        porig(*args,file=s)
+        res = s.getvalue()
+        # Split by newlines, wrap each line, then rejoin
+        wrapped_lines = []
+        for line in res.split('\n'):
+            if line:
+                wrapped = textwrap.fill(line, wrap)
+                wrapped_lines.append(wrapped)
+            else:
+                wrapped_lines.append('')
+        # Limit total output to 9 lines
+        if len(wrapped_lines) > tot_lines:
+            wrapped_lines = wrapped_lines[:(tot_lines-1)]
+            wrapped_lines.append('[...]')
+        porig('\n'.join(wrapped_lines).strip())
+```
+
+Large language models (LLMs) are transforming how we work. Some of these examples include using LLMs to help write computer code, using LLMs to extract out information from irregular text sources, and creating chat-bots that can interact with various data sources and documents.
+
+Most analysts, however, do not have any experience with these tools. This book is meant to be a general introduction to realistic examples of how individuals can use these tools; either in general software applications, or to help analysts write code to create software itself. Given the rapid pace of advancement in this area, a general introduction to help individuals who work in the knowledge economy understand the capabilities of these tools I believe is in order.
+
+Here is a simple example of using an LLM API (*Application Programming Interface* -- just a standard way to send information and get information back on the web) using the anthropic library in python to extract key information from a free text crime narrative:
+
+```{python}
+#| echo: true
+#| eval: true
+import anthropic
+
+# initialize API client
+client = anthropic.Anthropic()
+
+# crime narrative from police report
+narrative = """Victim reported that on 11/15/2024 at approximately
+1430 hours, suspect forced entry through rear door of residence located
+at 123 Main St. Suspect took laptop computer, jewelry, and cash."""
+
+# create message to extract structured data
+message = client.messages.create(
+    model="claude-sonnet-4-5",
+    temperature=0,
+    max_tokens=1024,
+    messages=[{
+        "role": "user",
+        "content": f"""Extract date, time, location, method of entry, 
+                       and items stolen from this narrative: 
+                       {narrative}"""
+    }]
+)
+
+print(message.content[0].text)
+```
+
+::: {.callout-tip icon=false}
+You can see the book has runnable code snippets. So the grey input is *python* code, and the green cell is the output from running the command.
+:::
+
+This simple example shows how LLMs can extract structured information from unstructured police narratives. Instead of manually reading through thousands of reports to identify patterns, you can write code to systematically extract and analyze this information at scale.
+
+The benefit of modern LLMs is that they are *generalists*. Here we defined the exact information to look for, simply through a prompt. You can change the prompt to look for any particular information you want. If reviewing gun crimes, and you want to extract information on the type of gun, just change the input prompt. If you have large documents and want to summarize key pieces of information, you can ask the LLM "give me two paragraph summary of this document". If you want the LLM to help you write computer code, you can just ask "please write a SQL statement that counts different crime types per week". One model can do many different tasks reasonably well.
+
+This set of code calls an externally served model, here Anthropic's Claude Sonnet Model, has it process the text input, and return the information. These large served models are sometimes called *foundation models*. If you have used online generative AI (artificial intelligence) chatbots, like OpenAI's ChatGPT, Anthropic's Claude, or Google's Gemini, under the hood this is all they are doing. Passing text in and out in a particular way to create the chatbot experience. Learning how to use the APIs is a critical component from just using someone else's chatbot, to being able to build tools for yourself or others to accomplish many tasks.
+
+## Are LLMs worth all the hype?
+
+Often people are discussing LLMs at the same time as AI. I am much more boring and pragmatic -- they can be *very* useful tools. Let me start with a boring example from my day job as a data scientist in healthcare.
+
+We have nurses review Medicaid claims for over payments. In a nutshell, hospitals can place the wrong codes on bills to (greatly) up the charges -- my company has nurses review the medical record on specific claims to make sure the stint justified the charge. The medical records the nurses review average around 400 pages and have plain text narratives from nurses and doctors, pages of tables with vital signs and laboratory results, ECG scans or other diagnostics, and many more idiosyncratic sections.
+
+Sitting down with the nurses while they did these reviews, they mostly used Ctrl+F to search through the document for keywords to identify certain pieces of information. So they would need to scan through all of the vital signs (which may be scattered in several sections of the medical record across dozens of pages), to determine if the individual at one point had a low oxygen level.
+
+What I built for the nurses, using the same tools I will show in the book, was simply a smart tagging system for the document. E.g. pages, 45, 46, 180, 210, 211 have vital signs, page 101 has an ECG, page 306 has the lab results, etc. This simple tagging resulted in an average nurse review time reduction of several minutes per review (which before this work took around 30 minutes). Given how many nurses we employ, just saving the nurses a few minutes is a cost savings of approximately one million dollars per year.
+
+This is obviously not transformative. Most people would not think that counts as AI. But it is certainly useful.
+
+::: {.callout-tip icon=false}
+For a brief aside about *what counts* as AI -- it is an academic belief among computer scientists if you build a machine that can reliably produce outputs that are indistinguishable from intelligent human behavior, it counts as "AI". This is called the *Turing test*, after Alan Turing, one of the founders of computer science.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+The current LLMs clearly meet that bar. But many lay-people (rightly) do not hold that same view of AI. When the acronym AI is used currently, it is mostly a buzzword, and is not used in any rigorous way.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+I will leave defining what counts as AI to others. This book focuses on tasks that can be accomplished now with the models, and does not speculate towards what is possible in the future.
+:::
+
+If you are reading this and think "you don't need LLMs for that", it is true we could build another system to do keyword searching through the document, or other supervised learning techniques to build a custom model. Initially I attempted a keyword regular expression approach -- some simple prompt tests on the early system showed the LLMs were much more accurate. Medical records are annoyingly inconsistent, different vendors produce different keywords, section headers, acronyms, etc. My system using a LLM handles these much more gracefully than a system where I just accumulated many different regex rules to flag pages.
+
+I do think, given enough time, I could build a custom trained model to tag pages that is *slightly* more accurate than the LLM model we are using. Part of the benefit of using the served foundation models that are very general is they are easy to deploy once you get the basics down -- it is just writing a prompt and chaining together API calls. Training and testing my own model takes much more time. In addition to the work of training a custom model, running my own custom model in production means I need to provision the necessary compute to meet our throughput requirements (over 400,000 pages a day and growing at this point).
+
+The pain of training and deploying my own model here is very difficult to compete with just having the generalist foundation model do the work. I am very glad I used the foundation LLMs when I get a question from the nurses "Hey Andy, can you add in a new page category Surgery Notes into your tagging system?". With the LLM tools we are using now, this takes a week to get into production (change the prompt and go through a testing procedure). With custom models, the turnaround and iteration would be *much* slower.
+
+Most of the realistic examples I see of LLMs being used (well) in production systems look like this -- marginal changes to productivity. It helps the nurses get their job done a few minutes faster. It helps me as a coder get my work into production from months to weeks. I just plan on continuing to do these marginal improvements to almost *all the systems that people work with* -- which is transformative. These are what the tools are capable of *right now*, even without any additional improvements.
+
+::: {.callout-tip icon=false}
+LLMs will not intrinsically result in improved efficiency though. For an example, Axon's DraftOne is software to take police body worn camera footage and automate report writing, using similar LLM tools I will show in this book. Ian Adams and colleagues analyzed Axon's DraftOne system in one police department in a randomized experiment (some officers got access to the tool, others did not), *No man’s hand: Artificial intelligence does not improve police report writing speed*.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+Ian found that DraftOne did not make writing reports any faster. I suspect DraftOne will eventually result in substantial time savings, but the hype with this tool has not been validated by independent research as of 2025.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+This is a common story with many LLM tools. To make them work effectively for any particular application is not trivial. People really need to understand the system they are applying LLMs towards.
+:::
+
+## Is this book more AI Slop?
+
+Part of the popularity of different AI tools is that they produce grammatically correct prose. Before the first release of ChatGPT, the models used to generate text were very mediocre and clearly not fit as general writing tools. They are now, producing text that is often superior to the majority of writers.
+
+This book is actually *the first* time I have used these tools in a substantive way with writing. I periodically do personal experiments with the major providers, and until now, I have mostly not been happy with the results when asking them to help me write content. Current generative AI writing tools are often much too verbose, use buzzwords and phrases I would personally never use, tend to have excessive sections and lists, and of course sometimes produce factually incorrect information.
+
+To help me write this book, I had Claude Code analyze prior samples of my writing. In particular my prior book, *Data Science for Crime Analysis with Python*. I then asked Claude Code (using the Sonnet 4.5 model), to write one chapter at a time, given my outline for the chapter and key points I wanted to make.
+
+If you are concerned about the quality of the writing due to this, I just ask that you spend some time and judge for yourself. Writing is an iterative process, you go over the work over and over and over again, tweaking sentences, adding, reordering, and removing sections. My estimate is that around half of the book was the initial draft written by Claude (this specific section I added in later, so this is not Claude writing).
+
+Writing half the draft is likely the reason I was able to find the time to write this book. I was incredibly impressed with the majority of the work Claude wrote on its initial pass. I assure you I still spend significant amounts of time copy-editing to make sure it is my own voice coming through, and I don't just print it because it is easy. I estimate I spent around 20 to 40 additional hours copy-editing and tweaking each chapter.
+
+## Who this book is for
+
+This book is aimed at individuals who are interested in learning about LLMs, and how they can leverage them for their personal objectives. This is very broad, but a few examples include: data analysts looking to extract information out of large amounts of textual data, software engineers looking to use LLM tools to help them write computer code, traditional data scientists looking to expand their toolbox into LLMs, and social science PhDs looking to summarize large amounts of narrative interviews, just to name a few.
+
+While my background is in criminology, and hence the examples in the book are often from that domain, in general any ambitious social science student or analyst (in any topical area) should be able to pick up the book and gain a practical introduction to LLMs.
+
+The book assumes you have basic Python programming skills. If you are new to Python, I recommend working through my prior book, *Data Science for Crime Analysis with Python*, before tackling this material. (Even if you *are not* a crime analyst, the book should still be informative.) You should be comfortable with basic Python syntax, and running Python scripts to be able to follow much of the material in the book. If those concepts are familiar, you are ready for this book.
+
+Unlike other resources on LLMs that focus on prompting through web interfaces, this book focuses on programmatic access through APIs. Why? Because working through web interfaces does not scale. If you need to process 10,000 police reports, you cannot copy-paste each one into ChatGPT. You need to write code that systematically processes your data, handles errors, and produces consistent output. That requires understanding how to call LLM APIs from Python.
+
+Being able to call the APIs directly also is often necessary given the sensitive nature of the data many individuals work with. For example, many crime analysts in the United States need to ensure the tools they use with criminal records data meet CJIS compliance (and crime analysts in the United Kingdom are under similar constraints). Using the GUI (graphical user interface) tools, like ChatGPT, often do not meet this standard. But calling some of the APIs directly (like Amazon's Bedrock) is acceptable for sensitive data.
+
+::: {.callout-tip icon=false}
+CJIS stands for *Criminal Justice Information Services*. This is a technology standard that ensures the safety of criminal justice data. Several of its main provisions are that data needs to have strict access controls and cannot be stored outside of the country.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+There are additional standards that other United States government agencies need to meet, like SOC2 and FedRamp compliance. CJIS is simpler than these frameworks, but they are broadly similar.
+
+::: {.content-hidden unless-format="pdf"}
+\
+\vspace{-10pt}
+:::
+
+ChatGPT can for example access your conversations and use them to train future models. This would fail CJIS compliance standards, as the training on your conversations could ultimately leak those conversations in some capacity to third parties at a later date. This is a major concern for many organizations (not just crime analysts), but using APIs directly often does not have the same risk.
+:::
+
+Finally, to build software applications to deploy apps to many individuals requires being able to use APIs. The difference between writing Python code to scan through 10,000 narratives on your personal machine is not all that different than writing general software to allow other people to conduct that same analysis. I want more folks to be able to take that step into software development.
+
+## Why write this book?
+
+My main motivation to write this book is partially out of fear. The pace of innovation around LLMs is incredible, and I think it is critically important for analysts and social scientists to start to adopt these tools in their work more broadly. While getting my PhD, I had to learn on my own Python and machine learning for many projects (around 2015). These helped me later branch out into a private sector data science role.
+
+These were already well established data science tools by that time (the popular sklearn Python library was first released in 2007). And these Python and traditional machine learning skills are what I spent the majority of my time on in my role as a data scientist until recently. ChatGPT, which was released towards the end of 2022, has largely transformed the data science profession though in just a few years.
+
+As of writing this (at the beginning of 2026), approximately half of my team's work has shifted from traditional machine learning to using LLM tools to help with cost savings and increased revenue opportunities. It has challenged me to learn new tools the same way I had to learn machine learning and Python programming to be a better policing researcher.
+
+Given the pace of innovation, it is likely some of what I write will be out of date soon. I believe the basics of what I am writing, understanding and applying these LLM tools in broad patterns, based on my actual experience deploying these models in realistic cases, will help those trying to take in the firehose of LLM innovations. It is the book I wish I personally had several years ago.
+
+## What this book covers
+
+This book covers:
+
+ - Basics of LLMs, and using local models you can download and run on your computer for certain tasks (like NER, classification, optical character recognition, and creating embeddings)
+ - The basics of calling external APIs (e.g. OpenAI, Anthropic, Google, AWS Bedrock) and how they work
+ - Using the APIs for common tasks, like structured output generation and having conversations
+ - Different LLM frameworks, such as RAG, tool calling, and agentic frameworks
+ - Using LLM tools to help write code (with tutorials showing GitHub Copilot, Claude Code, and the Google Antigravity editor)
+
+Do not worry if you do not know what some of those acronyms are now -- I will cover them in detail in later chapters.
+
+I suggest reading chapters in order. The way I write technical books, with code and concepts intermingled, I suggest to *skim* each of the chapters, and try to digest the overall concepts. Then later go back through and replicate the actual results on your own. The chapters are built in a way that I think will be easiest to digest the material, and they sometimes do build on one another (e.g. there are examples of using structured outputs, first introduced in Chapter 4, in Chapter 5 on RAG and Chapter 6 on tools and agents).
+
+All code examples in the book are tested and functional. You will need API keys to run the examples (covered in Chapter 3). Most examples use small amounts of data to keep API costs low while learning, and in Chapter 3 I discuss how to estimate costs for larger jobs. Many applications are quite cheap, which is one of the reasons such models are becoming more popular as well. To replicate the code in the entire book costs less than $10 cumulatively across all the API calls and services.
+
+These skills let you move beyond toy examples to building production systems that process real data for real analysis tasks. It will also be a good general introduction to LLMs and many practical applications, which are quickly becoming a needed skill for individuals pursuing a career in data science.
+
+## What this book is not
+
+This book is not an introduction to machine learning theory or transformer architectures. I will provide a brief example of training a model (for pedagogical purposes), but this text is not meant to be a sufficient introduction to that topic. Detailed knowledge of deep learning is not necessary to effectively use LLMs through APIs.
+
+This book is also not a prompt engineering guide focused on getting better results through clever prompting. While I cover prompting systems for specific tasks (like structured output generation and RAG systems), the focus is on systematic, programmatic use of LLMs. If you want to learn how to have better conversations with ChatGPT, this is not your book.
+
+Finally, this book does not cover training your own language models. That requires significant computational resources and expertise beyond the scope of this material. I show some examples of downloading open source models from Hugging Face and running some small computational tasks. But I mostly focus on using existing commercial models through APIs to accomplish tasks the smaller models cannot.
+
+## My background
+
+I worked as a crime analyst and researcher in criminal justice (I have a PhD in criminal justice) before moving to a private sector data science role. So I have experience as an analyst, a social science PhD researcher, and as a software engineer deploying solutions in the healthcare domain.
+
+At my current day job, director of artificial intelligence and machine learning at Gainwell Technologies, I have incorporated LLM techniques into production systems for analyzing healthcare claims data and medical records. This book is a way for me to incorporate my current practical knowledge of applying LLMs in production systems in a basic how-to guide to get a neophyte up to speed with common practices in the field. I believe more analysts and social science researchers should learn such LLM systems, both to help them conduct regular tasks, but also to help them in general be more productive. These skills are quickly becoming necessary to be able to work as a data scientist in almost all domains.
+
+I am personally using these tools to help me do my work faster, and want to put a guide together to help my future students and data scientists working under me to leverage them in the same way. They are not magic; it takes understanding how these tools can (and cannot be) used effectively to help you work faster.
+
+## Materials for the book
+
+Because the book is compiled with Quarto, it runs the embedded code snippets at runtime. Some of the chapters access materials on the local system, and those materials can all be found at <https://github.com/apwheele/LLMsForAnalysts>. The GitHub web-page also has instructions for creating a python environment that can run the code snippets (although many examples for a particular foundation model provider only need their specific python library).
+
+In addition to materials from the book, I will also maintain a corrigendum on that GitHub repository. One of the benefits of self-publishing is I can make updates as I want, recompile the book, and update the epub or print on demand book. I will devote a section on the GitHub page though to detail any major changes in the content.
+
+## Feedback on the book
+
+For feedback on the book contents, contact me at <https://crimede-coder.com/contact>. I welcome suggestions for additional topics, corrections of errors, or examples of how you are using the techniques from the book. If you have a positive review, I appreciate that feedback as well.
+
+If you are interested in training for your analysts or consulting on projects using LLMs for your analysts, feel free to reach out. I regularly conduct training sessions and consulting work with law enforcement agencies on data analysis and automation projects.
+
+## Thank you
+
+Thanks to those who provided feedback on early drafts and suggestions for topics to cover. Specific thanks goes to Mike Zidar, Scott Jacques, Gio Circo, Iain Agar, and Dae-Young Kim for feedback on early drafts of the book. Thank you to my wife as well for feedback on the graphical design of the book.
+
+This book is written and compiled using the freeware tools Quarto, Pandoc, and Python, which make writing and publishing the book on my own possible. The initial draft of the book was generated via Claude Code (with my directed guidance), but underwent extensive edits.
+
+The book title was inspired by Richard Berk's paper, *Toward a Methodology for Mere Mortals*. His paper was focused on how social scientists could use statistical methods in realistic applications that often do not meet all the assumptions for textbook applications of unbiased regression models. For its relation to this work, you do not need to have a PhD from Stanford or be a senior software engineer at Google to get a basic grasp of LLMs and use them productively. These tools can be effectively wielded by mortals.
+
+While it may seem strange to thank large companies like OpenAI, Anthropic, Google, and Meta, I do think these companies are generating potentially world altering technology. (Hugging Face, as well as the compute providers like AWS and Microsoft Azure, also deserve special mention for making these applications possible.) Imagine what life was like before smart phones -- I suspect these tools will be just as transformative to our daily lives. They may not be in our hands, but will likely be integral to many applications we use near constantly.
+
+I hope this books allows more people to build cool things to make the world a better place.
+

@@ -1,0 +1,2357 @@
+This is an example of LinkedIn posts, each new post is divided by a line break "-----". When asked to created social media or LinkedIn posts, make them shorter.
+
+----------------------
+
+"PDFs contain a ton of meta-data, making it difficult to forge them. This blog post is a good walkthrough of one example (a tenant noticing a landlord changing a lease), and different tools to examine the PDF.
+
+https://lnkd.in/eXnJBHBA
+
+Here you had edit dates in the meta-data after the sign date, and added in fonts later that were not in the original document.
+
+You can open PDFs in a text editor as well, they are difficult to understand, but are another way to inspect the elements of the document (in addition to the checksum, as shown in the screenshot).
+------------------------
+"
+"Sometimes it is hard to do root cause analysis of why certain errors occurred, as it is obvious that there was a lack of personal accountability. 
+
+Working with data applications, often in my work there was lack of *monitoring* to catch the error early (errors happen, if you go a week with an error in production though it begs the question ""why did it take so long to identify the problem and correct it"").
+
+So here if I were part of the group responsible for this in MA are the questions I would be asking, with the aim to prevent such failures in the future:
+
+ - what monitoring is in place on websites (surely this http website was receiving no traffic). This should go for all of the states websites, not just piecemeal by piecemeal. How would you know if a site is down? 
+
+ - the pre-post card is cheap but not costless -- who was monitoring whether the rate of responses to the pre-post card? Does it even make sense to not just send out the summons? (Which is probably also only a single page?)
+
+ - why is there a HTTP site at all? There should be some type of governance that prevents something like that from happening. Who owns the servers, and why was that allowed to happen?
+
+The last one is more of a person blaming, but I do not know how else to frame it -- no reasonably responsible web developer would allow a public website to be http for many years at this point.
+
+------------------------
+"
+"For another critique of random patrol, Tim Verlaan, Dan Birks, and Rob van der Mei have a pre-print out that uses agent based simulations to show response time metrics for three different types of police deployments:
+
+ - Random is random patrol within a particular assigned area 
+ - static is you take a call, then wait at that same location until dispatched to a new location
+ - stationary is you have an optimal location you drive back after your call and wait
+
+They then test these three different deployments in different police districts in Utrecht and with varying number of units to take calls (using actual calls for service and estimated network drive times).
+
+For the majority of scenarios, stationary outperformed static, and static outperformed random.
+
+https://lnkd.in/eXAZHh4X
+
+The work I have done on patrol districting, the optimal location for sufficiently small patrol areas will often be the hotspot in that response district. So it may be that stationary (returning to the hotspot to hang out) is both the optimal in terms of deterring the most crimes *and* being in a location that can get to calls the fastest.
+------------------------
+"
+"Those red balls in front of Target are not just decorative, they are bollards. Bollards prevent vehicles from driving where they are not supposed to, which is currently a common terrorist attack MO.
+
+Of course, they only work if there are enough of them. This is a Target I go to, and the columns are wide enough to drive a semi through. They should place at minimum an additional 2 red balls in this photo (and do the same for the other entrance).
+
+I do not know for sure the cost of the bollards. I am guessing to place 4 additional bollards would be low 5 figures. (They should have a physical metal piece in the ground, and the cement is just decorative -- no need to have a boulder rolling around.)
+
+If someone did ram a vehicle into these doors, I am guessing it could easily result in a total of 7 figures in damage (both physical damage and loss of sales). So to me that is an easy investment. (Let me know in the comments if my cost/benefit estimates are off!)
+------------------------
+"
+"Most people talk about big data, but analysts are often dealing with small data -- for one application, I developed a statistical test to identify if crimes were randomly distributed according to days of the week with small samples.
+
+The initial event that precipitated was a serial offender stealing catalytic converters from UHauls, it seemed like the events were clustered on certain days of the week, but making the test determined it was consistent with random data. So I could not recommend a specific day of the week to do a stake out.
+
+The paper, *Testing Serial Crime Events for Randomness in Day-of-Week Patterns with Small Samples*, has several case studies in addition to the catalytic converter thief (arsons in different areas of the city, and gang shootings). I also show the test is well powered with as few as 7 events in the series.
+
+The table I show here are gang shootings, many people default think certain crimes are more likely to occur on weekends, but you can see here they are quite spread out during the week. Again any particular patrol in these high gang shooting areas should not just be done on a single day of the week.
+
+My ptools R-package has an implementation of this test, https://lnkd.in/gJkMvBCy (the crimepy python package will have it eventually as well). 
+------------------------
+"
+"When writing my python book, I intentionally did not expand to include machine learning or more advanced stat analysis. This is a mistake when creating courses or books -- when coding books have stats, they tend to turn into cookbooks that are quite superficial. 
+
+I have posted the first two chapters of my book, https://lnkd.in/eZNxZwBR, would suggest folks walk through those if you are a total neophyte to python.
+
+Once you get the basics down, you can then migrate to more advanced stat examples (like shown in my `crimepy` python library). Code will never be able to tell you what analysis you need to do though, that will be something you need to know what you want to do before hands on keyboard.
+------------------------
+"
+"Dashboards are often not worth the effort analysts put into them. For just a handful of common issues:
+
+ - most of the common tools (Tableau, PowerBI) tend to be easy to create on your desktop, but difficult to share with others.
+ - Free versions of those software often do not connect to live data, so you get the thing with a public dashboard that is repopulated with static data once a month
+ - If you do the work to share a dashboard and check the stats, can see no-one actually uses it
+ - Even if people do use it, you either get endless ""can you update to include X"", or people just ask to download the data in Excel. This is a good thing, but static dashboards cannot support this.
+
+https://lnkd.in/erZndPm9
+
+My suggestion is often to not worry about a dashboard at all, but make a standard report to share with command, patrol, detectives. It is easier to read a report than expect someone to click 5 buttons in a dashboard once a week.
+
+If you have a specific scope, like a map with some simple filters for community meetings, that is doable. Robust dashboards with many data analytics capabilities take a decent amount of data modelling that often is not worth the effort.
+
+------------------------
+"
+"This blog post contains a few different tips on making nice line charts in python.
+
+https://lnkd.in/eX5baJf8
+
+Two things I like to do:
+
+ - superimpose points on top of the lines (makes it easier to identify specific time points)
+ - draw some lines as lighter grey, so they fade into the background (and highlight only one or two lines)
+------------------------
+"
+"Do you use python with ESRI products? Check out this series of notes I made earlier this year. Includes
+
+ - figuring out python methods for toolboxes
+ - cloning the base ArcGIS conda environment if you need to install additional libraries
+ - setting up bat files with conda on windows
+ - importing outside data into a geodatabase using python
+ - automatically updating a map project and exporting the map with the new data, titles, etc.
+
+https://lnkd.in/evRtkhSy
+
+If you need help automating GIS processes using your current ESRI stack, get in touch to see if I can help.
+------------------------
+"
+"One of my favorite books to recommend reading is Don Norman's *The Design of Everyday Things*. Me and my wife now have a laugh every door I accidently pull instead of push because of this book.
+
+It is not directly related to crime analysis, but one lesson I find very useful for computer programming is the idea about immediate feedback. When you have systems that have slow feedback -- like changing the temperature on the faucet in the shower -- it is much more difficult for users.
+
+So when building systems, it is often important to think about feedback explicitly, both for end users as well as devs. For my work on predictive models, it often takes more work to develop a system to test incremental improvements to model predictions than it does to incorporate a model into the business use case.
+------------------------
+"
+"Complicated machine learning models are often described as black boxes. One way to understand the outputs though are to generate reduced form summaries that approximate *why* a prediction was given. For one example use case, my paper *Mapping the Risk Terrain for Crime Using Machine Learning* (with Wouter Steenbeek) goes through an example forecasting interpersonal robbery counts in grid cells in Dallas in the next year using the XY location of the prediction, as well as different crime generator characteristics.
+
+So even though the base model used was a random forest, here using Shapley values, I can say this location on Park lane had a forecasted 2.3 robberies due to:
+
+ - being in a location with a high density of apartment complexes
+ - being nearby apartments
+ - being nearby a motel and other small food (mostly fast food) locations
+
+These are only approximate -- but are often good ways to decompose complicated machine learning models, as well as identify if your model has particular gaps. 
+
+Can see an interactive map of the predictions at https://lnkd.in/eFs-kn2j
+------------------------
+"
+"New blog post on Crime De-Coder, A graph is worth 1000 tables.
+
+https://lnkd.in/gzdkYTev
+
+Traditional CompStat reporting typically only shows pre/post counts of crime. This can fail to distinguish between different temporal patterns, such as smoother long term increases and decreases vs short term spikes.
+
+I go over two different charts I like to use to distinguish these patterns, a weekly Poisson smoothed chart, and a seasonal monthly chart. 
+------------------------
+"
+"One of my favorite charts to examine crime patterns is what is called a monthly seasonal chart. The X axis is months, and the Y axis are counts of crimes. Each year gets a new line. 
+
+Often people give each year a different color, but it is much easier to view if you just highlight some years (typically the current year), and then draw the rest as lighter and grey so they are in the background.
+
+This shows the typical ups and downs within a year, as well as whether a year is an outlier. You can see for this chart of robberies in Chicago, they are experiencing monthly lows going back 10 years, and that the yearly peaks are in August-October typically.
+
+This is so low if doing a CompStat meeting, I would actually check the data to make sure there is not a data reporting issue, or if I thought robberies were being displaced to other categories (like car jackings).
+
+This is an example I have in my crimepy python library documentation, can check out the code to replicate here https://lnkd.in/eFz9mYDj 
+------------------------
+"
+"Keeping with the alternative responder theme, Jessica Gillooly and Barry Friedman have a recent article in Crim & Public Policy interviewing dispatchers in San Fran and Denver around when they send alternative responders. They focus on when dispatchers deviate from the protocols in place to make that determination.
+
+https://lnkd.in/ePYz2XBP
+
+Denver (at least from the anecdotes) tended to deviate by sending officers. San Fran tended to deviate to send alt-responders. San Fran it was due to dispatchers knowing ambulance was backed up, so preferred faster response. [These are just interviews, so no estimates of *how often* deviations happen.]
+
+Both places probably have too complicated of decision trees (do not envy this, it will be difficult). This is an image of *one* of the call types in Denver (so there are many others). It may be person collecting info should not be person making the decision on whom to send. (And it can make sense to send a different unit if another is at capacity -- sounds to me like San Fran needs more paramedics from this.)
+------------------------
+"
+"Loren Atherley has a new article out in which he applies risk assessment principals from the Federal Aviation Admin. to policing calls for service and whether civilians can respond to calls.
+
+The idea is, there is a certain amount of uncertainty when someone calls 911 -- a call for a minor event can turn into something more severe. So we have to define where we can accept the risk of that severe of an outcome.
+
+Using expert judgement within Seattle PD, Loren estimates that close to 50% of calls could be taken by non-police responders.
+
+https://lnkd.in/eD_9nvFM
+
+This framework can be extended to consider all types of negative outcomes (risk to responders as well as the public). And likelihood is just statistics. 
+------------------------
+"
+"Many people give advice about resumes that I am not so sure about. (It is tough, as different people need different things.)
+
+I wrote a bit about what I personally want to see in a tech resume when I am hiring for a role -- which is outside verification you can actually code. 
+
+https://lnkd.in/emxrv4Mv
+
+Majority of resumes I review clearly embellish, so any outside evidence you have technical skills is really important to me. Which basically just means if you have a nice portfolio of real projects, you are already at the top of my list.
+------------------------
+"
+"The recent exchange between a cyber-security company Pistachio and Figma is a good lesson in different encrypted data storage strategies.
+
+https://lnkd.in/e4Utp7bf
+
+In a later post, Figma confirmed that the rep *can only* see the file names. Sales rep's should not have access to even the filenames, but many cloud systems at most use encrypted-at-rest file storage. So say in AWS you upload a file into S3, someone at AWS can technically see the file name, but needs to go through another step to decrypt the actual file contents.
+
+This is scary for using Figma from an IP theft standpoint. Ideas matter more than being able to write code, so an insider at Figma being able to leak ""company X is working on new product Y"" is not good. It does not even need to be malicious, a sales rep could be ""hey you should use Figma, competitor X is using it for Y"" to try to make a sale.
+
+If you are using a cloud company, it is important to understand what access they have to your data, and whether increasing that risk surface makes sense.  
+
+To prevent this, you would need to encrypt data before uploading to the cloud, or have an entire local stack.
+------------------------
+"
+"The Lab at DC had an interesting project using a machine learning model to identify buildings at the highest risk of having fires. They then rank prioritized building inspections based on that risk model.
+
+https://lnkd.in/erRcrZ5G
+
+They subsequently found that the prioritized inspections did not have any more violations than a control sample of random inspections.
+
+It could be violations are not tightly coupled to actual risk, so I think the idea has merit, but in terms of outcome evaluation may need some rethinking. The ultimate outcome is to prevent fires, but there may be a better way to measure ""reduced fire risk"", as the rarer outcome will have lower power to tell if an intervention is working.
+------------------------
+"
+"Thefts of firearms from vehicles is a major source of black market firearms. Alexander Testa a colleagues have a recent descriptive article on the distribution of vehicle burglaries in which a firearm was stolen in San Antonio.
+
+https://lnkd.in/ewp_NWNz
+
+Most of the patterns are likely explainable by the varying distribution (so trucks are more prevalent in the data, but it seems likely due to more trucks that have guns, not necessarily because they are being specifically targeted). But the one pattern I do find the most interesting is the majority of the thefts happen in commercial locations, not residential.
+
+This begs the question, what should be done to prevent more thefts? Obviously locking up the gun is important, but it is really hard to do awareness campaigns for commercial locations. (In Troy at one point in a wave of car break-ins, we went to community meetings to tell people lock your car, there was evidence it worked. That does not work for commercial locations.)
+
+I think the solution that makes the most sense is for the business locations, especially if there are specific repeat hotspot locations, is to hire security to patrol the parking lot. Mechanisms to force that though are slim (cities can have nuisance abatement, and premises liability lawsuits can nudge businesses as well).
+------------------------
+"
+"OpenAI says over a million people talk to ChatGPT about suicide weekly
+
+https://lnkd.in/g2n8bZeW
+
+While most of the solutions people seem to be focused on are alignment (training the model to behave how you want), the surface for that is near infinite. So I believe a totally separate monitoring system is warranted -- not only for mental health but for other illegal activities.
+
+This would look like other systems (such as looking for keywords or using a supervised machine learning model to identify high risk individuals), and then have a team of SIUs take action where necessary. Since the chats are not end-to-end encrypted (and OpenAI currently see them), this approach is feasible.
+
+I do think these tools can be used for good, even for mental health issues. They need some more internal oversight though.
+------------------------
+"
+"For folks who follow me here, another resource to keep tabs on is Jason Elder and Mindy Duong's LEAP (law-enforcement-analyst-podcast).
+
+https://lnkd.in/eBBS-Fxp
+
+Jason is excellent as a host -- high quality audio/editing. Gets a really good cross-section of the field, and has regular content.
+------------------------
+"
+"Have had a few discussions about reference RMS datasets for training the past few weeks. One of the best resources for this is Christopher Bruce's book, better policing with Microsoft Office.
+
+His book is online, and he has example datasets on his website at
+
+https://lnkd.in/ezFw3pwB
+
+Christopher is a wiz with Access, and if you want to build a form, I know of no better resource than this.
+------------------------
+"
+"Crime analysts should not be using the web based GUI LLM tools to input sensitive data. This includes ChatGPT, Claude, etc.
+
+https://lnkd.in/ecPYYWGS
+
+There are alternatives though. Those mostly include *querying* the APIs directly. Those queries are not permanently cached, and most of the TOS they do not use those direct API queries to further train the product.
+
+IMO most of the APIs are sufficient to meet CJIS compliance in spirit. But if you really want to have your use of a generative AI tool covered, you can use Anthropic's Sonnet 3.5 and Haiku in AWS Govcloud. (Hopefully whatever committee decides these models pass inspection will update models faster -- they are about a year+ behind at this point compared to the most recent Anthropic models.)
+
+I would not recommend self-hosting models -- the computational burden is so high. Using Sonnet 3.5 is likely much easier and higher quality than most reasonable self-hosting options for these models.
+------------------------
+"
+"One of the police behaviors that drives most crime science practitioners crazy is random patrol. In my ride alongs, police tend to try to be exhaustive, even if they drive down sleepy streets that see no crime (and mostly no people).
+
+In this article Eric Piza and colleagues use AVL (automated-vehicle-locator) data to look at the overlap in observed crime counts and the number of times police drive on that street in Manchester NH. Surprise, areas with higher police vehicle traffic were not correlated with crime (but were with traffic related calls for service).
+
+https://lnkd.in/esKASFmC
+
+AVL are one of the things that could in my opinion could be more incorporated into regular feedback for officers, although it tends to be large data and difficult to work with. It is a good idea though to give that feedback to patrol officers/sgts/captains, and say ""hey, it would be better to spend some extra time patrolling street X, instead of spending so much discretionary time on street Y"".
+------------------------
+"
+"Using generative AI tools, I have translated my *Data Science for Crime Analysis with Python* book into Spanish and French versions.
+
+https://lnkd.in/eABD5_Te
+
+Available for purchase worldwide in epub and print versions. For a limited time, I have a coupon code to purchase (any language) epub version for $19.99, translate25.
+
+If on the fence, at the linked blog post has several reviews of the book from Chris Delaney, Iain Agar, Jonathan Sofley, and Jérôme Barlatier. 
+------------------------
+"
+"I need to keep my head down and get some work done (so maybe no posts next week). But for a sneak peak of one of things I am working on.
+
+Will be available soon in both epub and print -- stay tuned and spread the word.
+
+(Still seeking French copy-editor, let me know if interested!)
+------------------------
+"
+"Martin Bouchard and colleagues have a new paper out, *Untangling SNA: the use and underuse of social network analysis among crime analysts*
+
+https://lnkd.in/e7atE3JG
+
+They conduct interviews with crime analysts to discuss barriers to actually using social network analysis in their work. One of the barriers is software, and I know I am a bit of a broken record, but analysts should just be using python for so much more. 
+
+Even if you want to use a GUI software to viz the network, knowing python for data manipulation to generate and filter the network can really trim down time for incorporating disparate data sources. (You figure out the code to do the workflow once, and then you have code to do it repeatedly over and over.)
+------------------------
+"
+"I really enjoy Robert VerBruggen's writing, and here for the Manhattan Institute he has a piece on the common critiques of ShotSpotter.
+
+https://lnkd.in/ggRTzmf5
+
+Here is the end conclusion quote:
+
+> ShotSpotter delivers on its promise of getting police to shooting scenes faster and boosting evidence recovery, but it increases officers’ workload and delivers crime benefits that are difficult to measure and may vary from place to place.
+> Nonetheless, solving one homicide is valuable, and preventing a homicide—whether by deterring gunplay, incapacitating a repeat offender, or saving a victim from bleeding out—is more valuable still. Even modest improvements in these outcomes could make GDT a worthwhile investment in dense cities with gun-violence problems, so long as they have the funds for the sensors, the staff to investigate alerts, and, ideally, a strong infrastructure such as a Crime Gun Intelligence Center and a Real-Time Crime Center to make use of the new information. Departments that lack the staffing or infrastructure to put ShotSpotter to use should focus primarily on developing those capabilities, which are important in and of themselves.
+
+I am not a big fan of the logic since it is a small proportion of the overall budget it is an easier sell, but he appropriately qualifies that and links to others who have differing opinions (including one of my own pieces).
+
+I would suggest everyone that follows me to follow Robert and his work at Manhattan, City Journal, etc.
+------------------------
+"
+"When evaluating the efficacy of interventions to prevent gun violence, one of the factors you need to take into consideration is that gun violence is (thankfully) quite rare per person. The best predictive models for high risk of being involved in a shooting still only have a positive predictive probabilities of around 10%.
+
+https://lnkd.in/guSq8UjK
+
+What this means is that your intervention needs to treat at minimum 10 people to prevent 1 shooting. As most interventions are not going to be 100% effective (the norm in criminology is more like 20-50% for well vetted programs), more realistically you will need to treat 20-50 people *to prevent one shooting*.
+
+I go through cost and benefits example for the READI program in Chicago, which drops $60k per participant (cognitive behavioral therapy + case worker). To me this is impossible ROI from the get go, but if you use some of the value of a statistical life estimates (which in my opinion are highly suspect) you can come up with a positive ROI.
+------------------------
+"
+"One of the simple charts I suggest when evaluating predictive crime models is to rank order the predictions, and then on the X axis plot the percent of the sample, and the Y axis the cumulative number of events captured in those top prioritized areas (or people).
+
+https://lnkd.in/e7maCQGV
+
+This has analogies to quite a few different useful pieces of information:
+
+ - can identify if the model can replicate Weisburd's law (5% of area with 50% of crime)
+ - the PAI statistic (% crime/ % area), can be inferred, a good predictive model should easily beat Weisburd's law, which is 50%/5% = 10.
+ - It is the same as a weighted ROC curve, so if it is a straight line, the model is no better than guessing at random.
+
+Often times higher proportions do not matter, you only care about recall in a fairly small slice, e.g. in the top 100 how much of the crime events I am interested in can I capture.
+------------------------
+"
+"A pro-tip when doing data science applications that take along time to run certain inputs is to cache your intermediate results. I often have python functions that look like this:
+
+import os
+
+file_path = ""cached_data.csv.zip""
+
+if os.path.exists(file_path):
+  print('loading in data')
+  data = pd.read_csv(file_path)
+else:
+  data = ... function that takes along time to create data ...
+  data.to_csv(file_path,index=False)
+
+And for regular pipelines, you can also get the time the cached file was modified via `os.path.getmtime(file_path)`. So if you want you can see how old the cache is, and then redo the calculation if it is too old as well.
+
+You can see an application of this when calculating drive time distances in my crimepy library to create patrol districts, https://lnkd.in/ejJm9DwA.
+------------------------
+"
+"I work with Scott Jacques on making open source research and tools more broadly accessible to everyone. If you are interested in joining us, consider becoming a member of CrimConsortium.
+
+https://lnkd.in/eUmAdJTS
+
+The current situation in which work is behind academic paywalls is mostly absurd, totally unnecessary, and a great detriment to the advancement of science in our field. Myself, Scott, and others in this group are working to change that.
+
+Joining as a paying member is nice to help keep the lights on, but even if you do not want to pay, if you enjoy my posts here this is a group you will want to be a part of. Open science is without a doubt in my mind a necessary component to ensure our scientific work is both rigorous and impactful.
+------------------------
+"
+"In this new blog post, I show how to use python to record your keyboard and mouse movements. The idea is if you have some desktop software that you are repeatedly conducting the same motions, you can record your movements and clicks. 
+
+This set of code you can then save the events to a file, and replay them whenever you want.
+
+https://lnkd.in/e3XhEnCU
+
+It also shows modifying the input events. Say you needed to input the current date in a form, you can just modify the event dataframe with the new information that you want.
+
+If it is a task you do over and over again, this is one approach to just have the machine do the work for you.
+------------------------
+"
+"In my work with Jerry on the WDD statistic, we leave it up to the analyst to figure out what a reasonable control area is. Another approach is to use a data based approach to construct areas that are good control areas. One way to do that is via *microsynthetic controls*. Imagine you have 100 areas, and you did your treatment in 5 areas, it would construct weights so the other 95 areas match on various characteristics, like prior crime counts, demographics, land use, etc. 
+
+This paper, with Eric Piza and colleagues, shows one example of that, evaluating a police sub-station that was opened in a business improvement district in Newark. It resulted in mixed findings, some reductions in MV thefts and burglary, and some evidence of displacement for robberies and burglary of motor vehicle in the catchment areas.
+
+https://lnkd.in/eWKMNYzb
+
+(Recently made open access via Arnold Ventures.)
+
+In real life, conducting rigorous outcome evaluations are difficult, as most scenarios we cannot conduct a simple randomized control trial. If you have need for a statistician to help you out with such an analysis, feel free to get in touch.
+------------------------
+"
+"Got a question about whether *Data Science for Crime Analysis with Python* is available overseas. The ebook is available for purchase anywhere in the world. My print on demand service (LuLu) is available for the majority of the world as well.
+
+https://lnkd.in/ek9mdCKE
+------------------------
+"
+"The broken windows theory of crime is often controversial because it is wrapped up in policing strategies that many do not agree with. But one of the basic tenet's of the theory, if you see disorder it is likely to spur more disorder, is well validated.
+
+One of my favorite demonstrations is by a group of psychologists in the Netherlands. They conducted several experiments where they seeded places with disorder (public displays of violating some rule), and showed that it resulted in more rule breaking later.
+
+https://lnkd.in/ein7WCAD
+
+This picture is of one I think most everyone can relate to -- if one person does not return a shopping cart, more people are likely to follow and also not return their carts. (At the beginning of the day, they would randomize leaving a shopping cart out.)
+
+Hence now whenever we see a scene like this at the grocery store my wife says ""the shopping cart theory again"".
+------------------------
+"
+"For the majority of training in policing, we do not know if it works or not in any sort of rigorous way. Polis recently did a de-escalation training with the Virginia Beach PD, and had a group of researchers (Kyle Mclean and company) conduct an external outcome evaluation.
+
+When Kyle and team examined body worn camera footage, they determined officers did use the lessons from the Polis training at a higher rate. But when looking at actual use of force outcomes, there were no aggregate differences between the treated and control groups.
+
+https://lnkd.in/eUcXmZuV
+
+This is not quite how I would do the analysis, but offhand it is maybe reasonably powered to identify a 20% reduction in UoF, but underpowered to detect a 10% reduction. I think Virginia Beach should continue to do monitoring of this and see if they do see some reduction in UoF after longer periods.
+
+Many trainings can be randomized in a way though for departments to know if they are effective. You can use the fact you cannot train everyone at once (so randomize the order), to be able to conduct similar experiments.
+------------------------
+"
+"Have had a few different chats with friends about drones recently, so decided to show an example of site selection in my `crimepy` python library. The image shows the selected base sites as squares, and the coverage areas for prior crimes colored in the same shade, example using public Raleigh public data on violent crimes.
+
+https://lnkd.in/eXzMbvvM
+
+This is a variant of the p-median problem, and I implement methods to either minimize the sum of distances travelled (given historical calls for service you would like to send a drone to), or minimize the maximum distance travelled.
+
+I really am a neophyte with the drone stuff, let me know in the comments the types of constraints you consider in assigning stationary drone locations, how many you have, etc. I use as potential base sites parking lots as an example, but not sure the constraints people consider in practice when choosing sites.
+------------------------
+"
+"Given that NIJ has decided to not continue to fund DSG to implement crime solutions, I took the time to scrape and archive the website
+
+https://lnkd.in/e7xPAH2R
+
+Long term, myself and Scott Jacques want to migrate CrimRXiv to a similar long term solution (here Ardrive) that will live on as close to in perpetuity as we can make it.
+------------------------
+"
+"Kim Rossmo, Ed Anderson, and Zena Rossouw released a white paper on how the Rainey Street Ripper -- a supposedly serial murderer drowning victims in Austin -- is unlikely given the patterns in the drowning data.
+
+https://lnkd.in/gsygmUnn
+
+I had a few examples when I was an analyst of being sent on goose chases based on media articles. It is good Kim (and Ed is an APD analyst) released this just to heed off silly critiques of Austin PD surrounding the speculation.
+------------------------
+"
+"An individual created a somewhat humorous app via scraping the San Francisco parking ticket public search form.
+
+https://lnkd.in/eC5QeECN
+
+While this is pretty harmless, it is fairly common for police departments to have search functionality for incident and arrest reports that expose themselves to similar scraping. In some circumstances the data is legally public, but often contains more information (like names and home addresses) that you should not put for everyone on the internet.
+
+In this example, the ticket IDs to query the system should be UUIDs (so you cannot easily guess them), there should likely be some type of captcha verification (to prevent bots from submitting multiple times), and IP address filtering for those who generate many requests.
+
+Without these, someone can likely bring down your server with just too many requests in a denial of service attack (not even a distributed attack, likely one person could just generate enough pings to make it unusable). 
+------------------------
+"
+"One of the reasons I suggest crime analysts (and grad students) pick up python is because it opens up many more job opportunities. IEEE has a yearly ranking of the popularity of programming languages, based on various internet sources and job postings, and python is at the top this year (last year SQL was in the top for jobs).
+
+https://lnkd.in/dZzScrm4
+
+It not only can help you with various task automation at your current gig, it opens up so many more opportunities for your career.
+------------------------
+"
+"In the crimepy python library I am building, I have several examples of interactive maps. On github, you cannot interact with these directly. But you can go to the nbviewer website and interact with them.
+
+https://lnkd.in/e6d6vwtA
+
+Most maps for interactive crime analysis you want to be able to pan and zoom. I have a bunch of methods to make layers and HTML popups easier to construct as well. You can see here I show how to embed a graph into the popup as well as a table of the count of crimes in the hotspot.
+------------------------
+"
+"Dawn Reeby on the Law Enforcement Analyst Podcast has an episode with good career goal advice for analysts -- but uses the wrong term. Dawn repeatedly says ""KPI"" (key-performance-indicator), but what she is actually describing are what software engineers called ""OKRs"" (objectives and key results).
+
+https://lnkd.in/eX597_ef
+
+KPIs are regular metrics businesses define to either monitor health or growth of the business. For police departments, the only real common one is response time. Most businesses focus on volume or revenue (and some focus on meeting service level agreements, response times would be similar to uptime for a SaaS product).
+
+It is difficult to coerce what analysts do to KPIs. It is possible (e.g. counting bulletins produced), but Dawn says this is not a very good metric (and I agree). OKRs are more about committing to long term projects (like developing automated tools to help with workflows), that have a firm finish. (KPIs go indefinitely, all the examples Dawn gives are projects that have an end goal.)
+
+Analysts can become secretaries that just respond to requests for information. This is not good -- you should have longer term objectives that you devote time towards, such as building tools for the department.
+------------------------
+"
+"I went through Charley's Udemy PowerBI course and it was high quality. Have not done this course but if this is material you are interested in recommend you check it out.
+
+(I am biased -- I think you should learn python for all this stuff, but for $20 if you are using these Office tools right now it is likely worth it.)
+------------------------
+"
+"The American Society of Evidence Based Policing conference calls for presentations is open
+
+https://lnkd.in/eDYbD674
+
+Conference is in DC (at American University) May 20th to 22nd in 2026.
+
+Highly suggest anyone who finds my posts here interesting -- the ASEBP is a group you should join and follow as well. If on the fence about submitting a talk, feel free to reach out (I am one of the individuals that reviews solicitations) -- happy to give quick feedback.
+------------------------
+"
+"Academics are not a monolith, and so while many are legitimate researchers in criminology and other fields, many are not. For a recent example, there were a set of qualitative criminologists who argued for a theory of ghost criminology -- places that are haunted by their violent histories.
+
+This was absurd, and so mostly ignored (and derided publicly by some) by the folks doing legitimate work. Ian Adam's and company took it one step further, and empirically tested the claims of ghost criminology. You can see how they found a place haunted by its violent past, and show that it has no perceivable effects on participants relative to a control location. You can mildly nudge people to feel uncomfortable, but it is due to direct stimulus, not some paranormal vibes.
+
+https://lnkd.in/erQ3wHQN
+
+It is likely the original group of qualitative criminologists will make excuses and say Ian's work misses the point. Or move on to some other catchy paper title. But this is how real science works -- you put your cards on the table, and then show it with data in the real world.
+
+While ghost criminology is an obvious punching bag, there are other examples of this living in the wild in police science. Fake forensic tools, magical bots to help with mental health issues, gizmos that seem cool. Part of being evidence based is demanding that people show receipts. Just because you claim something works is not sufficient, your clients should be able to demonstrably show it works for specific outcomes.
+
+Otherwise, there is no difference between your cool app and ghosts.
+------------------------
+"
+"A bit of a crazy stat I saw the other day while perusing New York CJ data -- in the NYC boroughs, following felony arrests the DA declines to prosecute over 10% of the time. For the rest of the state, this rate is only 0.1%. (See table images embedded.)
+
+It varies by borough, but all 5 are *much* higher than the rest of the state.
+
+Can see the original data at https://lnkd.in/eVeX3F_f (expand the section disposition of adult arrests)
+------------------------
+"
+"It is currently in soft-launch, but seeing some others take time to create proper software libraries, I decided to do the same with my work in python. See the `crimepy` library (contributions welcome)
+
+https://lnkd.in/eUTfTNGA
+
+Work on time series graphs, DB Scan hotspots, some of the SNA methods I have created, patrol districting, the spatial point pattern test, helper functions for querying online data, folium map helpers, and more to come.
+
+Check out the work of Iain Agar, Matt Ashby and Jared Greathouse for some other folks who prompted me to be more organized and put together an actual package.
+------------------------
+"
+"Excellent article by John Hall in Vital City -- Reality Check: Does the NYPD Need To Hire More Cops?
+
+https://lnkd.in/e5nhGKmc
+
+Overtime is always an important issue for police departments to understand. And John thinks that retention at NYPD is hurt because of it. But hiring 5k more officers would swell the budget when taking into account pensions and higher salaries later on for those cohorts.
+------------------------
+"
+"I have updated my dashboard with 2024 data showing sworn stats for agencies across the US at https://lnkd.in/etTz-EXH
+
+The overall percent of female sworn officers decreased slightly in the 2024 data, but this is due to composition effects. More agencies are reporting in the FBI data.
+------------------------
+"
+"For the academics following me, I noticed the Deep Research tools from the LLM providers cite open source materials *much* more frequently than closed sourced peer review. 
+
+This blog post I do a breakdown for one report I generated via Gemini -- 76% of the sources are HTML webpages, 50% are open peer reviewed articles, and only 13% are closed source peer review (so just used the abstract).
+
+https://lnkd.in/emjfYqJZ
+
+I also show in an additional example with ChatGPT, Eric Piza's website scores much higher than any peer reviewed or source from NIJ for a question about the effectiveness of gun shot detection.
+
+Two pieces of advice for academics publishing papers. 1, post your preprint/postprint publicly, preferably in HTML format (CrimRXiv is my suggestion for that). 2, have a blog/website where you talk about your papers. Eric's site is only a few years old and is ranked quite highly in that one example.
+------------------------
+"
+"For a python pro-tip, when you are de-bugging functions you can use the `reload` function from the `importlib` library. So something like:
+
+  from src import myfunc
+  test = myfunc(...) # gives an error
+
+Then you can do
+
+  from importlib import reload
+  reload(myfunc) # edit the code before this
+  test = myfunc(...) # uses the new definition
+
+Debugging code is what takes the longest in developing code, not actually writing it. (And using the LLM tools writing it even takes less time now.)
+
+This blog post I also go over another pattern, using reload + pickle to work with complicated classes that otherwise may take along time to instantiate.
+
+https://lnkd.in/eGaHvATd
+------------------------
+"
+"The recent executive order on ending cash bail misses a key alternative -- using risk assessment instruments to determine whether one is released on recognizance or held pre-trial in lieu of the traditional bond system.
+
+https://lnkd.in/ei4MUexV
+
+Used correctly, risk assessments should provide both more safety and more equitably distributed justice. Picture from an old blog post -- there is ultimately a trade off in who to release on recognizance vs detain pre-trial. That is a much better way to frame the problem in my opinion than going back to the often capricious process of setting bail.
+------------------------
+"
+"Interesting application of record-linkage in a crime setting -- researchers at the AI for Good lab in Microsoft used a semi-supervised custom deep learning model to link together pairs of signatures collected in illegal ivory tusks. (Semi-supervised means they had some humans hand label examples where they were matched, but otherwise had the machine churn out matches.)
+
+https://lnkd.in/eXeYvmaq
+
+In his interview on Jason Elder's podcast, Sean Bair mentioned giving an LLM a picture of a crime scene and asking it for information (that a cut in a screen was likely by a left-hander). I think most record-linkage applications should focus on squeezing out more from traditional records data, but there is probably some industrious way to incorporate more information from crime scenes into that process.
+------------------------
+"
+"I often suggest crime analysts to examine hot spots over extended periods of time. Often when analysts are looking at change in hotspots, the tools they use (probably most often just overlaying different KDE maps) tends to be quite noisy.
+
+This blog post I go over the SPPT -- the spatial point pattern test -- and why I like to use that instead of other techniques.
+
+https://lnkd.in/eF-5G3Pj
+
+The SPPT is fairly simple. Imagine in area A, you had 10% of the crime in the prior time period, and in the post time period it had 20% of the crime. The SPPT is just a systematic way to identify if that *percentage* change is statistically significant. 
+
+I have python code linked in the blog post to also take into account multiple comparison corrections. E.g. if you test 100 areas, you would expect some to be statistically different just by chance.
+
+This changes the question to checking for changes in hotspots, to checking for changes in the overall distribution of crime. One of the quarter mile grid cells I show went from 1 theft from MV in the 2019-2023 time period to 19 thefts from MVs in 2024. That area would not be a hotspot (many areas have a larger total volume), but is clearly an area with a noteworthy emerging trend in thefts from MV.
+------------------------
+"
+"For folks interested in learning python, grab an epub copy of my Data Science for Crime Analysis with Python, https://lnkd.in/eNQQQ_GB.
+
+I made a limited time coupon -- use Ebook20 which lowers the price of the epub to $19.99. Good for the next week.
+
+It is a good investment in technical development. It expands out the types of things you can do to a much broader set of tasks.
+
+The epub has the benefit you can copy-paste the code snippets to follow along directly. (If you purchase epub and later want a physical copy, I am happy to give you a coupon for the difference. Or the obverse folks who have purchased physical I am happy to send an epub gratis.)
+------------------------
+"
+"My initial reaction to this was to think of a high school friend that does a customer service telephone job for Spectrum (in San Diego), at home perpetually high on weed.
+
+On further reflection though, I think you could have sufficient oversight to monitor individuals, even remotely. (Using LLMs to ex-ante audit calls is quite cheap and is easy enough an enterprising crime analyst could do it.) So the upside of increased pool for work from home is worth the risk.
+------------------------
+"
+"On the Crime Analysis Subreddit, a commenter asked about the ASU Online Masters programs,
+
+https://lnkd.in/edazeBEn
+
+One suggestion I give to folks looking at programs (not just crime analysis), is to look up the faculty teaching courses. ASU Online here unfortunately does not even list faculty. (ASU at Tempe CJ program is a high quality faculty, but I have no clue if they are the ones teaching the online courses).
+
+Generally you want to look up the faculty, as many programs now are creating very low quality online masters degrees. They will often be staffed by rotating adjuncts, or people mostly unqualified (PhDs whose research focus has nothing even remotely to do with crime analysis).
+
+Adjuncts are generally underpaid, hence why it is difficult to staff a program with them consistently.
+
+Get in touch if folks are interested in promoting your program, I would be happy to do reviews (as of now I do not know enough of the curricula for any program to give a strong recommendation).
+------------------------
+"
+"Just found James's Substack recently, it is an excellent source to discuss broader, macro trends in crime rates.
+------------------------
+"
+"A useful technique for GIS analysts is *dasymetric mapping*. This is the idea of taking population estimates from one geographic unit, and predicting what it would be from a different set of units.
+
+The white images attached are from my lecture notes on this, and shows the basic idea. Pretend the squares are census blocks, and you want an estimate of the population in the intersecting circle.
+
+These images show the basic idea of proportional areal allocation. But a smarter way for folks in urban areas, you can allocate population to parcels first, and then aggregate back up. NYC has one of the most detailed parcel records, with info like residential feet, that makes it particularly well suited. (On multiple occasions I wish different cities had the number of units in apt complexes in their parcel data.)
+
+Chris Herrmann and colleagues have a paper showing this for NYC, and the last image shows an example of its use. Looking at exposure to particulates from the highway, using the traditional proportional areal allocation immensely over-estimates the actual exposure.
+
+Besides epidemiological studies, it is also useful for emergency planning. E.g. knowing how many people are in an area if that area ever needed evacuation.
+
+Link to Chris's paper, https://lnkd.in/e-Cmbr5g
+------------------------
+"
+"If you are a crime analyst, a good resource to ask questions is the Crime Analysis sub-reddit. Here is a recent thread asking for book recommendations for crime and intelligence analysts.
+
+https://lnkd.in/eprgdUdY
+
+Any other book recommendations?
+------------------------
+"
+"One of the common critiques of hotspot policing is that it will just push crime to other places -- what is called displacement. This critique is unfounded though when examining actual data. Many of the hot spot randomized control trials examine this and actually find the opposite -- that there is a diffusion of benefits. Places nearby but outside of the hotspots have additional crime reductions.
+
+Here is a picture from Braga & Weisburd (2022), https://lnkd.in/eQ9wmAvd, showing an average reduction of 7% in the displacement areas across 26 seperate studies.
+
+There are I think a few reasons for this. For why there tends to be not much evidence of displacement -- much crime is opportunistic due to local circumstances in specific areas. Think if you sell drugs at a specific busy bus stop, it is hard to just find another good place to deal with high foot traffic. Not impossible, but difficult, and some people will not take the extra effort.
+
+For the reason for crime displacement, extra hot spot effort in a specific location inevitably results in additional exposure to nearby areas. It is not like you put officers in an isolated box. Hot spots are just intense dosing, and nearby areas get some of that residual dose.
+------------------------
+"
+"My peer reviewed paper on up-adjusted NIBRS crime estimates based on domestic violence victimization reporting rates (with Alex Piquero Alexis Piquero) is now out in Crime & Delinquency.
+
+https://lnkd.in/em285zhE
+
+The methodology is simple. Imagine you have 100 reported crimes, but only a 50% reporting rate. Your estimate of the total number of crimes (the dark figure) is 100/0.5 = 200. I expand this slightly to estimate different reporting rates for different demographics and over time, but overall the idea is the same.
+
+Often folks look at large macro patterns of NCVS vs NIBRS. You can use both together to get a more accurate estimate of the total amount of crime in your jurisdiction. This is focused on domestic violence, but can be expanded to any inter-personal crime type.
+
+Work supported by the Council on Criminal Justice.
+------------------------
+"
+"On my site, I have an example (simplified) weekly CompStat like report, https://lnkd.in/eXu8NZ4A. The data in Dallas highlights why I like the Poisson Z-score chart. 
+
+There are really two separate goals when doing overall reporting like this: 1) identify longer term trends, and 2) identify short term anomalous spikes. These charts do well for both. Points outside the grey area represent spikes that are too high, so Robberies are essentially in control and very consistent ~45 per week in Dallas over these two years. If you had a week with 65+ though, that is basically at the high outlier point. (A single group of offenders can commit about 1 a day, so a spike in this chart would probably need to be 3+ multiple groups starting to operate).
+
+The MV theft also shows an in-control process, but one that has a long term decreasing trend. Drawing the grey error bars based on the moving average for the prior 8 weeks accomplishes both the short term what in-control looks like, as well as still being responsive enough to show medium to long term trends up and down.
+------------------------
+"
+"I have seen a few groups recently conduct social network analysis training for crime analysts, but use cheeky not actual crime data. I have created a list of actual openly available crime network data at https://lnkd.in/eg5Fqnvv.
+
+Individuals should feel free to use those for your class, they are all open source. (I understand having examples of celebrity networks is fun and easier to talk to individual people in the network, but I think it is more important to use realistic data. I often will draw a large network and show how the network graphs are often useless when you get over 100 nodes for example.)
+
+These include small datasets of densely connected gangs, as well as larger sets with more isolated components. (And this screenshot is one of the demo's on my website, a tool to prioritize who to call-in for a Focused Deterrence intervention.)
+------------------------
+"
+"When crime analysts are making maps of criminal incidents, they almost always use address level geocoding. That is, the point on the map is not exactly where the crime is committed, but is placed at the approximate location of the reported address.
+
+How far away is this approximate location from the actual crime location though? I attempted to answer that, in a paper with Manne Gerrell and Youngmin Yoo, by using more accurate data from Shotspotter compared to the typical address geocoded events.
+
+https://lnkd.in/edfEWv_a
+
+The typical error (95th percentile) was under 350 feet. But there were basically mixtures of types of error. When it is reported at the correct address, the 95th percentile of the error is 260 feet. There are however around 15% of cases in which the address is not even reported as the closest one possible, and in those cases the error is can easily be several hundred feet larger (with wrong streets often around 1000 feet off).
+
+This to me suggests, at least when making hotspot maps or predictive policing models of outdoor crime, it does not make sense to make predictions in any area smaller than 300 feet. (The actual historical crimes may be more often than not in a different grid-cell.)
+
+If you have need for help geocoding data or creating hotspot maps, feel free to get in touch. I have easily geocoded over 1 million crime records in my career across multiple jurisdictions in the US.
+------------------------
+"
+"Chris Bruce in the IACA forums said he is doing a historical overview of the crime analysis field. Was reminded of this older post I wrote, https://lnkd.in/eUDCJYpf.
+
+Hotspots are very persistent, some of the maps Calvin Schmid did in the 1920's in Seattle are the same hotspots now.
+
+Schmid also has a book (that is generally available) that shows the effort that went into drawing these graphics by hand. It is an incredible display of craftmanship given the lack of computers.
+------------------------
+"
+"Part of the work myself and Gio Circo did in Philadelphia, farther drive times to the ER have a marginal impact on the survivability of gun shot wounds. It is approximately 2 minutes faster drive time = a 1 percentage point decrease in the probability of survival.
+
+https://lnkd.in/eiW_-Qep
+
+Because the effect is small, one thing that happens is if you look in small samples, people tend to say it is a null effect. But looking over many studies, the effect is quite consistent. Here I compare estimates of Philly to a recent study in Baltimore and they are almost identical. The Baltimore study is not statistically significant though -- which results in the authors making a bunch of post-hoc explanations (like saying Baltimore is different) that are not necessary.
+------------------------
+"
+"Re-posting one of my Criminal Justician posts originally on the American Society of Evidence Based Policing -- Is gun shot detection tech worth the cost?
+
+https://lnkd.in/eZmgwMd6
+
+I go through how GSD likely saves lives (I estimate 1 per 100 shot in a coverage area), but there is not consistent evidence it reduces crime or increases clearances at this point. So how you value saving lives greatly impacts whether you say it is worth it or not.
+------------------------
+"
+"Excellent long-form article on prosecutorial diversion in Dallas focused on individuals with mental health issues.
+
+https://lnkd.in/ggwRs5tR
+
+I am not 100% sure about the costs of the program -- there was an initial $500k grant and the caseworker team has 100 open cases. If that $500k to cover costs for one year, that is *very* good ROI ($5k per person I think is crazy good).
+
+The work CPAL is doing, including this newsletter, is definitely worth a follow.
+------------------------
+"
+"The GIS crowd that follows me may find this interesting. So Simon Willison has a simple LLM eval, draw an SVG pelican riding a bicycle. Even the current models tend to have very mixed results for this.
+
+Recently wanted a knife icon for a web crime map (much simpler than the Pelican or the bike), and ChatGPT just fails miserably. (I had a long conversation to try to make it work as well, go through the individual parts, rotations, etc. Claude also does poorly.)
+
+One of the descriptions of LLMs is the surface of generalizability is very bumpy. So even if some of the newest models can handle well specified math competition problems, they may just not work at all for more mundane things.
+------------------------
+"
+"Indianapolis PD spent $237,000 for an outside group to do focus sessions and get input on their 5 year community plan
+
+https://lnkd.in/e9V6Kb2t
+
+So when I see mid 6 figure price tags, I often discuss how I can quote things significantly cheaper. So I have methodology to conduct surveys for much cheaper (to get 2k surveys may be around 20k using the every door direct mailers with conservative response rates, and it will be actually representative).
+
+For the focus sessions, to be honest I just don't see this as a viable method. You need people more engaged, like city council or some other elected rep (like an alderman). Focus sessions can only be good for ""I like this"" or ""I don't like this"" in slightly more detail.
+------------------------
+"
+"R street has an excellent article on the problems caused by, and some solutions for, failure to appear.
+
+This is a major issue, as the resulting warrants cause large swaths of some neighborhoods to have warrants, and courts just effectively stop enforcing them.
+
+https://lnkd.in/ebvxVbrS
+
+Only minor nitpick is that there is good evidence more than half of homeless people have access to cell phones. So even among that population text reminders are not a bad idea.
+------------------------
+"
+"New blog post on personal blog, my notes on project management
+
+https://lnkd.in/eWHtpA-E
+
+The simple high level goal is simply have a to-do list, and do them in a reasonable amount of time. Sub-goals of do everything in parallel that you can, and make smaller, well defined tasks that can be accomplished in a few days (longer this will take 2-3 weeks are not good). I give examples of applying this concept to both agile and waterfall, in practice you shouldn't be wedded to one or the other.
+
+This is more for the tech folks than the crime analyst/policing folks (most PDs don't even have a concept of project management, which they should hire civilians to do that and not top off sworn with extra responsibilities). 
+------------------------
+"
+"One of the aspects of predictive models that does not seem to be well taught is the idea that you can take aggregate properties of predictions to make decisions. For one example, for pre-trial risk assessments, say you had a cohort of individuals with probabilities of committing future crimes in the next 6 months as:
+
+Person1 - 50%
+Person2 - 30%
+Person3 - 10%
+
+If you released all three people on their own recognizance, your estimate is that 0.5 + 0.3 + 0.1 = 0.9 crimes will occur in that cohort of three people over the next 6 months. You can use this aggregate information in making determinations for how many people you want detained pre-trial vs how many to release ROR.
+
+https://lnkd.in/eDQURVKJ
+
+Many individuals, especially with binary models, seem to be under the impression that you need to set the threshold for making determinations of ""high risk"" (or here to detain pre-trial) to 50%. Very rarely is that how you should expect to make decisions though. 
+------------------------
+"
+"Many vendors say they are using AI, but are uber generic about what that means in practice. Most real use cases of generative AI or predictive models in practice tend to be pretty boring. This new blog post on Crime De-Coder shows a common use case with the current LLM models -- extracting information from plain text.
+
+I demo examples of extracting out information from police narratives, e.g. taking a narrative like:
+
+  The offender broke in a window on the back door to enter the residence.
+
+And turning that into
+
+  {'method-entry': 'window', 'location': 'back'}
+
+https://lnkd.in/eMP52Z_3
+
+That blog post shows using python and AWS + Anthropic models (so is out of the box CJIS compliant), and shows extracting out even more complicated information from plain text police narratives. This is a combination of specific prompting techniques (k-shot prior examples), as well as knowing how to turn plain text into a useable format (like JSON).
+
+If you have an application you would like this for (other applications could be extracting information from body worn camera transcriptions, monitoring dark web forums for specific pieces of information, or pulling out key information in longer PDF documents), feel free to get in touch.
+------------------------
+"
+"Another example of a professor (at U of Oregon) that is charging students for their own self-published book. Potentially profited more than 100k per year.
+
+https://lnkd.in/ex5_waYe
+
+In work with Scott Jacques, we identified a similar prof at Georgia State University selling her own ""How to use Excel"" text for $100 to ~800 students per semester.
+
+Given that these practices are not explicitly illegal (and most Universities do not seem to really care). It will probably take some state action or maybe federal (e.g. cannot use Pell grants to pay for these).
+------------------------
+"
+"Via the Data is Plural newsletter, several scholars (Hannah Younes and Robert Noland) have put together a list of states that share crash test data
+
+https://lnkd.in/dFusx72H
+
+(see the link in the Data Availability Statement for a spreadsheet of each state).
+
+FARS is difficult to work with (and like FBI reported UCR data, is often already a year or two behind by the time it comes out). Many states have their own bespoke dashboards and data systems though to access the data in shorter time spans.
+------------------------
+"
+"Sales for the *Data Science for Crime Analysis with Python* book still are trickling in.
+
+https://lnkd.in/gsQHBnKj
+
+One of the questions is ""why python"" over other programming languages? R is probably more popular among academics currently, but python dominates the software industry. They are mostly exchangeable, but generally R is more focused on traditional regression modelling, and python has broader support for applications beyond stat analysis.
+
+So I suggest python as it is a better long term investment in your technical skills as an analyst. If you want to go to the private sector later, you will have *many* more options knowing python than R.
+
+The book is intended for complete newcomers (it is basically what I would have wanted when getting started). Grab a copy (print or epub) and build some cool stuff.
+------------------------
+"
+"The EFF has released an article critical of Axon's Draft One. Even if you do not agree, I think it is worth a read, as it brings up many on-their-face reasonable questions about the use of GenAI tools in creating documents that intersect both ethics and technical capabilities:
+
+https://lnkd.in/gSrQ-t8k
+
+For a quick synopsis -- EFF is critical of Draft One, as you cannot tell after the fact what exact words were written by the LLM vs a human. Axon is right in that this is a higher standard than is currently expected (no one expects to be able to recreate the entire draft being written in a word document), but I think EFF is not totally unreasonable that outsiders may wish to know this information.
+
+From a tech standpoint even if this is now possible (e.g. having the initial draft from the LLM cached), in the future it may not be. Many of the LLM systems are more akin to auto-complete, so it is a mix of human prompting and machine fill in the rest of the sentence.
+
+One meet in the middle approach may be having random audits, done by either the police department or an outside firm, verifying the accuracy of reports. Similar to how tech firms have service level agreements for uptime, departments may have service level agreements for accuracy in reporting.
+
+Two years ago I was bearish on the tech, partly because I was not sure it would be accurate enough to be used in such contexts. My opinion has strongly flipped though in doing a few different projects. Both because the models have gotten marginally better, but also because time and time again I am reminded of the fallibility of humans. I consistently think human errors will be on the magnitude of 1/100 to 1/1000, and then when doing the actual project human errors are more like 1/10.
+
+Hence I believe such systems, done right, will ultimately *improve* the end output relative to just humans by themselves. It is reasonable for people to be skeptical though, and agencies being expected to show more accurate reporting (whether by bots, by humans, or both) is a good goal for departments.
+------------------------
+"
+"Was watching Flock Safety's podcast with Rich Slavin of Scottsdale PD discussing their drone as a first responder (DFR) program. One of the questions Dalton asked was ""how do you measure ROI?"". Rich Slavin responded it is hard to measure when something *does not occur*, saying DFR can prevent events (like prevent officer injuries via eyes on the scene).
+
+The way to measure this is to not think about counting events, but via statistical methods that estimate the prevalence of events. For a simple example, say you had officer injury rates for officers in 1/1000 events in historical data, but when you use DFR, injury rates for officers are 1/10000. You cannot say ""these specific 9 events"" prevented officer injuries, it is just an average over many events.
+
+https://lnkd.in/edqTcfbR
+
+In practice it will be slightly more complicated (you would likely want to control for additional case characteristics that predict the outcomes of interest, and potentially use stronger quasi-experimental designs). But that is what valid estimates of ROI will look like.
+
+If PDs are interested in such evaluations, feel free to get in touch with me. 
+------------------------
+"
+"Recently found Corbin's YouTube channel, he did a live example review of Codex, and now I am watching several of his series as learning a bit of Node front end was on the to do list. Recommend for web app development:
+
+https://lnkd.in/eMKekt-S
+
+Partly sharing to this crowd though as I think it is a good reminder of how AI models can be leveraged currently, but still take really good fundamental knowledge of the system. He often has 3+ terminals running in this video (the Node frontend, a Firebase SDK, another to fix the python environment associated with the Firebase functions). 
+
+Vibe coding, at least as I have attempted it, is not really a thing. You really need to have a strong base for what you want to do, how to set up your system, and how to troubleshoot when the AI goes down the wrong path. 
+
+I don't believe AI is going to take developer jobs anytime soon because of this, but can, if used correctly, make a good developer much more productive. 
+------------------------
+"
+"Interesting article posted by the Council on CJ, Trends in Gun thefts.
+
+https://lnkd.in/gY-8ChEV
+
+In urban areas, the number of guns stolen from motor vehicles has sharply risen since 2019 (whereas guns stolen in burglaries has somewhat decreased). Just as interesting though is the location where the theft occurs. At the residence is the most common, but other locations have been increasing, with parking lots almost as common now.
+
+Normalized by unit time, I bet the risk is much higher in parking lots. 
+------------------------
+"
+"Folks that follow me, check out the work that David Maimon is doing on identifying fraud via OSINT monitoring. Check washing, selling identities, USPS keys/mail-theft -- many interesting examples of the current fraud landscape lurking online.
+------------------------
+"
+"My backlog of podcasts is growing, currently to watch in the queue:
+
+Axon's Boldly Go on the biology of TASER, https://lnkd.in/eCzSzAcD
+
+Jerry's Reducing crime on video responses in DV cases, https://lnkd.in/epMYPwaS (and the recording with David on monitoring dark web)
+
+And just found the Flock youtube channel, https://lnkd.in/eaS2M9wW
+
+Let me know in the comments if there are any gems I am missing (this is focused on policing/tech, but really any good ones in CJ/public-sector/tech areas I would be interested in).
+------------------------
+"
+"New web demo up on the Crime De-Coder site, this shows a simple tool to be able to conduct ad-hoc queries on data for book prices and enrollments for Georgia State University (a project I did with Scott Jacques to identify books that make sense to encourage to use open source, or identify books the University should do wholesale pricing for).
+
+https://lnkd.in/eFS7eNCB
+
+The more interesting part though is I did a weekend project to figure out some of the tech stack behind this -- using Cloudflare R2 to host the data, plus a DuckDB WASM application. This will scale up to a very large number of users for very little cost, and can host quite large sets of data. So basically a way to build large scale online dashboards with complicated query patterns for public sites.
+
+I estimate that to host 72 gigs of data + the domain will cost around $23 per year. So if your open data site costs you more than that, it may make sense to switch the stack to something like this.
+------------------------
+"
+"Charles Katz and colleagues have a recent paper on the ineffectiveness of an early intervention system (IAPro) in Phoenix.
+
+https://lnkd.in/eFrWUtKW
+
+This research has somewhat of a limitation -- they show the EIS does not predict, but has weak negative effects on subsequent adverse effects. You need to do the evaluation of predictive capabilities before the system is in place (if it works it will make it seem like it is not predictive).
+
+That said, these systems that just have simple thresholds are very poor and obviously have many false positives (the slight negative effect is also what you would expect with regression to the mean). EIS systems need to look at rates of behavior, e.g. use of force 5/100 arrests is different than 5/10 arrests.
+
+If folks are interested in building an EIS for your department, feel free to reach out, that is something I can help with.
+------------------------
+"
+"New blog post on Crime De-Coder, using funnel charts to identify outliers in proportions.
+
+Imagine you are monitoring some outcome that is a proportion, say the proportion of warnings vs citations in traffic tickets. If the average is 50%, and you have two people:
+
+ - Officer A: warnings 3/10 stops
+ - Officer B: warnings 30/100 stops
+
+Officer B is more of an outlier, because they have many more stops. A convenient way to show this relationship is via a scatterplot, with the denominator on the X axis, and the proportion on the Y axis. This will show a funnel of points, and this blog post shows how to draw that hypothetical funnel in the background of the chart using python.
+
+https://lnkd.in/eiyBZbSq
+------------------------
+"
+"Very interesting article on an individual currently incarcerated who taught himself to code, and now (from in prison) works for a software startup.
+
+https://lnkd.in/eMZG5ZDG
+
+I would be curious how the security set-up for this goes. I think it would be very hard to make a general application secure enough and set up in a way where writing, testing, and pushing code online is feasible. But those who show good behavior can then graduate to more open environments.
+------------------------
+"
+"Thaddeus and Natasha Johnson have a recent OpEd in WaPo -- violence both against officers and civilians killed by police is rising more in rural areas
+
+https://lnkd.in/eMeYpQef
+------------------------
+"
+"Another piece of evidence in support of having non-police respond to traffic incidents, Jeff Asher shows it helped in NOLA to reduce response times
+
+https://lnkd.in/ey2-kUqG
+
+Most of what I have heard in North Carolina allowing civilians to take these calls have been positive as well.
+------------------------
+"
+"Similar to the issues of staffing for police officer roles, many cities are experiencing issues staffing 911 call centers. Anecdotally in Atlanta alternative non-emergency response (a web portal and text messages) have reduced the load and improved times (concurrently with hiring more call takers).
+
+https://lnkd.in/e6ay3Hmx
+
+------------------------
+"
+"New blog post, academic criminologists should be more active in building stuff, not just passively observing things other people implemented and writing papers about whether it is effective or not.
+
+https://lnkd.in/g-wrQEgN
+
+My friend gave the example of Bell labs -- I think something like that would greatly advance the field. As is the vast majority of criminology work is totally irrelevant to actual practice.
+------------------------
+"
+"Kudos to Flock Safety, they supported independent research into privacy implications and how they + police departments are tackling these issues (absent state regulations and caselaw).
+
+https://lnkd.in/d2w5yd7v
+
+Two things: first, I think there are totally reasonable ways for police + tech to use different tools responsibly. Having sunlight into how the tools are used, how departments are taking steps to limit misuse, etc. are good things to discuss in the public. This paper does not have any direct impacts on public safety.
+
+Second, IMO more private sector agencies should pay researchers directly. If you build good products, you should want legitimate feedback (think of outsourcing UX research to a firm, albeit a bit broader than that). It needs to be independent though, which the researchers say was built into the contract with Flock to begin with.
+
+------------------------
+"
+"With the new American Society of Evidence Based Policing website, my former Criminal Justician articles are not accessible. So now I am putting those up on my Crime De-Coder site.
+
+First post is going over an analysis of Denver's STAR alternative responder program, and why I am skeptical of the external researcher that estimated large crime reductions given the scope of the program. Also goes over the distinction between CAD calls and incident reports.
+
+https://lnkd.in/en6hN9i9
+------------------------
+"
+"Recent interesting study by the Lab at DC sent text messages or custom letters to high risk drivers. 
+
+https://lnkd.in/esAVwzX8
+
+It did not work, but given how cheap these messages/letters are I think it was worth a shot. (And would be worth testing for other initiatives, think social services for high crime risk/victimization.)
+
+I would be curious to hear if other cities are using other innovative strategies to target repeat problem drivers. Very similar problem to chronic offenders (and no doubt some overlap).
+------------------------
+"
+"One piece of advice for new coders, you need to meticulously *test* your code while you write it. So say I am working with offense data, and then I am changing NIBRS codes to plain text descriptions. In python it will look something like:
+
+```
+nibrs_dict = {'200': 'ARSON', .....}
+data['nibrs_label'] = data['nibrs_code'].replace(nibrs_dict)
+# test to see if the labels are filled in
+# data['nibrs_label'].value_counts()
+```
+Data tends to have many little gotchas, so above if the data for a row was `200 ` (and extra trailing space), the `replace` code would not work as is.
+
+It can seem like a slow process, but even professional software engineers typically only write 100 lines of code a day. Even quite large projects though often will only have a few thousand lines of code.
+
+This is also one area where using LLMs to code is actually harder. When it spits out 500 lines of code, your job turned into verifying those 500 lines (which is a difficult task, and it is not uncommon by the end of the process I have rewritten almost 500 of the lines). 
+------------------------
+"
+"Shared via the Crime Analysis Subreddit, and edit: Madison-PD (not Milwaukee) analyst created a python package to identify micro-time hot spots based on the work of the Santos', e.g. 3 events in X radius in T days. A simple way to identify areas to do more immediate proactive patrols.
+
+Link below is to github repo.
+
+https://lnkd.in/e9iA2rij
+------------------------
+"
+"I will answer stat/programming questions via cold emails (so always feel free to reach out, worst case I say I am too busy). A recent question was a good one, asking about whether to use OLS or a Poisson GLM in a dose response scenario, https://lnkd.in/eT3FPxyT.
+
+Image below is my response, it is mostly about looking at the functional relationship between the two. 
+
+It often does not matter all much to describe the in-sample estimates. (The flipside to this is that it is difficult even with pretty large samples to tell whether one or the other is a better fit to data.) Where it matters more is extrapolation outside of the doses. Poisson in particular can curve upwards quite fast and not be reasonable.
+------------------------
+"
+"Saw this graphic shared on X, and figured it would be a good learning example on a chart faux pas. So the data are aggregated to years, but the event of note is placed in-between years. This is wrong, majority of events in 2020 should be to the right of the line.
+
+Sometimes instead of plotting events as 1/1/2020, you may do the chart to plot at 6/1/2020 (so put the point in the middle of the year, or month, or week, whatever). The point in time event though with such a large aggregation to yearly metrics would still be misleading though in this example.
+
+If you are trying to parse the normalized data in either chart, I wouldn't bother with that either. Since Covid, police killings have risen by ~50 per year (from 1050 to now 1200). For homicide trends, check out Jeff Asher's work about the rise and fall of them as well. Police killings are *very* spread out across the country, homicides are more concentrated in large metro areas.
+------------------------
+"
+"Recently completed a training of my python materials at Austin PD. These cover my intro python book, but I also incorporate examples with your data locally. 
+
+So Austin PD has a series of examples of applying python to their local data systems -- querying their RMS data to pull out NIBRS data, manipulating ESRI projects, sending automated emails that work on their personal machines, etc. (Python is pretty tame to install, but I also work with IT so there should be no confusion on how an analysts system needs to be set up.)
+
+If that is something you would like for your agency to help train up your analysts, feel free to get in touch.
+
+------------------------
+"
+"It is necessary for urban police departments to triage non-emergency calls. They still contain incredibly important information -- many cities cannot respond to all the car break ins, but you definitely need that info from a crime analysis perspective to catch serial offenders. Dan Tatenko is building a better tool to help with online crime reporting, taking advantage of recent advances in LLMs. Think helping the public properly fill out an entire crime report.
+
+The current systems on the market still take way too much vetting from the PDs end. Really excited to see CaseX (not currently affiliated, have just chatted with Daniel Tatenko about his product). End state should be near fully automated processing for public crime reports.
+
+https://www.casex.io/
+------------------------
+"
+"Recent paper, with Scott Jacques, on identifying and stripping out protected information from qualitative case notes using LLMs is at:
+
+https://lnkd.in/eJ2wKWuy
+
+Paper has a link to python code. Which I used a public trained model for medical records (and it is fine with CPU). But if I had to do it over again I would use the GLiNER library (with ModernBert if you have an 8 gig GPU available).
+------------------------
+"
+"A promising study out of Australia -- specialized two week training for sexual offense detectives resulted in increased case solved rates over 10 percentage points compared to a matched sample over several years.
+
+This would be a good one to replicate in other jurisdictions.
+
+https://lnkd.in/ehez2t2a
+------------------------
+"
+"Interesting graphics in a paper examining temporal patterns of firearm injury based on emergency room visits in a panel of states.
+
+https://lnkd.in/eHus6_zk
+
+I will say in general CJ agencies are incredibly more open to sharing data than healthcare agencies. I cannot tell if the trends reported in the paper (like increases on certain holidays, or the uptick here at 2-3 am) are due to interpersonal conflict shootings or injuries with people (that is, I do not know the relative mixture of those components in the data).
+------------------------
+"
+"Some of the ASEBP gang (Renee Mitchell, Hunter Boehme, and Cannon Fulmer) recently published an experiment using different visuals to nudge police leaders to make different strategic decisions. Using hot street segments were more likely to encourage more hotspot patrols, and they also had an experiment on using visualizations instead of just percent change.
+
+https://lnkd.in/eN6uKPVA
+
+IMO I agree with the hotspot maps or having clusters of hotspots. The KDE maps tend to be blobby and are hard to pin down a specific area. Having discrete areas is easier to reason about.
+------------------------
+"
+"In ArcGIS online, I had the issue the other day that I wanted to modify a the text length for a field. You unfortunately cannot do this directly (either in the GUI, or using AlterField). But you can do a workaround of creating a temporary new field, copying the data, and then deleting the old field.
+
+So a script like below works:
+
+```
+layer = ""https://lnkd.in/e84Jyb8p""
+temp_field = ""XXX_temp""
+field = ""original_field""
+length = 100
+
+# Create a new temp field of the desired length, populate it with old
+arcpy.management.AddField(layer,temp_field,""TEXT"",field_length=length)
+arcpy.management.CalculateField(layer,temp_field,f""TRIM(TRAILING ' ' FROM {field})"",""SQL"")
+
+# Delete the original field, then remake with the desired length
+arcpy.management.DeleteField(layer,field)
+arcpy.management.AddField(layer,field,""TEXT"",field_length=length,field_alias=alias)
+
+# Populate the original field with temp, then clear out the old temp field
+arcpy.management.CalculateField(layer,field,temp_field,""SQL"")
+arcpy.management.DeleteField(layer,temp_field)
+```
+
+Doing this I even figured out you can use arcpy on layers directly in ESRI online. 
+------------------------
+"
+"Y'all get some more ArcGIS + python tips, since that is something I have been working on a bunch recently. You generally should not modify the base ArcGIS conda environment. But if you want to run code from Notebooks inside of an arc project, this is your only option.
+
+To do it safely, I recommend making a cloned environment, installing your library, and then do checks for pandas, numpy, and arcpy in that cloned env. Then you have a recipe for modifying the base environment you know will not break something.
+
+So for example to install sklearn in the base environment, this will do it currently:
+
+pip install --no-deps scikit-learn joblib threadpoolctl
+
+The no deps option prevents it from installing or changing additional libraries. Now, if you installed this from a machine where you do not have admin access, conda is smart and installs the libraries in a separate location. So in addition to this, to be able to load those new libraries, I had to add that path in my notebook. So this works to add the path.
+
+user_profile = os.path.expandvars(""%userprofile%"")
+sys.path.append(f'{user_profile}\\AppData\\Roaming\\Python\\Python311\\site-packages')
+from sklearn.cluster import DBSCAN
+
+And now you can use sklearn libraries. (I know arc has a DBSCAN algorithm, but I like some of my code better for harm weights + it gets you the core points, which are useful for mapping.)
+------------------------
+"
+"A simple way to rank order problem places (or people), is to assign a weight to different crime types. Here is one ranking by Jerry Ratcliffe.
+
+https://lnkd.in/eF23VSzQ
+
+There are others, but they will be quite correlated with one another. I have probably written something like this several time, but here is my approximate mapping to NIBRS codes. If folks have academic paper references to weights for NIBRS from more objective data let me know!
+
+Code, Label, Score,
+09A, Murder,14,
+11A, Forcible Rape,12,
+11B, Forcible Sodomy,12,
+11C, Sexual Assault with Object,11,
+100, Kidnapping,10,
+13A, Aggravated Assault,8,
+120, Robbery,7,
+520, Weapon Law Violations,7,
+220, Burglary,6,
+200, Arson,6,
+09B, Negligent Manslaughter,6,
+09C, Justifiable Homicide,6,
+35B, Drug Equipment,5,
+240, MV Theft,5,
+90D, DUI,5,
+510, Bribery,4, 
+250, Forgery,4,
+270, Embezzlement,4,
+210, Extortion,4,
+26A, Fraud,4,
+26B, Credit Card Fraud,4,
+26D, Welfare Fraud,4,
+26E, Wire Fraud,4,
+39B, Gambling Operation,4,
+39C, Gambling Equipment,4,
+23F, Theft from MV,4,
+23G, Theft of MV parts,4,
+40B, Promoting Prostitution,4,
+11D, Forcible Fondling,4,
+36A, Incest,4,
+90A, Bad Checks,4,
+90I, Runaway,4,
+13B, Simple Assault,3,
+35A, Drug Violations,3,
+23C, Shoplifting,3,
+23D, Theft from Building,3,
+23E, Theft from Vending Machine,3,
+23H, Other Larceny,3,
+370, Obscene Material,3,
+40A, Prostitution,3,
+36B, Statutory Rape,3,
+280, Stolen Property Offenses,3,
+90B, Loitering,3,
+90C, Disorderly Conduct,3,
+90E, Drunkeness,3,
+90F, Nonviolent Family Offenses,3,
+90H, Peeping Tom,3,
+90J, Trespass,3,
+23A, Pocket-picking,2,
+23B, Purse-snatching,2,
+13C, Intimidation,1,
+290, Vandalism,1,
+26C, Impersonation,1,
+39A, Betting,1,
+39D, Sports Tampering,1,
+90Z, All Other Offenses,1,
+------------------------
+"
+"In my python book, I went over using Jupyter notebooks to make standardized reports. But I have migrated most of my work anymore to Quarto notebooks. Here is a video tutorial I made for recent training I delivered to Kansas City crime analysts on using Quarto + VS Code to make a report.
+
+When I do trainings, I make extensive videos for analysts to later reference. If you are interested in python training for your analysts, get in touch.
+------------------------
+"
+"Eric Piza has created a series of courses related to crime mapping and using ArcGIS at Northeastern University. Check out a simple description and pricing at the CrimRXiv page
+
+https://lnkd.in/eR4ZGcBf
+
+For other professors that follow me, if you want to do similar advertising for your grad programs (IMO their is a good market in crime analysis/data science) let me know and I will get you in touch with the right folks at CrimRXiv to discuss that.
+------------------------
+"
+"Just an opinion today -- some folks with the improvements in LLM models say ""do not learn to code"", suggesting those skills will be obsolete. I do not think that will be the case, and think learning to code effectively will become more important.
+
+For a relevant historical example, the advent of mechanical calculators did not really eliminate any banking jobs, it expanded the capabilities of banks quite a bit (and so ended up creating many more jobs). I think LLMs helping people code will be similar.
+
+Software really has no end state in practice -- if tomorrow an LLM is so good it can help 1 person do the same work as 10 people, at least for everything I work on, there is enough future work for 10 people to now do 100 things.
+
+I do think getting fundamentals in coding is probably more important than ever though. As it is easy for the models to generate code, it is much harder to understand what they are doing, make corrections where necessary, and understand how code works overall to ask the right questions. I believe those will all still be relevant for the foreseeable future.
+------------------------
+"
+"North Carolina's victim rights include various notifications of different court proceedings. This should IMO be a problem that tech solves -- on certain changes in the state of cases (dismissal, court dates, etc.) an automatic notification (email, text) gets sent to the victim.
+
+https://lnkd.in/eyWZRDRx
+
+There will still need to be a human in the DA's office to talk to people, but the notification of case status itself should be automated.
+------------------------
+"
+"ESRI week continues, one of the examples for automation is taking a basemap, updating some of the elements, and then exporting that map to an image or PDF. This sample code, using Dallas data, shows how to set up a project to do this
+
+https://lnkd.in/dCFb5gvs
+
+Because ArgGIS has so many different elements, the arcpy module tends to be quite difficult to navigate. Basically I try to seperate out data processing (which often takes inputs and outputs them into a geodatabase) vs visual things on a map. So to do this project, you have step 1 import data into a geodatabase, and 2 update the map elements. Here legend, title, copying symbology, etc.
+------------------------
+"
+"The notes this week have mostly been about using arcpy locally with Esri tools. This post on my personal blog I wrote my notes up about using the public APIs. Many cities are using Esri services to host open data, and this goes over how people in the public can query those open data sources
+
+https://lnkd.in/eJaPsZqh
+
+It shows examples of walking through the query form Esri provides, as well as examples of forming requests in python. Plus a function to do pagination on bigger tables.
+------------------------
+"
+"Geocoding is one of the most common GIS processes that crime analysts need to do. IMO Esri's tools to do this are the best, and this blog post goes over how to automate the creation of a creating a geocoding locator, and geocoding a table using `arcpy`
+
+https://lnkd.in/ea_E5SNS
+
+Most crime analysts should be using a local tool to do geocoding with your jurisdictions data, and not calling a different server over the internet to do geocoding.
+
+------------------------
+"
+"When working with `arcpy`, often you need to have tables inside of a geodatabase to use particular geoprocessing tools. Here is an example of taking an external csv file, and importing that file into a geodatabase as a table.
+
+```
+import arcpy
+gdb = ""./project/LEO_Tables.gdb""
+tt = ""TempTable""
+arcpy.env.workspace = gdb
+
+# Convert CSV into geodatabase
+arcpy.TableToTable_conversion(""YourData.csv"",gdb,tt)
+#arcpy.ListTables() # should show that new table
+
+# convert time fields into text, useful for law enforcement management tools
+time_fields = ['rep_date','begin','end']
+for t in time_fields:
+  new_field = f""{t}2""
+  arcpy.management.AddField(tt,new_field,""TEXT"")
+  arcpy.management.CalculateField(tt,new_field,f""!{t}!.strftime('%Y/%m/%d %H:%m')"", ""PYTHON3"")
+
+# This will show the new fields
+#fn = [f.name for f in arcpy.ListFields(tt)]
+```
+
+When you create a new project, it automatically creates a geodatabase file to go along with that project. If you just want a standalone geodatabase though, you can use something like this in your python script:
+
+```
+import arcpy
+import os
+
+gdb = ""./project/LEO_Tables.gdb""
+
+if os.path.exists(gdb):
+  pass
+else:
+  loc, db = os.path.split(gdb)
+  arcpy.management.CreateFileGDB(loc,db)
+```
+
+So if the geodatabase does not exist, it creates it. If it does exist though, it will not worry about creating a new one.
+------------------------
+"
+"Using conda to run scheduled jobs in Windows is alittle tricky. Here is an example of setting up a `.bat` file (which can be set up in Windows scheduler) to activate conda, set a new conda environment, and call a python script.
+
+  ::: For log, showing date/time
+  echo:
+  echo --------------------------
+  echo %date% %time%
+  ::: This sets the location of the script, as conda may change it
+  set ""base=%cd%""
+  ::: setting up conda in Windows, example Arc's conda activate
+  call ""C:\Program Files\ArcGIS\Pro\bin\Python\Scripts\activate.bat""
+  ::: activating a new environment
+  call conda activate proclone
+  ::: running a python script
+  call cd %base%
+  call python auto_script.py
+  echo --------------------------
+  echo:
+
+Then, when I set up the script in Window's scheduler, I often have the log file at that level. So the task scheduler I will have the action as:
+
+  ""script.bat"" >> log.txt 2>&1
+
+This will append both the normal log and error log to the shell script. So if something goes wrong, you can open `log.txt` and see what is up.
+
+If interested in getting process automation tools set up for your agency, feel free to reach out, as I have extensive experience deploying solutions (particularly machine learning and ETL processes) in various environments, https://lnkd.in/gn9Hy3WF.
+------------------------
+"
+"I like using conda for python environments on Window's machines, as it is easier to install some particular packages. So I mostly use:
+
+```
+conda create --name new_env python=3.11 pip
+conda activate new_env
+pip install -r requirements.txt
+```
+
+But for some libraries, like geopandas, I will have conda figure out the install. E.g.
+
+```
+conda create --name geo_env python=3.11 pip geopandas
+conda activate geo_env
+pip install -r requirements.txt
+```
+
+As they are particularly difficult to install with many restrictions.
+
+And if you are using Esri tools, and you want to install a library, conda is already installed and you can *clone* that environment.
+
+```
+conda create --clone ""C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3"" --name proclone
+conda activate proclone
+pip install -r requirements.txt
+```
+
+As you do not want to modify the original Esri environment.
+
+If you are a beginner and want to learn more about python environments, I suggest checking out my entry level book on python, https://lnkd.in/eZNxZwBR
+------------------------
+"
+"I like to share code snippets for things I am working on. And this week will be using python + Esri tools.
+
+A little `arcpy` tip, if you import a toolbox, it can be somewhat confusing what the names of the methods are available. So for example, if importing some of the tools Chris Delaney has created for law enforcement data management, you can get the original methods available for arcpy, and then see the additional methods after importing the toolbox:
+
+```
+import arcpy
+d1 = dir(arcpy) # original methods
+arcpy.AddToolbox(""C:\LawEnforcementDataManagement.atbx"")
+d2 = dir(arcpy) # updated methods available after AddToolbox
+set(d2) - set(d1) # These are the new methods
+# This prints out for me
+# {'ConvertTimeField_Defaultatbx', 'toolbox_code', 'TransformCallData_Defaultatbx', 'Defaultatbx', 'TransformCrimeData_Defaultatbx'}
+# To call the tool then
+arcpy.TransformCrimeData_Defaultatbx(...)
+```
+
+Many of the Arc tools have the ability to copy python code, when I use Chris's tool it copy-pastes `arcpy.Defaultatbx.TransformCrimeData`, but if running from a standalone script outside of an Esri session (using the python environment that ArcPro installs) that isn't quite the right code to call the function.
+
+See Chris's overview of some of the law enforcement solutions he has built at https://lnkd.in/e5cx4b7y. And if you want help with implementing these tools for your local jurisdiction, feel free to get in touch!
+------------------------
+"
+"I have a new blog post up on Crime De-Coder, some example extensions to the WDD statistic
+
+https://lnkd.in/ef-Esjvv
+
+For those not familiar, I created the WDD stat with Jerry Ratcliffe as a simple way to identify if crime is going down in a treated area relative to control. So say you had:
+
+ - treated area pre=100, post=80
+ - control area pre=100, post=90
+
+The point estimate of the crime reduction is -10 (it is -20 in the treated, but the control area is also -10, so the final estimate is -10). I did the math to get a standard error around this estimate (assuming crime follows a Poisson distribution), and you can see the confidence interval of the estimate.
+
+I have shown how to update that simple example for a few different scenarios over the years, so have put them in a blog post + linked to an Excel spreadsheet. Those extensions are:
+
+ - different time periods in pre and post (you gain more precise estimates by using more data)
+ - normalizing per area
+ - combining multiple estimates together, such as via Harm Weights
+ - continuous monitoring over time
+------------------------
+"
+"Trying out Google's Deep Research, I gave it a task yesterday:
+
+> I am interested in developing a protocol to measure mental health, particularly around stress, in police officers. Generate a report on ways that people have measured mental health that is relevant for emergency responders, that is not too invasive or time consuming
+
+I am interested in this, as I have seen quite a few tech companies trying to tackle police mental health. But I have not seen any of them use a measurement strategy that they could tell if their tech worked or not. Hence the question about how to measure mental health in officers.
+
+Here is the output, https://lnkd.in/eqXs6-Ta. It could be way less verbose, but is a better narrative start than me doing google and google scholar searches for a few days getting a background in the topic.
+
+Because many of the actual scales are behind paywalls, it is superficial in terms of the actual questions. It likely has several hallucinations as well (I would follow up on the table of interventions for a PD and not trust the output 100%).
+------------------------
+"
+"This Friday I will be doing a webinar with the Virginia Crime Analysis Network (VCAN), Simple Stats for Evaluating Crime Reductions.
+
+This presents the WDD metric (made in collaboration with Jerry Ratcliffe), and the need to use a control group when saying whether your intervention is causing crime to go up or down.
+
+Sign up here, $10 for non-members, https://lnkd.in/eSSbEaF4
+------------------------
+"
+"It will likely not be in the works for awhile, but I think the next book I will work on is a Stats for Crime Analysis book. The content would be focused on more realistic case studies, so less mathematical equations (although will include some) and very little inferential statistics. I think most people have had an intro stats course, and likely had a hard time applying those lessons in an actual crime analyst role. So more of an extended after intro stats to help apply the lessons in real applications.
+
+I made a rough outline of topics, asking the crowd for feedback if there are other topics you would like to see covered. 
+
+Statistics for Crime Analysis Outline:
+
+ - Counts of things
+    - Poisson distribution
+    - outlier count of crime
+    - rates vs counts
+ - Comparing over time
+    - review of variance
+    - counts of crime before/after
+    - counts of crime, treated/control, WDD stat
+    - the cursed year-to-date
+ - Percentages
+    - Arrest rates, confidence intervals for proportions
+    - arrest rates with small samples
+    - comparing arrest rates in two samples
+ - Quantiles
+    - Response times, medians and 90th percentile
+    - CDF of chronic offender scores
+    - Weisburd's law (counts at street segments)
+ - Combinations
+    - record linkage and the birthday problem
+    - multiple comparisons and outliers
+ - Utility Equations
+      - Cost/Benefit, Expected values
+    - report writing decrease time example
+    - simulation for complicated scenarios
+ - Presentation
+    - Table advice
+    - Graph advice
+
+Appreciate feedback from folks who follow me.
+------------------------
+"
+"For rare events, like terrorist acts or school shootings, different academic groups monitor newspaper reports to build national or global databases. Given the advancement of large language models, this can almost be automated. The approach is use a service (like Brave search) to search for recent news articles. Pass those news articles to LLMs to extract key information, and then put that info into a database.
+
+Everytown for Gun Safety gives an outline of their approach to do this for gun violence events at https://lnkd.in/e43KB8eU. I would be curious to see how many events this misses (terrorist acts are going to be more newsworthy, not all shootings will even make the news in certain jurisdictions).
+
+But the idea can be applied more broadly to collating events that are in the news into structured data.
+
+(Everytown's page for me has something weird with javascript going on that makes browsing very slow, if you disable javascript after you load up the page it is easier to view that page.)
+------------------------
+"
+"New blog post, Why Crime Analysts Should Learn SQL
+
+https://lnkd.in/eSgDavRD
+
+SQL is the standard way to query data from relational databases. But most analysts I interact with use tools (like Crystal Reports) to export data and then do further work in Excel. 
+
+It is not that difficult to learn SQL, and then you can use other tools to be much faster and more reliable when pulling data. It also is a good skill to make your work as a crime analyst transferable to other analyst roles.
+
+This post I also give several additional resources to help you learn SQL, including my undergrad course materials (free) and the python book. 
+------------------------
+"
+"When I was in Albany, I worked at both DCJS as a research analyst, and then later as one of the now GIVE funded crime analysts (it was called IMPACT back then). GIVE stands for Gun-Involved-Violence-Elimination.
+
+For some background, the state funds boots on the ground field intel officers and crime analysts in various upstate crime analysis centers. They heavily encourage the use of different empirical vetted crime reduction strategies although are not dogmatic about it (so they let the local agencies choose what strategies they want to focus on). For example focused deterrence is popular, but Buffalo were one of the first to do custom notification home visit style that I remember.
+
+When I was there Chuck Tyree would come to the monthly CompStat meetings and give feedback. They would also do training; CPTED for officers, GIS for crime analysts. 
+
+The work that DCJS has funded in upstate New York is really incredible. If folks from out of state have a chance to go check out the network that DCJS has built, I really encourage it. It is a good showcase for those interested in evidence based policing on the ground and different agencies (large and small) doing innovative work.
+
+https://lnkd.in/eRVfu88n
+------------------------
+"
+"Not affiliated, but I think SpotCrime is a great public service. PDs can upload their crime data using whatever open data portal, and the SpotCrime folks can handle aggregation and sending out email alerts for people interested. (The aggregation across PDs is hard, the sending out emails in mass is quite annoying as well.)
+
+The SpotCrime folks also have a very nice blog, where they aggregate criminal justice tech stories around once a week. And here (I imagine Colin) has a story on how LAPD is not updating their online data portal due to a NIBRS transition.
+
+https://lnkd.in/edCafecf
+
+To me these public data portals are very good for community policing. They allow the community to do their own stats (and not rely on requests to crime analysts). Ditto for SpotCrime, you can go and see these 10 events around your house, and go to the community meeting and say how is this being addressed. Or the obverse a community PD officer can pull up the stats realtime and say those are not going up/down.
+------------------------
+"
+"Another department, Anchorage, has come out saying that Axon's Draft One has not saved them time, and that the review part essentially takes as much time as writing the report from scratch.
+
+https://lnkd.in/ePh79mW6
+
+Given the recent advancements in accuracy (as well as cost reductions) in these LLM models, I am pretty bullish on this tech. Both to save time, and in the end I think they could be *more accurate* than the manual process now. That said building these systems is still really hard.
+
+Sharing here as the CEO of Truleo, Anthony Tassone, had a comment on X about the current workflow of DraftOne that I found interesting. If I understand correctly, he does not think DraftOne should pre-fill 100%, but it should be more interactive, officer prompts and LLM fills in based on the audio context. 
+------------------------
+"
+"The article on our NIJ competition winning recidivism model (joint work with Gio Circo) is out (academic publishing is crazy slow, the competition was 4 years ago).
+
+https://lnkd.in/eG9aATpc
+
+Anymore, picking up some machine learning for analysts is not crazy. Basically just a simple train-test and some mild hyper-parameter tuning got you to the same solution as the majority of people in the competition. You need to know what to predict, how to restrict the sample to be appropriate, etc. So still basic stats understanding, just incorporate non-linear machine learning models where appropriate.
+
+In the comments I will post a bunch of links; open access paper, replication code, and various blog posts I have written over the years in regards to the competition.
+------------------------
+"
+"For those academics that follow me, I published a newsletter with advice on pursuing alt-academic career paths. Those are jobs for PhDs that are not being a professor, but opportunities like being a data scientist or product manager in the private sector.
+
+My newsletter included various things like types of positions to search for, tech prep to make you better prepared for the market, (some SQL, python/R, several posts about large language models that are in vogue now, some software engineering tips), and example scientists in the public/private sector now as exemplars.
+
+I have said pretty much all I had planned on, so posted that last newsletter for now. You can see the archives on my website at https://lnkd.in/gSwWeG4d.
+
+One of the reasons I started this was because I wanted to help recruit people into positions. Public sector is coming around with hiring more technical staff, cities and counties can and should do so much more though. The public sector folks I talk to about recruiting are not aware at all of the process that typically happens in the private sector side (which is also very inefficient to be candid).
+
+So I am hoping to take that back up again in the future. Always feel free to reach out if you have questions, either as a current student or professor interested in making the jump. Or as an agency trying to fill a technical role.
+------------------------
+"
+"I enjoy Peter Santenello's channel on YouTube (travel documentary in US, both rural/urban, nice and rough places). One of his recent videos he did a ride along with Jacksonville. Of interest to this group, the Sheriff's office took Peter to a custom notification. I really like custom notifications (hopefully have news to share soon on working with a PD to evaluate them), and think they can be more widely applied.
+
+Custom notifications as applied here are a chronic offender initiative. The first I heard about the idea was in reference to Focused Deterrence, you can't get everyone to go to a meeting with the entire gang, so sometimes you take the deterrence message directly to the individual. Custom Notification = Going to their house and talking to the person.
+
+They have evolved beyond Focused deterrence (where part of the message is we will come after the entire gang), to more direct messaging to the individual. That messaging has both a deterrence message, but just as importantly has opportunities to access social services (such as help getting drivers license, and they even mention moving assistance). The social worker, Garland Scott, says that around 30% of the individuals take up their offer to pursue social services. These are hard folks, but that 30% jives with my work with other PDs as well.
+
+Sheriff Water's makes for a very good interview as well. Highly suggest checking out the video.
+
+https://lnkd.in/ebTd8mXp
+------------------------
+"
+"John Shjarback's Substack is one I recommend. This most recent post is about the poor adoption of automated license plate reader tech at fixed locations in Atlantic City. A rundown of issues are:
+
+ - took forever to get all the permissions between different agencies to physically install the cameras
+ - cameras had various install problems that caused further delays (not oriented properly, trouble with tapping into the grid)
+ - cameras are not reading 100% of plates, more like 60%
+ - lack of agency initiative to respond to alerts, so generate very few arrests after alerts
+
+It is a good read for cities interested in the tech for implementation hurdles. The second bullet is a good advert for Flock that does not hook into the grid (and maybe the third bullet, I haven't seen stats that show the percentage of good reads from them). First is something you always need to consider for stationary cameras, and the last bullet yeah if you don't make institutional changes to use the info then they are not going to magically work.
+
+https://lnkd.in/eniS2U9S
+------------------------
+"
+"I will have to put in the queue a longer post on kernel density estimates (KDE), but this is a common mistake I see analysts make when using them, so figured would be worth a quick LinkedIn post.
+
+For background on what KDE maps are, imagine for every pin of where crime happened you pour out a bucket of sand. The sand spills out into a mound. For pins of crime nearby each other, the mounds of sand pile up higher. The KDE heatmap visualization is then the height of cumulative sand mounds. For KDE maps, the main parameter of interest is how far out the sand is spread (the bandwidth). The kernel (the shape of the mound) does not matter all that much.
+
+When you plot a map with only a few crimes, you get these little hotspots, but all it is is a single crime. The combo of a bad default bandwidth (default for crime analysis should often be something like 500-1000 feet), and the bad legend combine to make mountains out of mole hills. 
+
+When plotting over time, this becomes especially problematic, as you are saying hotspots shift with the coming and going of singular crimes. It is mostly just noise though, one more crime in the area does not establish a significant change in the historical pattern.
+
+The solution? IMO your products should just use the points for short time windows. For even long ones just having a table of repeat problem addresses is likely better than the ever shifting KDE maps.
+
+This example is via Craig Uchida's group Justice Security Strategies. Who do good work but I don't think this example is the best way to approach the problem.
+
+https://lnkd.in/e2DSSkdH
+------------------------
+"
+"Mike's newsletter is excellent and I recommend. It has stories from the prior week that practitioners, academics, and tech folks will all appreciate reading.
+------------------------
+"
+"Big data is not as much a buzzword now as it used to be, but it was always a bit over-hyped. Most laptops anymore have at least 8 gigs of RAM, and with that you can probably hold a 1 million row table in memory (plus have a Chrome tab opened).
+
+If you do happen to have a table that is too big to fit into memory, one solution is to read the table in smaller chunks. So in python, reading a table from a SQL query would look something like:
+
+ ```
+conn = ...sql connection...
+for ch in pd.read_sql('SELECT * FROM table',conn,chunksize=20000):
+    # ch is a pandas dataframe
+    # do whatever operation you want on the smaller chunk of 20k
+    # rows, and iterate over the values
+```
+
+And so even if `SELECT * FROM table` is too large to fit into memory all at once, the smaller chunks should be fine to work with.
+
+The inner loop for example, I have pipelines that apply predictive models to the rows of the table and write back to another database table. Doing it this way I know the process will never run out of RAM.
+
+This blog post shows an example of memory profiling with different databases in python for similar chunked queries.
+
+https://lnkd.in/eF-RJPZY
+
+------------------------
+"
+"The Crime Analysis sub-reddit was dormant for a bit. I have taken over being a moderator for the forum, so it should be back in operation.
+
+The majority of the material are entry level folks asking for getting started advice, but I will be bugging some of you to advertise the things you are doing and see if we can drum up more participation.
+
+https://lnkd.in/eiMfgjgx
+------------------------
+"
+"While there are many complicated ETL tools (extract-transfer-load), for the majority of applications I deal with, writing pipelines in python is not that hard (especially if you have compute already provisioned, such as a persistent physical or virtual machine).
+
+Here is an example from my book I use quite a bit in my work -- creating a reporting server that is a copy of a production database. You can simply loop over the tables you want in the production database at a particular cadence (like overnight, when the load is lower), and then copy them to the reporting server.
+
+And the next page in the book has an example of running the query in smaller chunks, so memory is not a concern. Put that in a scheduled script to run every night, and you have a reporting server that is at most data that is 1 day old and ready for large analytic type queries. (In practice I am also often doing other operations at this stage as well, such as geocoding.)
+
+https://lnkd.in/eZNxZwBR
+------------------------
+"
+"One of the capabilities of current large language models are called ""structured outputs"". A common use case is taking text data, and extracting specific pieces of information out of that text. For a crime analysis example, I can ask a question like:
+
+> I will give you a description of a burglary
+> please return json that determines the method
+> of entry, and the location of the entry
+> for example:
+> 
+> Offender pushed in the AC unit on the west side of the house.
+> return {'moe':'window', 'loc': 'side'}
+>
+> The offender entered via the unlocked front door
+> return {'moe':'unforced', 'loc': 'front'}
+> 
+> The burglary narrative is ...insert narrative here...
+
+It depends on the nature of the questions and the complexity of the input, but the current models available can both do these approaching good human levels for many extraction tasks, and be reasonably cheap for even large volume. Current pricing for Anthropic's Sonnet on AWS (so can be ok to send sensitive data like crime descriptions) will cost about ~0.003 dollars per a single narrative. (And could do batch to cut in in half.) So to do this exact task for 10,000 burglary narratives would be around $30 dollars I am guessing.
+
+If this is something you need help with, always feel free to reach out. I have been building applications that are CJIS compliant to be able to leverage online APIs.
+------------------------
+"
+"When using LLMs, they can cause what are commonly called ""hallucinations"". In this example a lawyer filed a suit with clearly made up case law.
+
+This specific application, citing real work, is mostly a solved problem, but is not typically something that is available out of the box in the easy to use ChatGPT or Anthropic GUI. (Perplexity is a better tool for this, but may be hard to get it to cite actual case law and not just random websites/blogs.)
+
+The way this is solved in production systems is via a RAG (retrieval-augmented-generation), you take your input cases, then get the relevant sections of those cases using a simple lookup. Then you can answer the question and identify the specific sections used in that section. Anthropic's citations capability works quite well out of the box in the tests I have given it.
+------------------------
+"
+"Not crime analysis related, but a project I recently did with Scott Jacques was to help GSU students save money on textbooks.
+
+Original idea was to have the university purchase unlimited e-versions (common for Academic presses). When scraping the data though, the bigger cost to students are textbooks (GSU students spend over $300k per year on a Pearson algebra text), and professors making students purchase their own self-published books (one business prof sells their Intro to excel book at $100 to 800 students a semester). 
+
+For the textbooks, GSU can pay someone to develop open access materials at a much lower cost (or directly license the material). For the professors making students buy their books, that needs someone in admin to step in and say it is not ok. Pretty much everyone I talk to about this has experienced that same scenario.
+
+If you are interested in doing something similar for your university, get in touch. Me and Scott hope to expand this cost savings work out beyond just GSU.
+
+https://lnkd.in/eWTGgMd2
+------------------------
+"
+"So for the results of the informal poll, overall for my readership it is close to 50/50 split. When looking at specific crime analysts though, it is more like 1/3 (with the yes's a few larger agencies, and smaller ones listing no).
+
+The reason I ask is because before I go into working with a PD, I can often make assumptions about the computing environment (such as you have computers and electronic records), and some software (most cities have access to ESRI).
+
+Assuming AWS is available though is not a sure thing. 
+------------------------
+"
+"As a crime analyst, I hated percent change. Crime is up 100% this month! Well, it went from 5 last month to 10 this month, is that an actual change we should worry about?
+
+Imagine you have crime data that averages 100 events per year. If you had a year with 101 would you say that is a substantive increase? How about 110? 120? 150? Where exactly is the difference between normal year to year variation vs we think that something fundamentally changed in the underlying process?
+
+So I suggest analysts use what I call the Poisson Z-score. It is a super simple formula:
+
+  2*[sqrt(new) - sqrt(old)] = Z
+
+And if the crime data is close to Poisson distributed (no real life process exactly follows a hypothetical stat distribution, but is often close enough in practice). When doing the square root transformation, this metric is approximately a standard normal distribution.
+
+The image in this post is a simulation I conducted -- I generated random Poisson data with a particular mean, then calculated Percent change in the top panel, and Poisson Z in the bottom. In the top panel, even for crime data with means of 20 and 50, you can get random data have a 100% increase (percent change is asymmetric, going from 10 to 20 is a 100% increase, but going from 20 to 10 is a 50% decrease, it is biased to say bigger increases).
+
+In the bottom panel, you can see the data is more evenly distributed. Because real life crime data is often slightly more dispersed than Poisson data, and analysts typically monitor many crime series, I suggest analysts alarm at +/-3 or +/-4, and not the typical +/-2 that academics more often use.
+
+What do analysts do then when a series alarms? That is just the start, it is just a signal it may be worth your time to investigate the data further to see if you can uncover some aspect that is causing the spike up. Or the obverse, if something went down in response to something the PD did, that is information people would like to know as well!
+------------------------
+"
+"Question to my followers -- how many individuals have access to AWS services in your organization?
+
+I am in the process of building a demo local chatbot with AWS Bedrock on the backend, so is CJIS compliant. I get concerned people are posting stuff in the online systems they should not be. (Hopefully can share that demo soonish.)
+
+I am not sure though how many cities (or other CJ related organizations) already have AWS accounts for other projects. So would like to get some sense.
+------------------------
+"
+"Evidence based policing is not just about knowing what interventions work. It is also important to conduct rigorous evaluations to identify programs that do not.
+
+Based on routine activities, we know we need an offender and victim to meet in space for a crime to occur. Some interventions focus on the victim part of the triangle, and are called target hardening.
+
+One example of this is work by Liz Groff and Travis Taniguchi, the idea was when a burglary occurred, send a notification to neighbors and suggest different target hardening strategies. This is because burglaries tend to cluster into near-repeat patterns.
+
+This experiment did not show reductions in victimization, although it did increase positive perceptions of police. (There have been similar experiments to prevent exact repeat victimization with similar findings.)
+
+https://lnkd.in/ezKR2G8S
+------------------------
+"
+"Crime analysts make too many BOLOs.
+
+If you do too many they become like spam and are not read, and they take very little skill to make. It is IMO an issue if I talk to a unit and they spend too much time on them.
+
+This blog post I give several example types of analysis projects that have a higher value add to the organization -- monitoring crime trends, identifying serial offenders, OSINT monitoring, and working on strategic hot-people/places strategies with buy in from command.
+
+https://lnkd.in/e6iFXaKc
+------------------------
+"
+"The upcoming ASEBP conference is in Tucson, here is the sign up link, https://lnkd.in/e5mf2Kjx
+
+I was one of the reviewers for the applications. This is a really special blend of folks doing great work across the country (and a few across the world).
+------------------------
+"
+"The Office for Access to Justice (under the DOJ) has an open challenge for proposals. The first round prizes are small (5*$5k, 2nd round is $50k), but for an inside tip the number of people who participate in .gov challenges are small.
+
+If you are interested in putting together a technical proposal (like a dashboard of rural access stats), feel free to get in touch.
+
+https://lnkd.in/ewA8CqDa
+------------------------
+"
+"From what I have seen, Peregrine has a very nice data integration product. That said, having real time data is not a significant impediment to implementing CompStat -- you can go to CompStat meetings with week old data and be fine.
+
+The generic recipe for CompStat is:
+
+ A) identify problem
+ B) take actions to solve problem
+ C) later see if action was actually taken
+ D) see if action solved the problem
+ E) if solved, find another problem, if not, go back to (B) with a new action
+
+I do quite a bit of number crunching, but honestly A is not that hard. B is hard, in that many people will say ""I am going to do this thing"" and do not actually do that thing. Hence I make step C, check to see if person did that thing.
+
+Doing that thing is not guaranteed to solve the problem. All you can do is make sure people are following the process they set out to do. Most people do not, there needs to be very strong follow up/top down pressure to make sure people actually do things. (This tends to look more like effective project management than crime analysis in practice.)
+
+Then part D, seeing if the problem is solved. This takes more rigorous data, but again does not need to be real time. We are talking big problems, showing there were no incidents yesterday does not show the problem is solved. You will need to look at bigger time windows.
+
+Peregrine I do not doubt is a great product for real time investigations. It will not intrinsically improve any CompStat process. Those steps C & D above are to me the parts where most agencies have the hardest time.
+------------------------
+"
+"When doing an experiment to reduce crime, it is important for departments to understand *how long* it is necessary to run the experiment to be able to reasonably tell if it is working.
+
+For a recent hotspots project, I told the PD they likely need to run the experiment for 10 months. I understand that is along time though, so I have developed some continuous time metrics (these are extensions of the WDD stat I created with Jerry Ratcliffe, just updated over time).
+
+And the linked blog post has an Excel spreadsheet implementing the metrics.
+
+https://lnkd.in/eFYWxUng
+------------------------
+"
+"Grants from the Bureau of Justice Assistance typically need the agency to directly submit the grant, but also need a research partner. I am happy to discuss with your agency being a research partner (big or small, police or other agency, state or local) if you have ideas you want to pursue.
+
+This solicitation, innovative field applications, is basically wide open, and awards up to 1,000,000 (with 10,000,000 total going out the door).
+
+BJA grants are different than other (like NIJ, NSF), in that they can directly support operations. NIJ just pays researcher salaries, BJA you can actually hire people on the grant awards.
+
+https://lnkd.in/emQEntzm
+------------------------
+"
+"The spatial footprints of chronic offenders tend to be very mobile. My favorite example of this I have in my notes below.
+
+When I was at the Finn Institute, I was working with a police department on a chronic offender initiative. The PD was interested in whether targeted enforcement of driving without a license would be effective.
+
+So I thought, lets look at the journey to crime, to see where they are potentially driving. Doing that work, the PD had a few hundred chronic offenders they identified, but something like 5-fold number of home addresses for those individuals. They tend to move frequently (and probably the home addresses they list are low quality).
+
+This is an example of the spatial footprint of an offender I called ""Mr Prolific"". This individual had close to 50 arrests over a 6 year period. Mostly for public indecency, but a few for assaults with a knife.
+
+The results of my analysis made me think a targeted spatial strategy for chronic offenders probably does not make sense (they go all over the place). The left graph the blue diamonds are home addresses, and red dots are crime locations. But when drawing the journey to crime in the right panel, you can see the crime location is sometimes correlated, but often not, to where he stated he was living at the time.
+------------------------
+"
+"Recently received a comment ""whomever you are"" -- I post on the company LinkedIn page but Crime De-Coder is just a one person shop, myself, Andy Wheeler.
+
+Here is my about page on my website, why I started Crime De-Coder. And you can browse the site to see some of the main types of projects I work on on the homepage, and web demos and blog posts on other technical capabilities I have.
+
+https://lnkd.in/eJWe7cy2
+
+In short, if you need technical, statistical, or computational help, do not hesitate to reach out and see if I can help.
+------------------------
+"
+"One way to use python for automation is controlling your mouse and keyboard directly. This allows you to even use tools that are GUI only, but you can simulate clicking/typing etc to fully automate different processes.
+
+This recent newsletter gives an example of moving the mouse using the python library `pynput`
+
+https://lnkd.in/ePzxUsAq
+
+Sign up if you are interested in other coding tips (it is free to anyone who wants)
+------------------------
+"
+"There are many different data visualization books. My recommendation for crime analysts wishing to learn data visualization (and more general scientific communication) is:
+
+1 - Tufte's Visual Display of Quantitative Information (+ his essay on powerpoints)
+
+2 - Jon Schwabish's Better Presentations
+
+For GIS specific data viz, I would suggest Monmonier's *How to lie with maps*.
+
+Let me know in the comments if you have any specific data viz books that would be good for crime analysts.
+
+https://lnkd.in/dAzuUfE
+------------------------
+"
+"New blog post on Crime De-Coder, Junk Science: Detecting deception in 911 calls, https://lnkd.in/e6_zUph7
+
+There is a common mistake that people building predictive models make. If you artificially construct your sample to be 50:50 (here the authors made a sample of 50% liars and 50% truth), but the real prevalence is much lower, all of your sample stats for accuracy, true positive rate, etc. will be heavily biased.
+
+You need to evaluate your model on a sample that mimics the true prevalence in the population. Which given most people do not lie in 911 calls, the cited research paper undoubtedly dramatically overestimates their ability to detect lying.
+
+Even if a paper is published in peer review and seems to use advanced methods (here LLMs and random forest models) it does not mean it is quality work.
+------------------------
+"
+"One AI application I think has a ton of potential promise are different firms automatically analyzing body worn camera footage. This pre-print by Ian Adams and colleagues analyzes the roll out of Truleo in two different agencies, and shows it can change officer behavior for the better.
+
+I have not seen a demo of Truleo, I have of Polis and I was very impressed. I suspect long term good behavioral outcomes will be the result of their product as well.
+
+https://lnkd.in/ephmGHK6
+------------------------
+"
+"Scott Phillips has started a podcast to discuss policing related research. Check out his interview with Stephen Bishop discussing use of force data and different research findings.
+
+https://lnkd.in/e744QCta
+------------------------
+"
+"My notes on making nice line plots in python. Advice includes:
+
+ - using markets to distinguish between lines (survives greyscale printing)
+ - using more saturated colors to distinguish if you need to (do not use pastel or yellow)
+ - highlighting lines by drawing them on top and thicker (and background lines as light grey)
+
+I focus advice on printing because I often suggest making nice printable reports more often than dashboards. People often ignore dashboards, but if you have a once a week report at a command staff meeting it is more likely to be printed out and read.
+
+https://lnkd.in/eX5baJf8
+------------------------
+"
+"I wrote a recent blog post on coin stocks as a follow up to a post I wrote 2 and a half years ago. But of more interest to this crowd I discuss Axon's rise, and how they still have good growth opportunities, so I don't think it is a fluke.
+
+I expect body worn cameras to diffuse into other areas (medical, teachers). And their market penetration in BWC/Tasers makes them well positioned to sell their other analytics/software products.
+
+https://lnkd.in/eUwM--6u
+------------------------
+"
+"Whenever you provide a forecast, it should always come with an estimate of uncertainty (like a prediction interval).
+
+The reason for this is that, like a coin landing on its edge, it is very unlikely to be exactly correct. And for most practical purposes a forecast's variance will impact how you interpret that forecast and act on the information. 
+
+Often people will want to make decisions on the lower or upper bound of the forecast as well (not its exact point estimate).
+
+https://lnkd.in/g9vZnm8T
+
+#forecast #python #crimeanalysis
+------------------------
+"
+"Folks who like my posts should have Vital City on their radar. It is focused on NYC, but the commentary is relevant to urban problems across the US.
+
+This recent article by Brandon Del Pozo is a short and incredibly well written description of the problem cities face from individuals with extreme mental health disorders causing repeated problems (basically every city I have ever worked with has at least one individual the same as Jordan Neely).
+
+The problem is not availability of mental health services for these particular individuals, (they have so many contacts with law enforcement and other service providers, they warrant teams of people in various orgs to deal with them). It is that the nature of current US criminal justice systems effectively cannot involuntarily commit them without incarceration.
+
+Although their histories tend to be filled with things that are on their face non-violent (disorderly conduct and public indecency), if given long enough they often will stab someone in my experience (think of the recent Ramon Rivera episode in NYC).
+
+Given the current laws as they are, IMO the best approach (if a PD has a willing partner in the prosecutors office) is to just have a consistent approach to seek the maximum penalty for crimes they do commit. (Have a prepared printout stack of prior history, and prosecutor drops brings the paper to the judge to justify seeking max penalty.) And this takes coordination from the PD (to ensure when they commit minor crimes to get witnesses and pursue those charges as well).
+
+https://lnkd.in/eu7MQAQR
+------------------------
+"
+"If you are doing public opinion surveys (or having a firm do them for you), the analysis should do what is called post-stratification of the survey results.
+
+Traditionally surveys were designed with weights, with complicated surveys often having design based weights for oversampling populations of interest. In practice, because of survey non-response (which has gotten much worse over the past several decades), weights are not an accurate way to estimate surveys.
+
+Probably just as common though are convenience samples for surveys in criminal justice. Just put a survey online for example. In these scenarios, you don't even have weights. But if you collect the demographics of the survey respondents (age, race, gender), you can likely use post-stratification to get a very reasonable estimate of public opinion.
+
+The idea is to fit a regression equation predicting the outcome, to keep it simple I will pretend we just have two groups, A & B. Pretend our regression equation predicting the outcome is `Opinion = 1.2*A + 0.8*B`. Now for our estimate of opinion in an area, say we had 300 in group A, and 100 in group B. Our area estimate will then be `(1.2*300 + 0.8*100)/400 = 1.1`. You then can incorporate errors into the estimates via the regression equation errors.
+
+In many convenience samples, this will adjust the self selected sample (which are often much older individuals), and make the overall estimates much more representative of your population. For a criminal justice application, check out this example by Gio Circo (for our NIJ submission), showing R code for a survey in Raleigh.
+
+https://lnkd.in/ek7wPc8v
+
+#surveys
+------------------------
+"
+"New blog post on personal blog, I discuss how I would identify excess rounding in billing (the anesthesiologist example that has been in the news recently).
+
+https://lnkd.in/epnThAvE
+
+When scanning many individuals (here doctors) for problematic behavior, many people just do simple rankings, e.g. top 5% with the most rounded bills. This is likely to cause false positives in practice, so here I show I more principled approach -- generate a statistical test (here we only expect 20% of the bills to round to 5 or 0), conduct that test for all anesthesiologists, and then run a false discovery rate correction test.
+
+#fraud #statistics #claims
+------------------------
+"
+"There is a John Tukey quote -- when you are a statistician you get to play in everyone's backyard. This works for doing technical coding work as well. 
+
+On the personal blog I wrote up an overview of the projects I have been involved in the past year. Evidence Based CompStat consulting, stat consulting with academic groups and non-profits, CALEA workload analysis, civil litigation, scraping bookstore data to save students money. 
+
+Also self-published a book (use `APWBLOG` for a $10 coupon code), and wrote two other academic papers.
+
+https://lnkd.in/gnjFYMB5
+
+If you have an idea and think I can help, always feel free to get in touch.
+
+#crimeanalysis #statisticalanalysis #consulting #python
+------------------------
+"
+"When I conduct trainings, I provide extension materials -- labs/reproducible-code/videos. Here is an example video I recently provided Kansas City in my python training for their analysts. I did a live demo in person, but provided pre-recorded demo videos for most of the examples I talked about in class.
+
+This video shows how to use ChatGPT to help write python code. I show how to create a quick Flask app to make a data input form (around 10 minutes of work!).
+
+The reason I generate these videos and other labs is because the trainings can be used later on by your analyst group as future training/on-boarding docs for new analysts. It isn't an investment for one time, I license the materials to use by your PD in perpetuity.
+
+https://lnkd.in/eTX4Gz7i
+
+If you are interested in similar training advanced coding training for your analysts (in python or R), let me know.
+
+#crimeanalysis #training #python #ChatGPT #GenAI #flask
+------------------------
+"
+"One important idea when you are writing python code in your work is to have environments. So you can have multiple versions of python on your system, e.g. one project has python 3.10 and uses geopandas for GIS analysis, another needs python 3.11 and uses NLP libraries like huggingface.
+
+These can all be installed at the same time on your same computer, but be in different environments. This is one of the reasons I wrote my book, as pretty much none of the current data science books on the market discuss this at all. So I go through examples of making new environments using conda, as well as how you can save a reproducible script to make an environment in a requirements.txt file.
+
+https://lnkd.in/eCZA4ET7
+
+#python #crimeanalysis 
+------------------------
+"
+"When examining rate data, it is important to keep in mind that smaller denominators in the rate will cause a higher variance in the metric. A chart I like to use in that scenario is a funnel chart -- you plot the background what the baseline expected variance is, and this allows you to spot outliers more easily.
+
+This post shows how to use such charts for monitoring use of force, and the embedded image is an example of extending that chart to show ratio estimates of use of force between black/white arrests.
+
+https://lnkd.in/ePrmeZhx
+
+#crimeanalysis #dataviz
+------------------------
+"
+""More evidence that doing video calls results in improved outcomes, new study by Barak Ariel and colleagues in Dorset, https://lnkd.in/eynQ6Zer.
+
+This is fairly small N, just a few over 1k total in treatment and control. Evidence that victims like this format better is very strong (both in this study and others). This study even has some evidence that it improves evidence collection and subsequent arrests.
+------------------------
+"
+"Most academic work on fraud detection is not practical -- papers with complicated models that no one can implement. This paper by Richard Frank and Ashleigh Burnside is different.
+
+https://www.crimrxiv.com/pub/k82mf4xe/release/1
+
+They took 37 FINTRAC suspicious transaction reports (3,263 transactions across casinos, banks, and businesses) and used two lightweight techniques: Benford's Law and feature engineering for anomaly detection.
+
+Benford's Law is simple -- in naturally occurring data, the first digit should be 1 about 30% of the time, 2 about 18% of the time, etc. For second digits, you expect 0 to appear about 12% of the time. In their casino/banking data, second digit 0 showed up 52.9% of the time. That is a massive red flag.
+
+They also engineered features like "gaming versatility" -- how many distinct casinos a person or business uses. More venues = more likely they are structuring transactions to avoid detection. Bank drafts were another indicator, as they are a common tool in the Vancouver Model of money laundering.
+
+The result? They reduced 671 entities down to 58 high-priority targets using Excel, Python, and Tableau. No enterprise software, no complicated machine learning. Just smart feature engineering and visual triage.
+
+This is how fraud detection should be done -- tools that work in resource-constrained environments and that analysts can actually understand and implement.
+------------------------
+""
+
+The GLiNER python library is excellent for named entity recognition. You can at runtime identify new categories you want to pull out from the text strings. And short examples like this run quite fast even on a CPU.
+
+Here is an example of distinguishing between person types inside of a police narrative (officer, witness, victim, offender), as well as stolen items. And the second example shows how to strip out PII from text.
+
+Here is a gist with code from the screenshots, 
+https://lnkd.in/eK7BbvGD
+
+----------------------
+
+This Lab Report article (from the folks at CPAL) is a good read for criminology students with alot of different major themes packed into a single article. 
+
+Goes over long term persistence (a single apt complex causing problems for decades), police problem solving (and it doesn't name it, but an example of Tamara Herold's place based approach with the motel connected to the apt), to violence interrupters (which now are unpaid volunteers, an example of informal social control and collective efficacy).
+
+https://lnkd.in/ezTZfwff
+
+---------------------
+
+For crime analysts looking for examples types of analysis you can conduct in python, check out my crimepy library
+
+https://lnkd.in/eUTfTNGA
+
+This is a map of DBScan hotspots, other examples include aoristic analysis, time series graphs, patrol districting, some examples of social network analysis, spatial point pattern tests (and more to come)
+
+----------------------
+
+Filevine, a Series E company start up company providing an AI Legal Assistant, had a critical vulnerability that appeared to expose a large number of sensitive documents.
+
+https://lnkd.in/eVV3hZ7a
+
+The root cause was a global Box API key that could be used to query any file was exposed on the internet.
+
+Another reason I wanted to bring this up though is the idea of multi-tenancy -- this is when your data and another persons data are in entirely separate environments. So if one data environment leaks yours is totally separate, or just as importantly there is no way for someone else who uses the service to see your data.
+
+I was surprised Filevine does not do that for each of its clients given their sensitive nature (appears to all go into a single Box instance -- hence one key gives up the whole goods). 
+
+Given this leak, I would be concerned it is possible for one firm to sniff tokens in the app and then query another firms data files. Solutions that are multi-tenant this attack vector is not possible.
+
+# POSTS ON LLM BOOK
+
+------------------------------
+
+CDC
+
+One of the benefits of using Claude's desktop tool is that you can create local apps. One example I show in my book is creating a MCP server to run python functions that query a database. 
+
+This is a page of my LLMs for Mortals book -- it shows the MCP in action with websearch using Claude desktop (the free version!) to identify repeat crime addresses and then give summaries of what is at that location.
+
+https://lnkd.in/ea_z3g4M
+
+If interested in using these LLM tools to actually develop applications, you should check out my book.
+
+-------------------------------
+
+CDC
+
+I suspect many of my followers are exhausted over the hype cycle of AI in the news. The hyperbole spans from people can create magical things with zero effort to all jobs are doomed on a near daily basis.
+
+I have a much more boring take, LLMs will generate marginal improvements, but because they can improve so many products it will be a fundamental change. The work will be hard though, and it won't happen overnight.
+
+Even if you are not a coder, I suggest to read my intro and first few chapters of https://lnkd.in/e9BmyE-a, it both discusses what LLMs are and provides realistic examples of what these tools can do.
+
+---------------------------------
+
+CDC
+
+Folks who are saying AI is going to take analysts jobs, here is the creator of Claude Code saying why Anthropic still has 100's of developer positions open.
+
+Engineers who use the tools will become more important, that is why I wrote LLM for Mortals, to help analysts and social science students get up to speed on the current landscape of LLMs, and wield them effectively, https://lnkd.in/erqp2C5f
+
+---------------------------------
+
+Personal
+
+Much of the hype around Claude Code is having it write extensive amounts of code. I personally do not use the tools like that, sure it can generate 10k lines of code a day, but good luck making sense of all that.
+
+Here is the snippet of my book, LLMs for Mortals, https://lnkd.in/ecF6N8wm, in which I give my advice. Part of which is doing small projects it is easier to verify the output and give specific prompts.
+
+Vibe coding can definitely help you code faster. The human should IMO be in the driver seat though overseeing the work.
+
+------------------------------------
+
+Personal
+
+No guarantees, but I am going to try to start posting regular tips on using LLMs to promote my book (so follow me if that is something you are interested in).
+
+First tip is that to use sub-agents in coding tools, you need to understand how the python environment is set up. Claude Code inherits from the shell it is run from -- Google's Antigravity does not. 
+
+That is something you can tell the agent though in Gemini.md -- here is a screenshot creating a shell script to start a flask app in the way that is needed to activate the correct conda environment for the agent.
+
+My book, LLMs for Mortals, has an example walkthrough of Antigravity (and compares it to Github Copilot and Claude Code). https://lnkd.in/e2w9vPT8
+
+---------------------------------------
+
+Personal (Monday) + CDC (Sunday)
+
+One of the benefits of buy my epub version of the book, you can copy-paste the code snippets directly. Here is a quick GIF illustrating with the open source Calibre E-reader.
+
+https://crimede-coder.com/cdcstore/product/large-language-models-for-mortals-a-practical-guide-for-analysts-with-python/
+
+Use the code LLMDEVS to get 50% off of the epub.
+
+-------------------------------------------
+
+CDC use text for tables (Tuesday)
+
+When using LLMs to help with data analysis tasks, you often should use what is called markdown format to give the model information on tables.
+
+Here is an example from my book, having Claude analyze a table of robberies. The models currently are smart enough to be able to read the table the correct way and make reasonable interpretations of the data.
+
+Get a copy of my book, LLMs for Mortals, if you want a reasonable intro to how LLMs can help analysts with various tasks, https://crimede-coder.com/store
+
+-------------------------------------------
+
+Personal Hooks with pytest (Tue)
+
+Claude Code has the ability to create hooks, arbitrary sets of code, to run at specified times. The times they are triggered can be before the agent starts writing code, before an agent finishes, before/after a tool call, etc.
+
+One of the examples of this I give in my book are having Claude Code always run pytest before it finishes a task. It is somewhat tricky, as it requires you to capture the pytest output in a particular way to stdout (so I have the hook run a shell script that calls pytest).
+
+Other hooks that make sense could be having a agent always make a new github branch and commit to github at the end of its run. Or it could be starting an application (so it is running in the background for the codes tools).
+
+Purchase a copy at https://crimede-coder.com/store for 350 pages of tips like these on using LLMs for real applications.
+
+-------------------------------------------
+
+CDC (Wed) + Per
+
+One of the benefits of my LLM for Mortals book is I have examples in all of the major providers, not just one, including AWS Bedrock. Bedrock in particular is challenging, due to both poor AWS documentation, as well as needing to set up IAM roles to use many of the examples. I give examples in the book on how to do batch processing for structured output generation and S3 Vectors for example, both of which require a different set of IAM roles.
+
+If you are in government services and need to use AWS, I have you covered.
+
+See https://crimede-coder.com/blogposts/2026/LLMsForMortals to review the first few chapters of the book and links to purchase your own copy.
+
+---------------------------------------------
+
+Personal Review Code then write code (Wed)
+
+One of the prompting flows I find convenient is having the model review some code first before asking it to write code. This reads the relevant portions of code into the conversation memory. You generally want the agent to do less, not more, so this removes making the agent spend a bunch of effort finding and reading in the relevant files, the agent can get right to writing code.
+
+In my book, I have an example of converting R code to python using this framework, and show how to create a command in Claude Code to use the same prompt repeatedly. (So at the start of a session, you can just use the command to review the relevant code.)
+
+This is a screenshot from the paperback version of the book. Available for purchase at https://crimede-coder.com/cdcstore/product/large-language-models-for-mortals/.
+
+---------------------------------------------
+
+CDC Google Maps Grounding (Thu)
+
+One of the unique abilities of Google's Gemini models is to leverage google maps data directly. Like web-search in the other tools, Google has a specific google maps search. Here is an example of inputting a jugging incident at one ATM, and then asking Gemini to identify potential nearby ATMs that may be similar targets.
+
+I have several examples of using google maps grounding in LLMs for Mortlas to summarize locations post identifying they are repeat address locations of common crimes.
+
+https://crimede-coder.com/blogposts/2026/LLMsForMortals
+
+
+---------------------------------------------
+
+Personal Testing edge cases (Thu)
+
+One of the main focuses in the book is not just how to use the APIs, but how to use them in responsible ways. One of the most important aspects of using LLMs is that you know going in they are going to be wrong -- determining how often they are wrong is the key question.
+
+Each of the chapters has examples of evaluating different aspects of LLMs. For structured outputs, you should make a set of test cases to see the accuracy, for RAG you should look at precision and recall. And for agents with more fuzzy tasks, you may use LLM as a judge to view the outputs.
+
+This screenshot shows a section on comparing Haiku 3 vs 4.5 for a structured extraction task. Many of these types of structured extraction tasks in systems I am working with cost is a key component, so trying out older/smaller/cheaper models is an important consideration.
+
+https://crimede-coder.com/cdcstore/shop/
+
+-----------------------------------------------
+
+Personal, MCP graphs/SQL (Sat)
+
+While skills in Claude Code are all the rage currently, do not forget about MCP. One of the examples of using MCP in LLMs for Mortals is data analysis tasks, like writing a function to conduct certain pre-specified queries, and creating a time series graph. In the book I show a full fledge example of MCP with Anthropic (both for an agent, as well as the desktop client).
+
+To replicate this specific functionality in skills is very difficult. Claude would need to write its own python functions, execute them, and then inspect the output. If you know you have repeated tasks, like creating and reviewing a time series graph, it is easier to make an MCP server and then have the agent call those tools.
+
+Can see the full MCP example at https://github.com/apwheele/LLMsForAnalysts, which also has materials for the book and a preview of the first 60+ pages.
+
+------------------------------------------------
+
+Personal, Agents feedback (Sun)
+
+One of the mistakes I see with agent based systems is it requires you to write your functions to capture errors in a particular way and feed that back to the model. (This is also one of the reasons I am not real keen on langchain, I see people very confused about the agent loop.)
+
+In Chapter 6 of the book, I show tool calling workflows with each of the provider APIs (OpenAI, Anthropic, and Google). If you structure your functions correctly, agent based approaches can automatically see errors and then rewrite code. Here is an example of an agent writing SQL queries with the Anthropic API.
+
+The book has working code examples for each of these components, so it is easy to see how I write my functions and apply them to your own data, https://crimede-coder.com/blogposts/2026/LLMsForMortals
+
+-------------------------------------------------
+
+CDC Skills (Sat)
+
+If you want to see an example of what is possible via data analysis automation via Claude Code, this notebook on vandalism in Dallas in my crimepy library was generated entirely via prompt (with no edits).
+
+https://github.com/apwheele/crimepy/blob/main/notebooks/VandalismAnalysis.ipynb
+
+The skill refers to prior examples, and then it is as simple as 
+
+> /crime-analyst I am interested in conducting crime analysis of ‘DESTRUCTION/ DAMAGE/ VANDALISM OF PROPERTY’ NIBRS category in the Dallas crime data. Can you help write a jupyter notebook with analysis
+
+This looks through the prior example notebooks, and then conducts relevant analysis. Can see aoristic analysis in this screenshot, vandalism has a slight peak at 1 am in Dallas for most days of the week.
+
+-----------------------------------
+
+
+CDC RAG recall example (Mon)
+
+For RAG based systems, like using LLMs to chat with documents, it is generally better to have extraneous information. Hence when evaluating different RAG solutions, you often prioritize *recall* over precision.
+
+https://crimede-coder.com/store
+
+When building tools using LLMs, you need to think about metrics to test the system from the start. You know they will be wrong some percentage of the time, you need to estimate that for folks to have confidence in your tool. 
+
+---------------------------------------------------
+
+Personal LLM Judge + Structured Outputs (Mon)
+
+From my experience as an educator, when presenting material you should logically build from earlier lessons to later lessons. This is how I structured my LLM for Mortals book. Here is an example, in the chapter on agents I show how to build an LLM as a Judge evaluator at the end of the agent. To do this I use structured outputs to look for specific failure points in the resulting text.
+
+https://crimede-coder.com/store
+
+The book is logically laid out to build on lessons in the earlier chapters. So structured outputs (Chapter 4) has examples in Chapter 5 (RAG), Chapter 6 (Agents/MCP), and Chapter 7 (you can use structured outputs with Claude Code).
+
+The book is laying out what I think it takes to go from 0 knowledge of LLM APIs to be a productive application designer through many small lessons.
+
+----------------------------------
+
+CDC CJIS note (Tue)
+
+A question on the IACA forums came up about my LLM book and CJIS -- it is something I address directly at several points in the book. It is generally not CJIS appropriate to use the *free* GUI applications. Often the APIs though are sufficient (they do not permanently cache your data, nor use it for training, when using the paid for APIs across any of the providers).
+
+https://crimede-coder.com/blogposts/2026/LLMsForMortals
+
+It is also one of the reasons I don't just focus on OpenAI, I have examples with AWS and Google as well in the book. If your city already uses a cloud stack (including Azure for OpenAI), you likely already have agreements in place that are sufficient for your sensitive data needs.
+
+-----------------------------------
+
+Personal, shadow text GitHub Copilot (Tue)
+
+Although the LLM tools are currently focused on coding, they have broader use to in general helping across many jobs. One example is GitHub Copilot's Shadow text, which is basically advanced auto-complete. Here is a screenshot from the book using it to help write a Docstring for code, but it will work the same way for email, slides, blogposts, etc.
+
+https://crimede-coder.com/cdcstore/shop/
+
+Eventually there will be tighter integration in different tools (like OpenAI directly in word or outlook), but for now just using the free tools that many orgs have access to, like GitHub Copilot, can be quite helpful for writing in general.
+
+(IMO much documentation that is in Word docs should be in GitHub in plain text in general, it is a very convenient software to keep track of revisions, see the output, etc.)
+
+----------------------------------
+
+CDC Conf Classification (Wed)
+
+One of the common tasks with LLMs is to use them to classify text. Imagine you are monitoring a web-forum, and want to flag a submission if it has obscene text. You can submit that text to an LLM, and ask it to return True/False whether it contains the offending text.
+
+Often with rare cases though, we want to know not only the classification, but *how confident* the model is in that classification. This blog post shows how to look at the models token log-probabilities, and using conformal inference can set the threshold using the Jigsaw toxic comment competition data. 
+
+In this example, using gpt-4o-mini, if the probability of the false token is less than `1 - 0.000000001`, you should classify the text as obscene to maintain 95% recall of obscene text.
+
+https://crimede-coder.com/blogposts/2026/ConfClassification
+
+If you want help with using LLMs in applications, and want someone with actual expertise and understanding of the models, you should get in touch.
+
+
+----------------------------------
+
+Personal Audio Diarization structured outputs (Wed)
+
+When I was a professor at UT-Dallas, I sat on a dissertation that developed a human in the loop system to identify the number of speakers in an audio clip -- what is called audio *diarization*. This traditionally was a *very* difficult problem, it was not so hard to figure this out when you know the number of speakers up front, but when you had an indeterminate number it was very difficult.
+
+This has basically been solved with using the different LLM providers that can take audio input, and this is one of the examples I show in Chapter 3, using Google's models (although you could do it as well via OpenAI).
+
+Even if you are not a coder, the book is a good resource to understand what the models are currently capable of with realistic examples. Can see  https://crimede-coder.com/cdcstore/product/large-language-models-for-mortals/ to purchase a paperback copy.
+
+----------------------------------
+
+Personal (Sun)
+
+While I have a section in the book devoted to RAG, traditional RAG systems (embedding chunks of text into a vector database) are somewhat falling out of style vs keyword searching.
+
+You can adapt RAG systems though in a myriad of ways. I have an example at the end of the RAG chapter with the base Stata documentation -- it has over 3000 pages. But you can have an LLM extract out the relevant pages from the table of contents, and then just retrieve those relevant pages. So a RAG example without embedding the entire document.
+
+Here is a screenshot of epub (can read on personal machine using free epub readers like Calibre). Can purchase epub here, https://crimede-coder.com/cdcstore/product/large-language-models-for-mortals-a-practical-guide-for-analysts-with-python/, and a paperback version is available as well (worldwide print on demand).
+
+------------------------------------
+
+Personal (Sat)
+
+Claude Code does not have an image model, so I show creating an MCP with Gemini image models in the book. Can see the MCP code at https://github.com/apwheele/LLMsForAnalysts/tree/main/Ch07
+
+While this is a cheeky example, it is useful to generate mock up image data for applications, create diagrams for architecture/slides, write blog posts with images, etc.
+
+----------------------------------
+
+CDC Video analysis (Sun)
+
+One of the unique capabilities among the foundation model providers, Google's Gemini models can evaluate videos. Here is a screenshot from the paperback version of the book showcasing this capability.
+
+The book is a good resource for folks wishing to understand what are the current capabilities of the different models, and the most common patterns that data scientists use (structured extraction, RAG chat with documents, or agent based approaches)
+
+Available either as an epub or paperback, here is the link to the paperback version, https://crimede-coder.com/cdcstore/product/large-language-models-for-mortals/
+
+
+----------------------------------
+
+CDC (Sat)
+
+One of the responses to me writing the book -- why pay for a book when you can just have ChatGPT create a course for you on the fly? This is true, and I recommend it for folks looking to learn new material as well.
+
+But the benefit of the book is you don't know what you don't know. For example:
+
+ - if you want consistent outputs, you should set the temperature to 0
+ - how to prompt engineer structured outputs for consistency (JSON and k-shot examples)
+ - newer reasoning models can be used for intermediate web search results
+ - to get prompt caching, you need to submit your prompt template in a particular order/format
+ - the difference between in-memory vs an on-disk vector database
+
+It is really my compendium of what I think it takes for current data scientists to deploy LLM applications using foundation model APIs. 
+
+So if you are a beginner to the space, you should consider purchasing the book, https://crimede-coder.com/blogposts/2026/LLMsForMortals
+
+
+----------------------------------
+
+Personal AWS JSON (Mon)
+
+In the book, I have a dedicated chapter on structured output generation. I go through using Pydantic schemas with OpenAI, Anthropic, and Google models (which are current best practices), but AWS Bedrock still does not support Pydantic schemas.
+
+But that lack of functionality is OK: here is the code snippet very similar to what I use in production applications -- just parsing the text is very reliable in my experience with the correct prompt engineering.
+
+In practice you should do prototyping of your prompt without Pydantic schemas first (I show a few examples in the book the forced schema will hallucinate outputs).  
+
+If you want practical advice you can use to build production applications, pick up a copy of the book at https://crimede-coder.com/blogposts/2026/LLMsForMortals
+
+----------------------------------
+
+
+CDC Struct workflows (Mon)
+
+Structured outputs are commonly used for data extraction tasks (e.g. extract out the type of gun from this narrative, extract out the name from this PDF, etc.) Another way to think about structured outputs though are using LLMs in other embedded decision processes -- you can have the LLM fill in the inputs for the downstream application.
+
+One example I show in the book is creating a standardized report based on an input table of crime numbers. I define different components of the report, here a trends analysis, a seasonal analysis, and an outlier analysis (which is a list, so can have multiple outlier discussions).
+
+If you are interested in building an agent based system, either with help writing the code, or training to get your analysts up to speed on the latest LLM frameworks, get in touch, https://crimede-coder.com/
+
+----------------------------------
+
+Personal Reliability Post (Tue)
+
+The LLM book is compiled using Quarto, so the code snippets are run every time I make an update to the book. I have over 250 code snippets in the book, many of which are stochastic (reasoning models you cannot set the temperature to zero). I compiled the book enough times to identify errors, which examples for each of the foundation model providers. These include:
+
+ - One degradation of OpenAI reasoning model using web-search (just on a single day though)
+ - Anthropic sometimes returns the trailing character when using stop sequence tokens
+ - Google's Grounding maps is pretty unreliable -- it returns results, the results will just say "cannot look up google maps" info though
+ - One example with AWS calling DeepSeek would randomly not return a response
+
+https://andrewpwheeler.com/2026/02/27/some-notes-on-unreliability-of-llm-apis/
+
+These are useful to know for production systems, especially the example with OpenAI and Google -- it would be a silent error. It will return text, the text response though will just be junk.
+
+It is important, especially if building for critical systems, that people building tools proactively monitor the service and identify degradations in the output. Not just errors poor textual responses from the models.
+
+
+---------------------------
+
+CDC & Personal
+
+Not many people are familiar with epub, so I recorded a short video on how you can use free software to read the epub version of Large Language Models for Mortals (and this works for my first book, Data Science for Crime Analysis with Python as well)
+
+https://www.youtube.com/watch?v=OdJupmR385I 
+
+One of the main benefits of the epub is you can copy-paste the code snippets.
+
+Use promo code LLMDEVS to get 50% off of the epub. I will be recording several more videos showcasing using LLM coding tools.
+
+---------------------------------
+
+CDC Antigravity Flask App (Mon)
+
+-------------------------------
+
+I will be giving the Keynote talk at the North Carolina School of Science and Math Hackathon today. It will likely be difficult to parse the slides without the talk to accompany it, but you can maybe glean some Math Hacks for Life from the slides.
+
+
+
+
+-----------------------------------
+
+Per OCR docling (Wed)
+
+
+--------------------------------
+
+CDC LEAP 
+
+LLMDEVS - $25 off epub
+TWOFOR1 - $30 off purchasing two books
+LEAPLLM - $20 off LLM paperback (plus I will send you the epub)
+
+Updated picture
+
+LEAPLLM promo code for $20 off
+LinkedIn
+CDC posts
+
+------------------------------------
+
+Per RAG markdown (Thu)
+
+------------------------------
+
+New decision out of New York on AI and privilege, and this review article by Clark Hill is a good overview. The U.S. District Court for the Southern District of New York held that AI-generated content was not protected by attorney-client privilege when created using a public tool.
+
+https://www.clarkhill.com/news-events/news/pause-before-you-prompt-ny-court-finds-ai-generated-content-is-not-privileged/
+
+In short it is not privileged because Claude can see the outputs (via the GUI tool), and it was not work product because it was not explicitly requested by an attorney.
+
+If you are pasting sensitive information into third-party AI systems, do not assume it is confidential. One solution is building internal, auditable tools with clear data controls — which is exactly the type of work I focus on at Crime De-Coder
+
+---------------
+
+Pangram Personal
+
+https://www.pangram.com/history/5e54ab74-c2d5-4799-b3e4-28e0caa16a69?ucc=bdHBB51UVT5
+
+Many people are turned off by AI writing, which I totally get, there is plenty of AI slop. My book, LLMs for Mortals, I wrote the initial draft using Claude Code (Sonnet 4.5) -- I had it review my prior writing (blog posts and python book), then fed it a detailed outline and generate one chapter at a time.
+
+I did it as a test (had the idea for the book for quite a while), and was very impressed with the first pass (took less than an hour!). I likely would not have written the book without Claude's help.
+
+I still did a ton of copy-editing, likely around 50% of the book is the original Claude output. But this took writing from my prior python book (1 year) to two months for this book.
+
+I have been feeding snippets into Pangram, one of the better AI detectors. I have not found a single example in the book that Pangram flags as AI generated. (Link to Pangram in the comments.)
+
+You can definitely use these tools, still keep your voice, and save a ton of time writing. If me admitting that I used genAI to help me write is turning you off, I suggest previewing the first 60+ pages here, https://crimede-coder.com/blogposts/2026/LLMsForMortals. 
+
+# put in comment:
+
+Here is the link to pangram chat, https://www.pangram.com/history/5e54ab74-c2d5-4799-b3e4-28e0caa16a69?ucc=bdHBB51UVT5
+
+------------------------------------
+
+------------------------------------
+
+Personal Local Models NER GLiNER (Thu)
+
+The book largely focuses on using foundation model APIs, but I have a few examples of using local models. One of them is using the GLiNER library for named-entity-recognition. This is useful if you need to strip out PII before sending to a foundation model, or just as a local option for information extraction out of text in general. (Which runs reasonably fast on a CPU.)
+
+This is one of the examples that you can check out in my preview of the first 60+ pages at https://crimede-coder.com/blogposts/2026/LLMsForMortals
+
+-----------------------------------
+
+CDC Sat Python book
+
+TWOFOR1 ($30 off)
+
+So the new book, Large Language Models for Mortals -- you need to know python to be able to fully understand the materials. Fortunately I have a prior book, Data Science for Crime Analysis with Python, to help with that.
+
+Even if not a crime analyst, the lessons are general enough to help any software engineer or student learn python and develop real world applications.
+
+Can purchase both books at https://crimede-coder.com/store, and for a limited time can use promo code TWOFOR1 to get $30 off when purchasing multiple books (can be any two books in my store).
+
+
+-----------------------------------
+
+Personal Sun Python book coupon
+
+So the new book, Large Language Models for Mortals -- you need to know python to be able to fully understand the materials. Fortunately I have a prior book, Data Science for Crime Analysis with Python, to help with that.
+
+Even if not a crime analyst, the lessons are general enough to help any software engineer or student learn python and develop real world applications.
+
+Can purchase both books at https://crimede-coder.com/store, and for a limited time can use promo code TWOFOR1 to get $30 off when purchasing multiple books (can be any two books in my store).
+
+
+-----------------------------------
+
+Personal (next Saturday)
+
+goals for book sales, appreciate getting the word out
+
+My first book, Data Science for Crime Analysis with Python, has been available for close to two years now. It has accumulated over 150 sales. The addressable market is fairly small (although it is a good general introduction to python for any "analyst") -- maybe around 1000 at max.
+
+For that book my goal was 100 sales -- the new book though, LLMs for Mortals, has a much broader market. It is really relevant for any data scientist/software dev/social scientist, which will easily be in the six digits (if not seven). And so my goal to call this book a success is over 1000 sales.
+
+So far I am at ?60? sales 4 weeks in. Part of getting to my goal of 1000 sales is breaking out of my current bubble. Appreciate the folks who follow me sharing the book with others in their network if you think it is relevant.
+
+ - If you are a professor and have current students looking at the private sector data science job market
+ - Or if you know someone who teaches a class where the book would be relevant
+ - Know of tech talk webinars/podcasts in your network, I am happy to go give a remote talk
+ - Know of groups/classes in the triangle area? Happy to have an in-person talk/workshop on materials in the book
+
+I wrote this book as my intro to LLM foundation models, as it is the resource I wish I had several years ago. Appreciate any help I can get to spread the word, can share the link at https://crimede-coder.com/blogposts/2026/LLMsForMortals for a preview of the book and overview of its contents.
+
+--------------
+
+Personal (Sun)
+
+My LLM for Mortals book has the first 60+ pages available to review. Even for those non-technical, the introduction has my overview on the current state of AI (which is a silly term, but the current tools are no doubt useful).
+
+Chapter 1/2 and partially chapter 3 will give you a flavor of the technical content of the book as well.
+
+Purchase a copy (paperback or epub), at https://crimede-coder.com/store
+
+-----------------
+
+https://www.linkedin.com/posts/flock-ceo-garrett-langley-talks-crime-prevention-ugcPost-7438192315766251520-pr0R?utm_source=share&utm_medium=member_desktop&rcm=ACoAAAox8IkBbf2Iqpg0sDyNtFHv0Z1JRHUm0QE
+
+I generally try to be positive in my posts, but this clip by Flock CEO Garrett Langley saying that Flock's tools *mainly* operate via deterrence (making offenders think twice before committing a crime) and subsequently reduce incarceration is beyond the pale.
+
+To start, Flock ALPRs no doubt help solve crimes. They do this via hot listing stolen vehicles, so officers get in the moment alerts where a stolen is located at. They also can help monitor movements of individuals to/from crime scenes when linked with a vehicle. Cameras, by their nature, cannot physically prevent a crime.
+
+The fact that most offenders are impulsive is definitely true -- it is a long standing criminological finding. (There is a whole branch of criminology that this fact is a major keystone -- self-control theory.) This means many criminals are not deterred, even if a camera is staring them in the face! They tend to not be forward thinking.
+
+The criminology literature on the efficacy of cameras is actually quite mixed (and difficult to identify the difference between specific incapacitation vs deterrence). One of the findings Eric Piza continually points to is the cameras often are not effective on their own -- the idea you can just put up a bunch of cameras and folks magically stop committing crime is not true.
+
+I get it is a nice message for the anti-policing crowd -- and I agree prisons are expensive. You have a small number of people that continually commit crimes over and over again (no point in arguing whether these folks are evil or not, they are certainly impulsive though). Helping catch those people is the main draw of Flock. 

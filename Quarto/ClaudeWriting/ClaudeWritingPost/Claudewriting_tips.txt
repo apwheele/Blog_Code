@@ -1,0 +1,112 @@
+ ▐▛███▜▌   Claude Code v2.1.79
+▝▜█████▛▘  Sonnet 4.5 · API Usage Billing
+  ▘▘ ▝▝    /…/Dropbox/Dropbox/PublicCode_Git/Blog_Code/Quarto/ClaudeWriting
+
+❯ review prior PersonalTechBlog posts, I am going to have you help write a new  
+post                                                                            
+  ⎿  Loaded PersonalTechBlog/CLAUDE.md
+
+  Searched for 1 pattern, read 4 files (ctrl+o to expand)
+
+● Let me read a few more examples to get a fuller picture of the style range.
+
+  Read 3 files (ctrl+o to expand)
+
+● I've reviewed 7 of your PersonalTechBlog posts. Here's what I see in your
+  style:
+
+  Voice
+  - First person, conversational ("I found", "In my experience")
+  - Opinionated but honest about limitations ("I am a terrible person to ask
+  about dev builds")
+  - Technical but not dry - shares the messy reality
+  - Links generously to others' work and your own prior posts
+
+  Structure
+  - HTML comment at top with title hint (<!--- Title here -->)
+  - Opens with motivation: a real problem, someone's question, or context
+  - Code examples with output/images inline
+  - Practical takeaways, not over-concluded endings
+  - Sometimes mixes topics (book review + Docker tips in one post)
+
+  Formatting
+  - Indented code blocks (4 spaces), not fenced
+  - Markdown images with GitHub raw URLs or external hosts
+  - Short paragraphs, lists when natural
+  - Headers used sparingly
+
+  Tone
+  - No emojis, no marketing fluff
+  - Matter-of-fact, direct
+  - Admits uncertainty ("I am not as familiar with this area")
+  - Dry humor where natural
+
+  Typical elements
+  - GitHub repo links for full code
+  - References to your book and crimede-coder.com
+  - Crime analysis connections when relevant
+  - Caveats and edge cases
+
+  Ready when you are - what topic do you want to write about?
+
+✻ Worked for 56s
+
+❯ In the ClaudeWritingPost folder, review the outline.txt, then create a new md 
+ file, called ClaudeWritingExample.md, filling in the sections based on the     
+outline                                                                         
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Write(ClaudeWritingPost/ClaudeWritingExample.md)
+  ⎿  Wrote 49 lines to ClaudeWritingPost/ClaudeWritingExample.md
+      1 <!---
+      2 Using Claude Code to help me write
+      3 -->
+      4 
+      5 This is not a post about Claude Code specifically. Copilot, Googl
+        e's tools, or OpenAI alternatives could work similarly. The point
+         is about how I use LLM tools to help with writing, and some note
+        s on what works well versus poorly.
+      6 
+      7 My recent book, [*LLMs for Mortals*](https://crimede-coder.com/bl
+        ogposts/2026/LLMsForMortals), I used Sonnet 4.1 to write around 5
+        0% of the content. The total writing time compared to my prior bo
+        ok dropped from about a year to two months. That is a substantial
+         productivity gain.
+      8 
+      9 A reasonable question: does it read like it was written by a robo
+        t? I ran it through a few AI detection tools, and here is an exam
+        ple result from Pangram:
+     … +39 lines (ctrl+o to expand)
+
+● Created ClaudeWritingPost/ClaudeWritingExample.md. The post covers all
+  sections from your outline:
+
+  - Intro: Frames it as tool-agnostic, mentions the LLMs for Mortals book with
+  the productivity stats, includes the Pangram image showing it doesn't flag as
+  AI-written
+  - Copy Editing: Links to the Crime De-Coder blog post example and the Claude
+  conversation, embeds the ClaudeEdits image
+  - Writing New Content: Covers the plain text markdown workflow, reviewing
+  prior writing first, writing in small chunks, notes that short-form still
+  tends toward marketing but technical writing works better
+  - Citations: Warns they don't work without verification, suggests the bibtex
+  workaround, mentions the potential Semantic Scholar MCP
+
+  Kept it in your voice -- first person, direct, no fluff, admits limitations
+  honestly. Let me know if you want any sections expanded or adjusted.
+
+✻ Cogitated for 41s
+
+❯ /export Claudewriting_tips.txt                                                
+  ⎿  Conversation exported to: /mnt/d/Dropbox/Dropbox/PublicCode_Git/Blog_Code/Q
+     uarto/ClaudeWriting/Claudewriting_tips.txt
+
+❯ /cost                                                                         
+  ⎿  Total cost:            $0.4350
+     Total duration (API):  1m 13s
+     Total duration (wall): 8m 37s
+     Total code changes:    50 lines added, 0 lines removed
+     Usage by model:
+          claude-opus-4-5:  5.4k input, 3.8k output, 164.5k cache read, 37.0k 
+     cache write ($0.4350)

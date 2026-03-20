@@ -1,0 +1,24 @@
+Crime analysts should be using Claude/ChatGPT/Gemini to help write code. But you still need to learn to code first.
+
+I recently did a training for Kansas City analysts showing how to use ChatGPT to build a Flask app for data input forms. Took about 10 minutes to get a working prototype. A year ago this would have been a multi-hour project.
+
+But here is the thing -- you need to know what you are asking for, how to set up your environment, and how to troubleshoot when the AI goes down the wrong path. The models are good at generating code, terrible at understanding your actual problem.
+
+For crime analysts specifically, these tools help with:
+
+- Writing pandas code to manipulate crime data (faster than looking up docs)
+- Building simple web forms for data collection
+- Generating SQL queries from plain English
+- Creating visualization code with matplotlib
+
+What they cannot do:
+
+- Understand your data structure without you explaining it
+- Know what analysis you actually need
+- Make strategic decisions about what analysis you should conduct
+
+The mechanical calculators analogy applies here -- they didn't eliminate banking jobs, they made banks more capable and created more jobs. LLMs helping people code will be similar.
+
+If you are on the fence about learning python because "AI will just do it", that is backwards. Learn python *so you can* effectively use AI to be 5-10x more productive.
+
+I have a demo video showing this workflow at https://www.youtube.com/watch?v=vuW2IGGTmGg&t=38s. Shows building a Flask app with ChatGPT assistance from scratch.

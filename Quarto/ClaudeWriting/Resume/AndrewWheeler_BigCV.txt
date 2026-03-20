@@ -1,0 +1,314 @@
+Curriculum Vitae  
+Andrew P. Wheeler
+Principal Data Scientist  
+
+Contact Information
+apwheele@gmail.com
+Personal Website
+https://andrewpwheeler.com/ 
+
+
+Education
+
+2015	University at Albany, SUNY
+	Ph.D., Criminal Justice	Albany, NY
+
+		Advisor: Rob Worden, 
+	Dissertation: What we can learn from small units of analysis. 
+
+2010		M.A. in Criminal Justice
+	
+2008	Bloomsburg University of Pennsylvania
+	B.A. in Criminal Justice, Cum Laude
+	Minor in Sociology and Statistics      
+	Bloomsburg, PA
+Employment in Academic and Research Roles
+
+2023 - Current	Founder, CRIME De-Coder LLC (Consulting Firm)
+
+2019 - Current	Currently Director of Data Science at Gainwell Technologies (formerly HMS)
+
+2020 – Current 	Affiliated Faculty Member, Georgia State University, Department of Criminal Justice & Criminology
+
+2016 - 2019	Assistant Professor at the University of Texas at Dallas
+
+2009 - 2016	Research Analyst for the Finn Institute for Public Safety
+
+Current Research Agenda
+
+	Currently I am an end to end data scientist in the healthcare industry. My work at Gainwell focuses on predictive models related to identifying problematic health insurance claims, optimizing auditing strategies, and predictive models for population health management.
+	
+My prior research interests in criminal justice focused on quantitative applications in policing, with an emphasis on crime reduction. This includes evaluations to see if crime reduction initiatives work, advancing methods to evaluate crime preventions, predictive policing, time series monitoring of crime and police behavior, and optimal and fair allocation of policing resources. If you are interested in consulting services related to similar applications, see CRIME De-Coder LLC for services that I provide.
+Peer Reviewed Articles, Working Papers, Technical Reports, and Conference Presentations
+
+Peer Reviewed Articles & Books 
+
+2025	Wheeler, Andrew P., and Alex Piquero. Using victimization reporting rates to estimate the dark figure of crime: A case study of domestic violence. Crime & Delinquency Online First. 
+
+2025	Jacques, Scott & Andrew P. Wheeler. A plea for open access to qualitative criminology: With a python script for anonymizing data and illustrative analysis of error rates. The Journal of Qualitative Criminal Justice and Criminology 15(2): 634d1d80
+
+2024	Andrew P. Wheeler. Data Science for Crime Analysis with Python. CRIME De-Coder.
+
+2024	D. Kim Rossmo, & Andrew P. Wheeler. The journey-to-crime buffer zone: Measurement issues and methodological challenges. Journal of Criminal Justice 95: 102272.
+
+2023	Jung, Yeondae, & Andrew P. Wheeler. The effect of public surveillance cameras on crime clearance rates. Journal of Experimental Criminology 19(1): 143-164.
+
+2022	Circo, Giovanni M., & Andrew P. Wheeler. An open source replication of a winning recidivism prediction model. International Journal of Offender Therapy and Comparative Criminology. Online First.
+
+2022	Drake, Gregory, Andrew P. Wheeler, Dae-Young Kim, Scott Phillips, & Kathryn Mendolera. The Impact of COVID-19 on the Spatial Distribution of Shooting Violence in Buffalo, NY. Journal of Experimental Criminology. Online First.
+
+2021	Wheeler, Andrew P., Jordan R. Riddell, & Cory P. Haberman. Breaking the chain: How arrests reduce the probability of near repeat crimes. Criminal Justice Review 46(2): 236-258.
+
+2021	Circo, Giovanni M., & Andrew P. Wheeler. Trauma center drive time distances and fatal outcomes among gun shot wound victims. Applied Spatial Analysis and Policy 14(2): 379-393.
+
+2021	Wheeler, Andrew P. and Wouter Steenbeek. Mapping the risk terrain for crime using machine learning. Journal of Quantitative Criminology 37(2): 445-480.
+
+2021	Wheeler, Andrew P., & Sydney Reuter. Redrawing hot spots of crime in Dallas, Texas. Police Quarterly 24(2): 159-184.
+
+2021	Wheeler, Andrew P., Christopher R. Herrmann, and Richard L. Block. Micro-place homicide patterns in Chicago. Springer.
+
+2020	Wheeler, Andrew P., Jason R. Silver, Robert E. Worden and Sarah J. McLean. Mapping attitudes towards the police at micro places. Journal of Quantitative Criminology 36(4): 877-906.
+
+2020	Wheeler, Andrew P. Allocating police resources while limiting racial inequality. Justice Quarterly 37(5): 842-868.
+
+	
+2020	Wheeler, Andrew P., Manne Gerell, & Youngmin Yoo. Testing the spatial accuracy of address based geocoding for gun shot locations. The Professional Geographer 72(3): 398-410.
+
+2020	Zakrzewski Jr., William J., Andrew P. Wheeler, and Andrew J. Thompson. Cannabis in the capital: Exploring the spatial association between medical marijuana dispensaries and crime. Journal of Crime and Justice 43(1): 1-15.
+
+2020	Yim, Ha-Neul, Jordan R. Riddell, & Andrew P. Wheeler. Is the recent increase in national homicide abnormal? Testing the application of fan charts in monitoring national homicide trends over time. Journal of Criminal Justice 66 (January-February): 101656.
+
+2020	Piza, Eric P., Andrew P. Wheeler, Shun Q. Feng, and Nathan T. Connealy. The crime control effects of a police sub-station within a business-improvement district: A quasi-experimental evaluation. Criminology & Public Policy 19(2): 653-684.
+
+2019	Yoo, Youngmin and Andrew P. Wheeler. Using Risk Terrain Modeling to predict homeless related crime in Los Angeles, California. Applied Geography 109(August):102039.
+
+2019	Wheeler, Andrew P., Sarah J. McLean, Kelly J. Becker, and Robert E. Worden. Choosing representatives to deliver the message in a group violence intervention. Justice Evaluation Journal 2(2): 93-117.
+
+2019	Worrall, John L. and Andrew P. Wheeler. Evaluating community prosecution code enforcement in Dallas, Texas. Justice Quarterly 36(5): 870-899.
+
+2019	Wheeler, Andrew P. Creating optimal patrol areas using the P-median model. Policing: An International Journal 42(3): 318-333.
+
+2019	Wheeler, Andrew P. Quantifying the local and spatial effect of alcohol outlets on crime. Crime & Delinquency 65(6): 845-871.
+
+2019	Kim, Dae-Young, Scott W. Phillips, and Andrew P. Wheeler. Using “Symbolic” SWAT raids as a crime reduction strategy: Are their effects “Instrumental” in nature? Criminal Justice Policy Review 30(2): 176-200.
+
+2019	Wheeler, Andrew P., Robert E. Worden, and Jason R. Silver. The predictive accuracy of the Violent Offender Identification Directive (VOID) tool. Criminal Justice and Behavior 46(5): 770-788.
+
+2018	Wheeler, Andrew P. The effect of 311 calls for service on crime in Washington D.C. at micro places. Crime & Delinquency 64(14): 1882-1903.
+
+2018	Wheeler, Andrew P., and Jerry H. Ratcliffe. A simple weighted displacement difference test to evaluate place based crime interventions. Crime Science 7:11.
+
+2018	Wheeler, Andrew P., Wouter Steenbeek, and Martin A. Andresen. Testing for similarity in area-based spatial patterns: Alternative methods to Andresen’s spatial point pattern test. Transactions in GIS 22(3): 760-774.
+
+2018	Worrall, John L., Stephen A. Bishopp, Scott C. Zinser, Andrew P. Wheeler, and Scott W. Phillips. Exploring bias in police shooting decisions with real shoot/don’t shoot cases. Crime & Delinquency 64(9): 1171-1192.
+
+2018	Wheeler, Andrew P., Dae-Young Kim, and Scott W. Phillips. The effect of housing demolitions on crime in Buffalo, New York. Journal of Research in Crime & Delinquency 55(3): 390-424.
+
+2018	Wheeler, Andrew P. and Scott W. Phillips. A quasi-experimental evaluation of using roadblocks and automatic license plate readers to reduce crime at micro places in Buffalo, NY. Security Journal 31(1): 190-207.
+
+2018	Wheeler, Andrew P., and Tomislav V. Kovandzic. Monitoring volatile homicide trends across U.S. cities. Homicide Studies 22(2): 119-144.
+
+2017	Wheeler, Andrew P., Scott W. Phillips, John L. Worrall, and Stephen A. Bishopp. What factors influence an officer’s decision to shoot? The promise and limitations of using public data. Justice Research and Policy 18(1): 48-76.
+
+2016	Phillips, Scott W., Andrew P. Wheeler, and Dae-Young Kim. The effect of police paramilitary unit raids on crime at micro-places in Buffalo, New York. International Journal of Police Science & Management 18(3): 206-219.
+
+2016	Wheeler, Andrew P. Tables and graphs for monitoring temporal crime trends: Translating theory into practical crime analysis advice. International Journal of Police Science & Management 18(3): 159-172.
+
+2016	Wheeler, Andrew P. Testing serial crime events for randomness in day-of-week patterns with small samples. Journal of Investigative Psychology and Offender Profiling 13(2): 148-165.
+
+2016	Wheeler, Andrew P., Robert E. Worden, and Sarah J. McLean. Replicating group based trajectory models at high-crime micro-places in Albany, NY. Journal of Quantitative Criminology 32(4): 589-612.
+
+2015	Wheeler, Andrew P. Visualization techniques for journey to crime flow data. Cartography and Geographic Information Science 42(2): 149-161. (Special Issue on Crime Mapping)
+
+2012	Wheeler, Andrew P. The moving home effect: A quasi experiment assessing effect of home location on the offence location. Journal of Quantitative Criminology 28(4):587-606.
+
+2012	Worden, Robert E., Sarah J. McLean, and Andrew P. Wheeler. Testing for racial profiling with the veil of darkness method. Police Quarterly 15(1): 92-111.
+
+2011	Kurlychek, Megan C., Andrew P. Wheeler, Leigh A. Tinik and Cynthia A. Kempinen. How long after? A natural experiment assessing the impact of the length of aftercare service delivery on recidivism. Crime & Delinquency 57(5): 778-800.
+
+
+Articles Currently Under Review and Working Papers
+
+2022	Wheeler, Andrew P. Analysis of LED street light conversions on firearm crimes in Dallas, Texas. Available at https://osf.io/preprints/socarxiv/dr7us/.
+
+2018	Wheeler, Andrew P., and Cory P. Haberman. Modeling the spatial patterns of intra-day crime trends. Available at https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3136030. 
+
+2017	Worden, Robert E., Wheeler, Andrew P., and McLean, Sarah J.. Smart Stops: Toward More Strategic Proactive Policing.
+
+2015	Wheeler, Andrew P., Sarah J. McLean, and Robert E. Worden. Making stops smart: Predicting arrest rates from discretionary police stops at micro places in Albany, NY.
+ 
+2015	Wheeler, Andrew P. What we can learn from small units of analysis. Available at http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2626564. 
+
+2013	Wheeler, Andrew P. A critique of slopegraphs. Available at http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2410875.
+
+Technical Reports, Book Chapters, and Non-Peer Review Articles
+
+2024	Piquero, Alexis and Andrew P. Wheeler. Towards a Better Estimate of Domestic Violence in America. Council on Criminal Justice.
+
+2024	Piquero, Alexis and Andrew P. Wheeler. Disaggregating fatal and non-fatal shootings in Boston, 2015-2023. International Journal of Police Science 2(1). Rapid Communication.
+
+2023	Circo, Giovanni and Andrew P. Wheeler. Using every door direct mail web push surveys and multi-level modelling with post stratification to estimate perceptions of police at small geographies. Winning solution in the non-probability sample section to the NIJ Measuring Community Perceptions Challenge.
+
+2021	Circo, Giovanni and Andrew P. Wheeler. National Institute of Justice Recidivism Forecasting Challenge Team “MCHawks” Performance Analysis.
+
+2019	Wheeler, Andrew P. Bigger fonts please! Font size recommendations for slides and posters. The Criminologist 44(5): 8-9. (Longer version with more detail/citations available here.)
+
+2018	Worden, Robert E., Sarah J. McLean, Andrew P. Wheeler, Danielle L. Reynolds, Caitlin Dole, and Hannah Cochran. Smart Stops: An Inquiry into Proactive Policing. Summary Report to the National Institute of Justice. Award No. 2013-MU-CX-0012.
+
+2018	Worrall, John L., Andrew P. Wheeler, and Justine Medrano. Community prosecution code enforcement in Dallas, Texas: Effects on serious crime. In The Evolving Role of the Public Prosecutor: Challenges and Innovations. Eds. Colvin, Victoria and Philip Stenning. Routledge. New York.
+
+2017	Wheeler, Andrew P. Geospatial analytics. In SPSS® Statistics for Data Analysis and Visualization. Eds. McCormick, Keith and Jesus Salcedo, with contributions by Jon Peck and Andrew Wheeler. Wiley. Indianapolis, IN.
+
+2012	Wheeler, Andrew P. Arrests and Arraignments Involving Strangulation Offenses Nov. 11, 2010 – June 30, 2012. New York State Division of Criminal Justice Services. Albany, NY. 
+
+2012	Wheeler, Andrew P. Hate Crime in New York State 2011 Annual Report. New York State Division of Criminal Justice Services. Albany, NY. 
+
+2012	Wheeler, Andrew P. Domestic Homicide in New York State, 2011. New York State Division of Criminal Justice Services. Albany, NY. 
+
+2010	Worden Robert E., Sarah J. McLean, and Andrew P. Wheeler. Stops by the Syracuse Police. Report to the Syracuse Police Department. John F. Finn Institute. Albany, NY.
+
+Conference Presentations & Workshops (Invited and/or Peer Reviewed)
+
+2021	Wheeler, Andrew P. & Giovanni Circo. Panel Discussion on Addressing Racial Bias. NIJ's Recidivism Forecast Challenge Symposium. December 1st and 2nd.  
+
+2019	Wheeler, Andrew P. & Jerry H. Ratcliffe. Simple statistics for evaluating interventions to reduce crime. Presented at the International Association of Crime Analysts Conference, Washington, D.C. Also presented at the New York State DCJS GIVE Symposium, Albany, NY. https://www.dropbox.com/s/jepuy9gmzoqctv0/SimpleStats_IACA19_Wheeler.zip?dl=0.  
+
+2018	Wheeler, Andrew P., Wouter Steenbeek, and Martin A. Andresen. Testing for similarity in area-based spatial patterns: Alternative methods to Andresen’s spatial point pattern test. Presented at the ESRI User Conference as part of special issue for Transactions in GIS. San Diego, CA.
+
+2017	Wheeler, Andrew P. Monitoring temporal crime trends for outliers: A workshop using Excel. Workshop presented at the International Association of Crime Analysts conference, New Orleans, LA. September 12th. Materials available at https://www.dropbox.com/s/ngq64tu7tv3hzdq/Wheeler_MonitorTemp_IACA_FinalFiles.zip?dl=0. 
+
+2015
+	Wheeler, Andrew P., Sarah J. McLean, Robert E. Worden. An Exploratory Network Analysis of Hot People and Places. National Institute of Justice Research Track. Presented at the International Association of Crime Analysts conference, Denver, CO. White paper available at https://www.dropbox.com/s/oiso3j0ozmm9n2a/AndyW_Overlap_HotPeoplePlaces.pdf?dl=0. 
+
+2014		Wheeler, Andrew P., Sarah J. McLean, and Robert E. Worden. Making Field Stops Smart. National Institute of Justice Research Track. Presented at the International Association of Crime Analysts conference, Bellevue, WA. (Paper available upon request.)
+
+Conference Presentations and Posters (Non-Peer Review)
+
+2020	Wheeler, Andrew P. Flipping a Criminal Justice PhD to an Alt-Academic Data Science Career. Roundtable at the Annual Meeting of the Criminology Consortium. Link to presentation. 
+
+2020	Wheeler, Andrew P., and Wouter Steenbeek. Mapping the Risk Terrain for Crime Using Machine Learning. Presented at the Academy of Criminal Justice Sciences conference, San Antonio, TX. [Cancelled Due to Covid]
+
+2019	Wheeler, Andrew P. Allocating police resources while limiting racial inequality. Presented at the American Society of Evidence Based Policing Conference. Cincinnati, OH. 
+
+2018	Wheeler, Andrew P. Allocating police resources while limiting racial inequality. Presented at the American Society of Criminology Conference, Atlanta, GA. 
+
+2018	Wheeler, Andrew P., and Richard L. Block. Spatial inequality in distribution of homicides in Chicago. Presented at the Homicide Research Working Group meeting, Clearwater Beach, FL. 
+
+2018	Wheeler, Andrew P., and Cory P. Haberman. Modeling the spatial patterns of intra-day crime trends. Presented at the Environmental Criminology and Crime Analysis conference, Elche, Spain.
+
+2018	Wheeler, Andrew P., Robert E. Worden, and Jason R. Silver. The accuracy of the violent identification directive (VOID) tool to predict future gun violence. Presented at the Academy of Criminal Justice Sciences conference, New Orleans, LA.  
+
+2018	Zakrzewski Jr, William J., Andrew P. Wheeler, and Andrew Thompson. Marijuana dispensaries in Washington, D.C. Presented at the Academy of Criminal Justice Sciences conference, New Orleans, LA.  
+
+2017	Wheeler, Andrew P. Crime Data Visualization for the Future. Presented at the American Society of Criminology conference, Philadelphia, PA. Paper available at https://www.dropbox.com/s/hphfswijruwjz8q/DataViz_Future_AndyWheeler.pdf?dl=0.  
+
+2017	Worrall, John L., Stephen A. Bishopp, Andrew P. Wheeler, Scott C. Zinser, and Scott W. Phillips. The missing link for detecting evidence of implicit bias in police shooting decisions. Presented at the American Society of Criminology conference, Philadelphia, PA. 
+
+2017	Wheeler, Andrew P., Jason R. Silver, Sarah J. McLean, and Robert E. Worden. Mapping attitudes towards the police at micro places. Poster presented at the American Society of Criminology conference, Philadelphia, PA. Poster available at https://goo.gl/xvg9Zx. 
+
+2017	Wheeler, Andrew P., Sarah J. McLean, Kelly J. Becker, and Robert E. Worden. Choosing representatives to deliver the message in a group violence intervention. Presented at the Academy of Criminal Justice Sciences conference, St. Louis, MO. 
+
+2016	Wheeler, Andrew P. Quantifying the local and spatial effects of bars on crime. Presented at the American Society of Criminology conference, New Orleans, LA. 
+
+2016	Worden, Robert E., Sarah J. McLean, and Andrew P. Wheeler. Smart Stops: Toward more strategic proactive policing. Presented at the American Society of Criminology conference, New Orleans, LA.
+
+2016	Wheeler, Andrew P., Robert E. Worden, and Sarah J. McLean. Making stops smart: Predicting arrest rates from discretionary police stops at micro places in Albany, NY. Presented at the Academy of Criminal Justice Sciences conference, Denver, CO.
+
+2016	Worden, Robert E., Sarah J. McLean, Andrew P. Wheeler, and Kelly J. Becker. Gangs, groups, networks, and deterrence: An evaluation of Syracuse Truce. Poster presented at the Academy of Criminal Justice Sciences conference, Denver, CO. Also presented at the American Society of Criminology, New Orleans, LA. 
+
+2015	Wheeler, Andrew P. The Effect of 311 Calls for Service on Crime in D.C. at Micro Places. Presented at the American Society of Criminology conference, Washington, D.C.
+
+2013	Wheeler, Andrew P. Visualization techniques for journey to crime flow data. Presented at the American Society of Criminology conference, Atlanta, GA.
+
+2012	Wheeler, Andrew P. The Measurement of Small Place Correlates of Crime. Presented at the American Society of Criminology conference, Chicago, IL.
+
+2011	Wheeler, Andrew P. The Moving Home Effect: A Quasi Experiment Assessing Effect of Home Location on the Offence Location. Presented at the Academy of Criminal Justice Sciences conference, Toronto, ON Canada. Also presented at the American Society of Criminology conference, Washington, D.C.
+
+2008	Wheeler, Andrew P. Applying the 90’s Crime Drop to the New Century: A model of unemployment and incarceration’s effect on current crime trends. Presented at an Undergraduate Poster Session at the Eastern Sociological Society annual conference. New York, NY.
+
+Service
+
+As part of my service to the field, I have a personal website and blog, http://andrewpwheeler.com/. Most often I blog about technical, computer programming aspects of my work, and provide tutorials to replicate advanced quantitative analysis. I also answer programming, statistics, and GIS questions on several online forums. Mostly on Cross Validated (Statistics), SPSS Nabble Group, GIS Stack Exchange, and Stackoverflow.
+
+Committee Work:	Crime Science Editorial Board, 2025-Current
+
+Journal of Quantitative Criminology Editorial Board, 2021-Current
+
+CrimRxiv Steering Committee, 2020-Current
+
+Graduate Applications Committee (UT Dallas Program in Criminology), 2018-2019
+
+Chair of the Publications Committee (International Association of Crime Analysts), 2018-2019
+	
+Online Sites:	LinkedIn, SSRN Profile, Personal Website and Blog, Publons, ORCiD, SocArXiv, crimrxiv
+
+Ad hoc reviewer:	Journal of Quantitative Criminology | Criminology |
+Policing: An International Journal of Police Strategies & Management |
+Police Quarterly | International Journal of Offender Therapy and Comparative Criminology | Journal of Applied Statistics |
+Applied Geography | Justice Quarterly | Journal of Criminal Justice |
+Journal of Research in Crime & Delinquency |
+European Journal on Criminal Policy and Research | PLoS ONE |
+CrimeSolutions.gov | Transactions in GIS | Criminal Justice and Behavior | Journal of Crime & Justice | Papers in Regional Science | Crime Science | Applied Spatial Analysis and Policy | International Journal of Police Science and Management | Crime & Delinquency | Sage Open | Justice Evaluation Journal | Asian Journal of Criminology | Journal of Policing, Intelligence, and Counter Terrorism | Journal of the Royal Statistical Society: Series A (Statistics in Society) | Global Crime | ISPRS International Journal of Geo-Information | Population Research and Policy Review | International Journal of Environmental Research and Public Health | Journal of Urban Health | Criminology & Public Policy | The Professional Geographer | Police Practice and Research: An International Journal | Journal of Scandinavian Studies in Criminology and Crime Prevention | International Journal of Drug Policy | Criminal Justice Review | Journal of Experimental Criminology | Deviant Behavior | Criminal Justice Policy Review | Social Problems | Victims & Offenders | Applied Sciences | Telematics and Informatics | Annals of GIS | Criminal Justice Studies | Urban Studies | Social Science Research | Journal of Health Economics and Outcomes Research | Remote Sensing | Sensors | Discover Global Society | Scientific Reports | Robotics and Autonomous Systems | Computers, Environment, and Urban Systems | Cities | International Journal of Law, Crime and Justice | Journal of Criminal Justice Education | American Journal of Preventative Medicine | Quality of Life Research | Journal of Open Source Software | Injury Epidemiology
+ 	
+Teaching Experience
+
+	Below are courses I have previously or am currently teaching. I have course materials posted at https://andrewpwheeler.wordpress.com/courses/. 
+
+•	Mapping and Analyzing Crime – (CJS 422) - St. Rose, Undergraduate, Fall 2011 (co-taught with Jim Gilmer)
+•	Geographic Information Systems in Criminal Justice (CRJ 693) - SUNY Albany, Graduate, Spring 2016, Online Spring 2017, Online Spring 2018 (Online Course Materials)
+•	Seminar in Criminology Research and Analysis (CRIM 7301) – University of Texas at Dallas, Graduate, Fall 2016, Fall 2017, Fall 2018 (Online Course Materials)
+•	Communities and Crime (CRIM 4323) – University of Texas at Dallas, Undergraduate, Spring 2017, Spring 2018, Spring 2019
+•	GIS Applications in Criminology (cross listed as CRIM 6332 & GISC 6331) – University of Texas at Dallas, Graduate, Online Summer 2017, In person Spring 2019 (Online Course Materials)
+•	Crime Science (CRIM 7381 Special Topics) – University of Texas at Dallas, Graduate, Spring 2018
+•	Advanced Criminology (CRIM 3302) – University of Texas at Dallas, Undergraduate, Fall 2018
+•	Special Topics: Crime Analysis (CRIM 4396) – University of Texas at Dallas, Undergraduate, Fall 2019 (Online Course Materials)
+
+Selected Media Pieces
+
+•	Interview with NBC5 about work on Patrol Redistricting in Carrollton
+•	Webcast #5: “Predictive Analytics” w/ Andrew Wheeler. Webcast with the Canadian Society of Evidence Based Policing. See it on YouTube or listen to it on SoundCloud. 2018.
+•	Don’t shoot: When Dallas police draw their guns, they usually choose not to fire. Short piece authored by myself at The Conversation. 2018.
+•	Are you more likely to be shot by Dallas police if you’re black or white? It depends, study says. Interview with Naheed Rajwani, Dallas Morning News. 2018.
+•	Study: Recent Spikes in Homicide Rates Don’t Tell Whole Story. Media release by UT News Center by Kim Horner. 2017.
+•	Swat raids are more about symbolism than reducing crime in the long term. Blog post with Dae-Young Kim and Scott Phillips on the London School of Economics United States Politics and Policy site (LSE USAPP). 2016
+Grant Applications and Awards
+
+Awarded
+
+2025	Funding Organization: Arnold Ventures
+Title: A Randomized Experiment to Target High Risk Gun Offenders in Denver, Colorado
+Awarded: $107,000
+
+2017	Funding Organization: University of Texas at Dallas, Center for Teaching and Learning, Instructional Improvement Awards
+Title: Flipping Communities and Crime into a Blended Learning Course
+Awarded: $5,400
+
+Rejected
+
+2018	Funding Organization: National Science Foundation, Early Career Development Program
+Title: Assessing Transparency and Fairness in Predicting Chronic Offenders by the Police
+Primary Investigator: Andrew P. Wheeler
+Requested Funding: $430,000
+
+2018	Funding Organization: National Institute of Justice, W.E.B. Du Bois Fellowship for Research on Race and Crime
+Title: Allocating Police Resources While Limiting Racial Inequality
+Primary Investigator: Andrew P. Wheeler
+Co-Investigator: Nadine M. Connell, Ph.D., The Center for Crime and Justice Studies, The University of Texas at Dallas
+Requested Funding: $51,000
+
+Awards
+
+2013	Walter M. Francis Policing Award
+    School of Criminal Justice
+    University at Albany, SUNY
+
+2008	University Honors Award in Criminal Justice
+    Department of Criminal Justice,
+    Bloomsburg University
+
+Consulting Experience
+
+I have prior experience conducting crime and GIS analysis for police departments for a variety of areas (civil litigation in regards to evaluating racial bias in police behavior, evaluation of crime reduction initiatives, analyzing survey data, training for crime analysts, etc.). I have additionally conducted training for crime analysts. You can see a portfolio of work at https://crimede-coder.com/. 
+
+I commonly work with police agencies on various problems pro bono. If you are interested in having advice regarding crime analysis or program evaluation feel free to contact me.
+

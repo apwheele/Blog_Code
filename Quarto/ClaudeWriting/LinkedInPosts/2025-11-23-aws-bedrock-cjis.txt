@@ -1,0 +1,22 @@
+Crime analysts should not be using the web based GUI LLM tools to input sensitive data. This includes ChatGPT, Claude, etc.
+
+There are alternatives though. Those mostly include *querying* the APIs directly. Those queries are not permanently cached, and most of the TOS they do not use those direct API queries to further train the product.
+
+IMO most of the APIs are sufficient to meet CJIS compliance in spirit. But if you really want to have your use of a generative AI tool covered, you can use Anthropic models AWS Bedrock in Govcloud regions that are designed for sensitive government data.
+
+This is out-of-the-box CJIS compliant. Your crime narratives, case notes, sensitive data never leave the AWS environment. No humans at Anthropic see the data, it is not used for training.
+
+I am in the process of building demo applications using AWS Bedrock for crime analysis use cases. Common applications:
+
+- Extracting structured information from plain text narratives (method of entry, suspect descriptions)
+- Summarizing long police reports
+- Analyzing body worn camera transcripts for key information
+- Monitoring dark web forums for specific threats
+
+The current pricing for Sonnet on AWS Bedrock will cost about 0.003 dollars per narrative. So processing 10,000 burglary narratives would run around $30.
+
+I would not recommend self-hosting models -- the computational burden is so high. Using Sonnet 3.5 via AWS is likely much easier and higher quality than most reasonable self-hosting options.
+
+If you need help building CJIS-compliant AI applications for your agency, feel free to get in touch. This is something I can help with.
+
+https://crimede-coder.com/blogposts/2025/StructuredOutputs

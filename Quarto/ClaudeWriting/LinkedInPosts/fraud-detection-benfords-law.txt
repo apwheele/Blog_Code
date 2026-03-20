@@ -1,0 +1,13 @@
+Most academic work on fraud detection is not practical -- papers with complicated models that no one can implement. This paper by Richard Frank and Ashleigh Burnside is different.
+
+https://www.crimrxiv.com/pub/k82mf4xe/release/1
+
+They took 37 FINTRAC suspicious transaction reports (3,263 transactions across casinos, banks, and businesses) and used two lightweight techniques: Benford's Law and feature engineering for anomaly detection.
+
+Benford's Law is simple -- in naturally occurring data, the first digit should be 1 about 30% of the time, 2 about 18% of the time, etc. For second digits, you expect 0 to appear about 12% of the time. In their casino/banking data, second digit 0 showed up 52.9% of the time. That is a massive red flag.
+
+They also engineered features like "gaming versatility" -- how many distinct casinos a person or business uses. More venues = more likely they are structuring transactions to avoid detection. Bank drafts were another indicator, as they are a common tool in the Vancouver Model of money laundering.
+
+The result? They reduced 671 entities down to 58 high-priority targets using Excel, Python, and Tableau. No enterprise software, no complicated machine learning. Just smart feature engineering and visual triage.
+
+This is how fraud detection should be done -- tools that work in resource-constrained environments and that analysts can actually understand and implement.

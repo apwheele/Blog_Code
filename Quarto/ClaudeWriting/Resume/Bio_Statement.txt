@@ -1,0 +1,34 @@
+
+Andrew P. Wheeler, PhD and founder of CRIME De-Coder, collaborates with police departments across the United States on custom software and data analytics. His work focuses on predictive analytics, operations research, and policy analysis. See his firm and other resources at https://crimede-coder.com/.
+
+------------
+
+Andrew P. Wheeler, PhD, received his doctoral degree in criminal justice from the University at Albany SUNY. His published work focuses on data applications in policing; predictive analytics, operation research, and policy analysis. He has collaborated with police departments across the United States, and currently runs a consulting firm, CRIME De-Coder, in which he helps police departments with custom software and data analytics.
+
+
+
+
+-----------------------------------
+
+Keywords: policing, spatial-analysis, micro-places, crime-reduction, quantitative methods
+
+-----------------------------------
+
+Data Science
+
+Name: Andrew P. Wheeler
+
+Affiliation 
+
+HMS & Georgia State University
+
+Bio: 
+
+Andrew P. Wheeler is a Principal Data Scientist at Gainwell Technologies and an affiliated faculty member at Georgia State University in the Department of Criminal Justice and Criminology. He received his doctoral degree in criminal justice from the University at Albany SUNY. His research focuses on the applications of predictive policing and operations research within the criminal justice field.
+
+--------------------
+
+DS jobs
+
+End to end data scientist, working on predictive models to identify problematic health insurance claims (fraud, waste, and abuse), as well as applications in population health. Current models in productions generate over $20 million dollars in incremental revenue per year. Technology stack experience is varied, and machine learning model deployments cover on-premise (RedHat virtual machines), as well as cloud (Azure, Databricks). Mostly use SQL and python to automate ETL and building machine learning models.
+
