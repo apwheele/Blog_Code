@@ -1,6 +1,6 @@
 # Race to the bottom
 
-[blog post link]()
+[blog post link](https://andrewpwheeler.com/2026/04/21/the-race-to-the-bottom-with-ai-tools/)
 
 This is a blog post generated mostly via the `gemini cli` (that even [pangram does not flag as AI generated](https://www.pangram.com/history/e0dd540e-2c3b-4648-bfaf-9236b37e56df)). The `race_bottom_chat.md` shows my session inputs and outputs.
 
