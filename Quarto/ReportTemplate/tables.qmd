@@ -1,0 +1,133 @@
+---
+format:
+  docx:
+    title: "Example Tables Report"
+    subtitle: "Supercool Subtitle"
+    date: today
+    date-format: YYYY-MM-DD
+    author: 
+        - "Andrew P. Wheeler, PhD"
+    toc: false
+    reference-doc: CDC_Template.docx
+    execute:
+        cache: false
+
+execute:
+  eval: true
+  echo: false
+  warning: false
+---
+
+#### BREAK4
+
+# Introduction Section
+
+`reference-doc: CDC_Template.docx`
+
+In the qmd document + the template, you can see I have a 4th level section header formatted as a linebreak.
+
+This is a simple test report to illustrate quarto is working and various libraries are installed. Lets see how a table looks!
+
+```{python}
+import pandas as pd
+from IPython.display import Markdown
+
+x = [1,2,3]
+y = ['a','b','c']
+df = pd.DataFrame(zip(x,y),columns=['x','y'])
+
+table_cap = "\n\n: Table 1: Simple Table"
+
+Markdown(df.to_markdown(index=False) + table_cap)
+```
+
+You can also reference values inline now for python, such as the mean of x is `{python} df['x'].mean()`. (Although they cannot be used with cached outputs!). This is what a table looks like when directly printing the dataframe:
+
+```{python}
+df
+```
+
+# HTML stuff
+
+Here is a raw HTML table
+
+```{=html}
+<table>
+<thead><tr><th colspan="2">foo</th></tr></thead>
+<tbody><tr><td>1</td><td>2</td></tr></tbody>
+</table>
+```
+
+Here is with a cell colored
+
+ - bgcolor="#0000ff" in attribute does not work
+ - 
+
+```{=html}
+<table>
+<thead>
+  <tr>
+    <th colspan="2">foo</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td style="color:red;">1</td>
+    <td>1</td>
+  </tr>
+</tbody>
+</table>
+```
+
+bgcolor="#0000ff"
+
+Here is with a row span (inherits the grey background in CDC template):
+
+```{=html}
+<table>
+<thead>
+  <tr>
+    <th colspan="2">foo</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td>1</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td rowspan="2">2</td>
+  </tr>
+  <tr>
+    <td>3</td>
+  </tr>
+</tbody>
+</table>
+```
+
+This is a raw pagebreak in word
+
+
+```{=openxml}
+<w:p>
+  <w:r>
+    <w:br w:type="page"/>
+  </w:r>
+</w:p>
+```
+
+see <https://pandoc.org/MANUAL.html#extension-raw_attribute>
+
+
+Here is example table directly this way (no application of default template)
+
+```{=openxml}
+<w:tbl xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"><w:tblPr><w:tblStyle w:val="TableNormal0" /><w:tblW w:w="0" w:type="auto" /><w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0" w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1" /></w:tblPr><w:tblGrid><w:gridCol w:w="3400" /><w:gridCol w:w="3400" /><w:gridCol w:w="3400" /></w:tblGrid><w:tr w14:paraId="77777777" w14:textId="77777777"><w:trPr /><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Header1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Header2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Header3</w:t></w:r></w:p></w:tc></w:tr><w:tr w14:paraId="77777777" w14:textId="77777777"><w:trPr /><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Row1-Col1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Row1-Col2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Row1-Col3</w:t></w:r></w:p></w:tc></w:tr><w:tr w14:paraId="77777777" w14:textId="77777777"><w:trPr /><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Row2-Col1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Row2-Col2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3400" w:type="dxa" /></w:tcPr><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr><w:r><w:t>Row2-Col3</w:t></w:r></w:p></w:tc></w:tr></w:tbl>
+```
+
+Here is one with row spans
+
+```{=openxml}
+<w:tbl xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:tblPr><w:tblStyle w:val="TableNormal" /><w:tblW w:w="0" w:type="auto" /></w:tblPr><w:tblGrid><w:gridCol w:w="3405" /><w:gridCol w:w="3405" /><w:gridCol w:w="3405" /></w:tblGrid><w:tr><w:tc><w:tcPr><w:tcW w:w="6810" w:type="dxa" /><w:gridSpan w:val="2" /><w:shd w:val="clear" w:color="auto" w:fill="FFFF00" /></w:tcPr><w:p><w:r><w:t>A</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3405" w:type="dxa" /><w:vMerge w:val="restart" /></w:tcPr><w:p><w:r><w:t>B</w:t></w:r></w:p></w:tc></w:tr><w:tr><w:tc><w:tcPr><w:tcW w:w="3405" w:type="dxa" /></w:tcPr><w:p><w:r><w:t>C</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3405" w:type="dxa" /></w:tcPr><w:p><w:r><w:t>D</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:vMerge w:val="continue" /><w:tcW w:w="3405" w:type="dxa" /></w:tcPr></w:tc></w:tr><w:tr><w:tc><w:tcPr><w:tcW w:w="3405" w:type="dxa" /></w:tcPr><w:p><w:r><w:t>1</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3405" w:type="dxa" /></w:tcPr><w:p><w:r><w:t>2</w:t></w:r></w:p></w:tc><w:tc><w:tcPr><w:tcW w:w="3405" w:type="dxa" /><w:shd w:val="clear" w:color="auto" w:fill="C0504D" /></w:tcPr><w:p><w:r><w:t>3</w:t></w:r></w:p></w:tc></w:tr></w:tbl>
+```
