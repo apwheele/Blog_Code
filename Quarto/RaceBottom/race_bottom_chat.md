@@ -20,9 +20,6 @@ Showing up to 200 items (files + folders). Folders or files indicated with ... c
 │   ├───settings.local.json
 │   └───commands/
 ├───.empty/
-├───Autism/
-│   ├───AutismBook.txt
-│   └───Communication.txt
 ├───BookWriting/
 │   ├───_quarto.yml
 │   ├───c01.qmd
@@ -64,120 +61,6 @@ Showing up to 200 items (files + folders). Folders or files indicated with ... c
 │   ├───sna.md
 │   ├───StructuredOutputs.md
 │   └───WorkloadAnalysis.md
-├───DataScienceTransition/
-│   ├───2025-11-23-crime-analyst-to-data-scientist.md
-│   ├───2025-11-23-linkedin-post.txt
-│   ├───2025-11-23-security-cost-benefit.txt
-│   └───Prompt.txt
-├───ExampleProject/
-│   ├───classify_py.txt
-│   ├───classify.py
-│   ├───prompt.txt
-│   └───__pycache__/...
-├───LinkedInPosts/
-│   ├───2025-11-23-ai-coding-assistants.txt
-│   ├───2025-11-23-aws-bedrock-cjis.txt
-│   ├───Claude.md
-│   ├───ForceScience_Critique.txt
-│   ├───fraud-detection-benfords-law.txt
-│   ├───Posts.txt
-│   ├───pw0lafb3Kb-VjMcPrIKCsQg.png
-│   └───VA4labb5O_PSjMcPiJ2FsQg.png
-├───LLM_Book/
-│   ├───_quarto.yml
-│   ├───.gitignore
-│   ├───.python-version
-│   ├───.vdoc.01834bd0-3d0f-41aa-a18a-16520abbc8ef.py
-│   ├───.vdoc.1d610417-ca48-4a26-a833-7e6df56d1651.py
-│   ├───.vdoc.20fd9596-e534-4ec9-8b0c-318d08e6de89.py
-│   ├───.vdoc.2a69d96f-236c-45fa-913f-17afcba64550.py
-│   ├───.vdoc.38bf0d10-5f9e-40a6-9193-6d741d56c09c.py
-│   ├───.vdoc.974198d0-5a12-4511-ae00-36dc625fb97b.py
-│   ├───anthropic_batch_id_old.txt
-│   ├───anthropic_batch_id.txt
-│   ├───aoss-permissions.json
-│   ├───batch_id_old.txt
-│   ├───batch_id.txt
-│   ├───batch_input.jsonl
-│   ├───bedrock_job_arn_old.txt
-│   ├───bedrock_job_arn.txt
-│   ├───bedrock_job_info.json
-│   ├───blog_post_structured_output_bedrock.txt
-│   ├───book.css
-│   ├───c01.qmd
-│   ├───c02.qmd
-│   ├───c03.qmd
-│   ├───c04.qmd
-│   ├───c05.qmd
-│   ├───c06.qmd
-│   ├───c07.qmd
-│   ├───c08.qmd
-│   ├───Ch06_ClaudeDesktop_MCP.png
-│   ├───Claude.md
-│   ├───color_notes.txt
-│   ├───Competitors.txt
-│   ├───copyright.tex
-│   ├───crime_test_data.csv
-│   ├───DallasCrime.csv.zip
-│   ├───doc_embeddings.npy
-│   ├───doc_embeddings2.npy
-│   ├───DurhamHotspotClipped.mp4
-│   ├───ExampleGoogleAgentSDK.txt
-│   ├───FiraMono-Regular.ttf
-│   ├───google_batch_name_old.txt
-│   ├───google_batch_name.txt
-│   ├───index.html
-│   ├───index.qmd
-│   ├───KpSans-Bold.otf
-│   ├───KpSans-BoldItalic.otf
-│   ├───KpSans-Italic.otf
-│   ├───KpSans-Regular.otf
-│   ├───macros.tex
-│   ├───monthly_aggassaults.png
-│   ├───monthly_aggassaults1.png
-│   ├───monthly_robbery.png
-│   ├───monthly_robbery1.png
-│   ├───MonthlyRobberiesChicago.png
-│   ├───NotesFeedback.txt
-│   ├───openai_vector_store_old.txt
-│   ├───openai_vector_store.txt
-│   ├───packages.tex
-│   ├───policy_docs.pkl
-│   ├───policy_docs2.pkl
-│   ├───policy_index.faiss
-│   ├───policy_index2.faiss
-│   ├───python_cells.sh
-│   ├───RaleighSearchForm.png
-│   ├───RaleighSearchSeizure.pdf
-│   ├───requirements_freeze.txt
-│   ├───requirements.txt
-│   ├───StataFullDocument.pdf
-│   ├───StataReferenceManual1000.pdf
-│   ├───StataTOC.pdf
-│   ├───tB1dadzBKvKpjMcPz72AgQs.png
-│   ├───TrimmedPodcast.mp3
-│   ├───VulnerablePops.PDF
-│   ├───WebMapAudio11sec.mp3
-│   ├───WLineRec.PNG
-│   ├───_book/
-│   ├───_freeze/
-│   ├───.git/...
-│   ├───.jupyter_cache/
-│   ├───.quarto/
-│   ├───.venv/
-│   ├───aws_creds/
-│   ├───Ch05/
-│   ├───Ch06/
-│   ├───Ch07/
-│   ├───chap_images/
-│   ├───chroma_db/
-│   ├───freezev1/
-│   ├───freezev2/
-│   ├───freezev3/
-│   ├───LEAP/
-│   ├───prep_release/
-│   ├───screenshots/
-│   └───utils/
 ├───PersonalTechBlog/
 │   ├───apc_suicide_overdose.md
 │   ├───arcpy_notes.md
@@ -194,19 +77,6 @@ Showing up to 200 items (files + folders). Folders or files indicated with ... c
 │   ├───reflections_selfpublishing.md
 │   ├───reload_shared_borders.md
 │   └───suits_match.md
-├───Projects/
-│   ├───ALPR_Litigation.qmd
-│   ├───CarChaseAccidents.qmd
-│   ├───Claude.md
-│   ├───CRIMEDeCoder_EWS_Proposal.txt
-│   ├───Denver_AppendixA_Power.md
-│   ├───DenverLOI_Chronic.txt
-│   ├───Miami_CallAnalysis.qmd
-│   ├───PremisesLiability_Dallas.qmd
-│   ├───PremisesLiabilityLongview.qmd
-│   ├───SerialAnalysis.txt
-│   ├───SMU_AnalysisSythn.txt
-│   └───staffing2024.qmd
 └───Resume/
     ├───AndrewWheeler_BigCV.txt
     ├───AndrewWheeler_DataScienceCV.txt
