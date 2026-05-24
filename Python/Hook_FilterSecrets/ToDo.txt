@@ -1,0 +1,16 @@
+
+ - create a branch on Blog_Code
+ - log into platform.claude.com using your crime de-coder email, create an API key
+ - install Claude code on local
+ - in folder ./Python/Hook_FilterSecrets, using Claude Code, set up hook that runs before tool use
+   - script should use python, and find/replace
+ - have a script run Claude Code in headless mode, have it write results to check API key and replace with redacted (not sure if you can do this via command line, or if using the python agent SDK directly will be easier, https://code.claude.com/docs/en/agent-sdk/overview#hooks)
+
+ - write up a blog post in markdown, will be posted to https://crimede-coder.com/blog, so make it somewhat accessible
+   - how it works
+   - limitations
+     - if AI is smart, can cypher the text (simply by changing text slightly)
+     - requires user to turn on Hooks. In future org level hooks will probably become easier
+
+ - make a pull request when finished
+
