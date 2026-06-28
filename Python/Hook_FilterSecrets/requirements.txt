@@ -1,0 +1,3 @@
+# Only needed for the SDK demo (demo_sdk.py).
+# secret_filter.py, redact_secrets_hook.py, and the tests are pure standard library.
+claude-agent-sdk
