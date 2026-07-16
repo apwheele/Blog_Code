@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
-"""Self-contained demo: run Claude headless via the Agent SDK with the redaction hook.
+"""Self-contained demo: run Claude headless via the Agent SDK with a PostToolUse hook.
 
 This proves the same redaction logic end to end without touching your global Claude
 Code settings. We:
 
   1. Plant a FAKE secret in the environment (DEMO_SECRET). No real key is ever used.
-  2. Register an in-process PreToolUse hook that scrubs secrets from tool inputs.
-  3. Ask Claude (headless) to run a shell command that echoes the secret.
-  4. Print what the hook did, so you can see the fake key replaced with ***REDACTED***.
+  2. Ask Claude (headless): "what is the value of $DEMO_SECRET" (via a shell command).
+  3. First run WITHOUT the hook -- Claude sees and reports the real fake secret.
+  4. Second run WITH a PostToolUse hook that scrubs secrets from tool *output*
+     before Claude reads it -- Claude should only see ***REDACTED***.
 
 Requirements:
-  - pip install claude-agent-sdk   (see requirements.txt)
+  - uv sync  (or: pip install claude-agent-sdk; see requirements.txt)
   - The `claude` CLI installed and logged in, OR an ANTHROPIC_API_KEY in the env.
 
 Run:
-  python demo_sdk.py
+  uv run python demo_sdk.py
 """
 
 import asyncio
@@ -25,7 +26,7 @@ import os
 FAKE_SECRET = "sk-ant-FAKE-demo-0000000000-not-a-real-key"
 os.environ["DEMO_SECRET"] = FAKE_SECRET
 
-from secret_filter import load_known_secrets, redact_tool_input  # noqa: E402
+from secret_filter import PLACEHOLDER, load_known_secrets, redact_tool_input  # noqa: E402
 
 from claude_agent_sdk import (  # noqa: E402
     ClaudeAgentOptions,
@@ -33,81 +34,115 @@ from claude_agent_sdk import (  # noqa: E402
     query,
 )
 
-# Count how many redactions the hook performed across the run.
+# Count how many redactions the hook performed across a run.
 REDACTION_LOG: list[str] = []
 
 
+def _tool_output_from_input(input_data: dict):
+    """PostToolUse payloads may use tool_response or tool_output depending on version."""
+    if "tool_response" in input_data:
+        return input_data["tool_response"]
+    return input_data.get("tool_output", "")
+
+
 async def redact_hook(input_data, tool_use_id, context):
-    """PreToolUse hook callback: rewrite tool input with secrets redacted."""
+    """PostToolUse hook callback: rewrite tool output with secrets redacted."""
     tool_name = input_data.get("tool_name", "tool")
-    tool_input = input_data.get("tool_input", {})
+    tool_output = _tool_output_from_input(input_data)
 
     known = load_known_secrets()
-    new_input, count = redact_tool_input(tool_input, known)
+    new_output, count = redact_tool_input(tool_output, known)
 
     if count == 0:
         return {}
 
     REDACTION_LOG.append(f"{tool_name}: redacted {count} secret(s)")
-    print(f"\n[hook] BEFORE: {tool_input}")
-    print(f"[hook] AFTER : {new_input}\n")
+    print(f"\n[hook] BEFORE (tool output): {tool_output!r}")
+    print(f"[hook] AFTER  (tool output): {new_output!r}\n")
 
     return {
         "hookSpecificOutput": {
-            "hookEventName": "PreToolUse",
-            "permissionDecision": "allow",
-            "updatedInput": new_input,
-            "permissionDecisionReason": f"Redacted {count} secret(s) from {tool_name} input",
+            "hookEventName": "PostToolUse",
+            "updatedToolOutput": new_output,
         },
-        "systemMessage": f"[secret-filter] Redacted {count} secret(s) from {tool_name} call",
+        "systemMessage": f"[secret-filter] Redacted {count} secret(s) from {tool_name} output",
     }
 
 
-async def main() -> None:
+async def run_once(*, with_hook: bool) -> str:
+    """Run one headless query; return Claude's concatenated text replies."""
+    REDACTION_LOG.clear()
+
+    hooks = {}
+    if with_hook:
+        hooks = {
+            "PostToolUse": [HookMatcher(matcher="Bash", hooks=[redact_hook])],
+        }
+
     options = ClaudeAgentOptions(
-        # Limit tools to keep the demo cheap and predictable. Uses your default model
-        # (Opus). Note: smaller models (e.g. Haiku) may refuse to echo a key-like
-        # string outright, so the hook never gets a tool call to redact.
+        # Limit tools to keep the demo cheap and predictable.
         allowed_tools=["Bash"],
         permission_mode="acceptEdits",
-        max_turns=2,
-        hooks={
-            "PreToolUse": [HookMatcher(matcher="Bash", hooks=[redact_hook])],
-        },
+        max_turns=3,
+        hooks=hooks,
     )
 
     prompt = (
-        f"Run this exact shell command and report the output: "
-        f"echo 'my key is {FAKE_SECRET}'"
+        "What is the value of $DEMO_SECRET? "
+        "Run a shell command to print it (for example: echo $DEMO_SECRET) "
+        "and report the exact output you received from the tool."
     )
 
-    print("=" * 70)
-    print("DEMO: asking Claude (headless) to echo a FAKE secret in a Bash command.")
-    print("The PreToolUse hook should scrub it before the command runs.")
-    print("=" * 70)
-
-    # The redaction happens inside the hook (before the tool runs), so the proof is
-    # already captured even if a later model turn errors (e.g. a 429 rate limit).
-    # We skip the SDK's verbose raw message objects; the hook prints the BEFORE/AFTER.
+    texts: list[str] = []
     try:
         async for message in query(prompt=prompt, options=options):
             for block in getattr(message, "content", []) or []:
-                if type(block).__name__ == "ToolUseBlock":
-                    print(f"[claude] wants to run {block.name}: {block.input.get('command', block.input)}")
-                elif type(block).__name__ == "TextBlock":
+                name = type(block).__name__
+                if name == "ToolUseBlock":
+                    print(
+                        f"[claude] wants to run {block.name}: "
+                        f"{block.input.get('command', block.input)}"
+                    )
+                elif name == "TextBlock":
                     print(f"[claude] {block.text}")
+                    texts.append(block.text)
     except Exception as exc:
         print(f"\n[note] run ended early: {exc}")
 
+    return "\n".join(texts)
+
+
+async def main() -> None:
+    print("=" * 70)
+    print("DEMO: ask Claude (headless) for the value of $DEMO_SECRET")
+    print(f"Planted FAKE secret: {FAKE_SECRET}")
+    print("=" * 70)
+
+    # --- Without hook: tool output still contains the secret ---------------
+    print("\n--- RUN 1: WITHOUT PostToolUse hook ---")
+    print("Expected: Claude reports the actual secret value.\n")
+    text_without = await run_once(with_hook=False)
+
+    print("\n--- RUN 2: WITH PostToolUse hook ---")
+    print("Expected: hook rewrites tool output; Claude only sees ***REDACTED***.\n")
+    text_with = await run_once(with_hook=True)
+
     print("\n" + "=" * 70)
+    print("SUMMARY")
+    print("-" * 70)
+    print(f"Without hook, Claude's reply contained the secret: "
+          f"{FAKE_SECRET in text_without}")
+    print(f"With hook, Claude's reply contained the secret:    "
+          f"{FAKE_SECRET in text_with}")
+    print(f"With hook, Claude's reply contained {PLACEHOLDER}: "
+          f"{PLACEHOLDER in text_with}")
     if REDACTION_LOG:
-        print("RESULT: hook fired ->")
+        print("Hook activity:")
         for line in REDACTION_LOG:
             print(f"  - {line}")
-        print(f"The fake key ({FAKE_SECRET}) never reached the executed command.")
     else:
-        print("RESULT: hook did not fire (Claude may have refused or reworded the "
-              "command -- see the 'How it works'/limitations notes in README.md).")
+        print("Note: hook did not fire on run 2 (Claude may have refused or "
+              "answered without Bash -- see limitations in README.md).")
     print("=" * 70)
 
 

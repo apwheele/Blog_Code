@@ -1,6 +1,6 @@
 {
   "hooks": {
-    "PreToolUse": [
+    "PostToolUse": [
       {
         "matcher": "Bash|WebFetch|WebSearch",
         "hooks": [

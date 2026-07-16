@@ -114,9 +114,10 @@ def redact_text(text: str, known: list[str] | None = None) -> tuple[str, int]:
 
 
 def redact_tool_input(tool_input, known: list[str] | None = None) -> tuple[object, int]:
-    """Recursively redact every string value in a tool_input structure.
+    """Recursively redact every string value in a nested structure.
 
-    Handles nested dicts and lists (e.g. Bash ``command``, WebFetch ``url``/``prompt``).
+    Used for both tool *inputs* and tool *outputs* (PostToolUse). Handles nested
+    dicts and lists (e.g. Bash stdout strings, WebFetch response bodies).
     Returns ``(new_structure, total_count)``. The original is not mutated.
     """
     known = known if known is not None else load_known_secrets()

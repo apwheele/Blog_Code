@@ -85,9 +85,10 @@ def test_webfetch_url():
 def test_hook_entrypoint_piping():
     """Pipe JSON into redact_secrets_hook.py and check the stdout decision JSON."""
     payload = {
-        "hook_event_name": "PreToolUse",
+        "hook_event_name": "PostToolUse",
         "tool_name": "Bash",
-        "tool_input": {"command": "echo sk-ant-api03-abcDEF123456789"},
+        "tool_input": {"command": "echo $DEMO_SECRET"},
+        "tool_response": "sk-ant-api03-abcDEF123456789\n",
     }
     proc = subprocess.run(
         [sys.executable, HOOK],
@@ -98,16 +99,17 @@ def test_hook_entrypoint_piping():
     assert proc.returncode == 0, proc.stderr
     out = json.loads(proc.stdout)
     hso = out["hookSpecificOutput"]
-    assert hso["permissionDecision"] == "allow"
-    assert "sk-ant-" not in hso["updatedInput"]["command"]
-    assert PLACEHOLDER in hso["updatedInput"]["command"]
+    assert hso["hookEventName"] == "PostToolUse"
+    assert "sk-ant-" not in hso["updatedToolOutput"]
+    assert PLACEHOLDER in hso["updatedToolOutput"]
 
 
 def test_hook_entrypoint_clean_noop():
     payload = {
-        "hook_event_name": "PreToolUse",
+        "hook_event_name": "PostToolUse",
         "tool_name": "Bash",
         "tool_input": {"command": "ls -la"},
+        "tool_response": "total 0\n",
     }
     proc = subprocess.run(
         [sys.executable, HOOK],

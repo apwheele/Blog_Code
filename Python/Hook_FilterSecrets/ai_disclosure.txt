@@ -1,0 +1,7 @@
+By Andrew Wheeler
+
+Marc wrote the initial blog post and python code. I (wrongly) asked him to use a pre-tool use hook at first, and ended up using Grok (4.5) to rewrite the example with a post-tool use hook. 
+
+I then lightly edited the post further.
+
+[Pangram does flag it as AI generated](https://www.pangram.com/history/df5ba7ac-8540-479e-8c61-2856360b2a34) -- sorry it is good enough!
