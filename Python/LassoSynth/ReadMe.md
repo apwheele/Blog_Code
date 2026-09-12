@@ -1,5 +1,32 @@
 # Using Lasso & Conformal Inference
 
+This folder now goes with two blog posts. Scroll down for the original opioid
+example; this first section is the newer one.
+
+## Faking synthetic control estimates
+
+Post text is in [`FakingSyntheticControl.md`](FakingSyntheticControl.md). It
+estimates four synthetic control models for monthly thefts in Los Angeles
+around George Gascon taking office as LA County DA, three of which are
+fabricated and one of which is honest, to show that a reader without the data
+and code cannot tell them apart.
+
+    python PrepGasconData.py   # builds LATheft.csv from the RTCI snapshot
+    python GasconAnalysis.py   # all tables and figures, writes Results.md
+
+ - `PrepGasconData.py` -- pulls monthly thefts from a local snapshot of the
+   [Real-Time Crime Index](https://github.com/AH-Datalytics/rtci), via my
+   [CrimeDecomp](https://github.com/apwheele/CrimeDecomp) repo. Edit the `RTCI`
+   constant if your copy lives somewhere else. Writes `LATheft.csv`, which is
+   committed here so the rest runs standalone.
+ - `FakeSynth.py` -- the fabrication. Subclasses `LassoSynth.Synth` and fits
+   the donor weights to every period, with the treated unit's post-period
+   values replaced by whatever you want to report.
+ - `GasconAnalysis.py` -- fits the three fakes plus the honest model, writes
+   `Results.md`, the `*Weights.csv` and `*Effects.csv` files, and the PNGs.
+
+## Synthetic control in python: Opioid death increases in Oregon and Washington
+
 This is a set of code to go with my blogpost, [Synthetic control in python: Opioid death increases in Oregon and Washington](https://andrewpwheeler.com/2023/10/04/synthetic-control-in-python-opioid-death-increases-in-oregon-and-washington/)
 
 This uses the lasso to estimate synthetic control weights, and conformal inference to estimate standard errors for the lasso predictions. I like this approach because it tends to have smaller intervals than placebos in state level designs. Also I like lasso as a better default optimization algorithm than the stochastic gradient descent in the original Abadie method.
