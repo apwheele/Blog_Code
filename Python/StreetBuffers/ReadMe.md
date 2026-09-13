@@ -8,6 +8,10 @@ Brooklyn Bridge over the East River. Point of the post is that a buffer divides
 by area, and area is only a reasonable proxy for criminal opportunity when the
 ratio of street to area is stable.
 
+All measures are **exclusive bands**, not cumulative. The 100-200 buffer row is
+the ring between 100 and 200 meters out, and network order 3 is only the
+segments first reached at that order, so a crime is counted once.
+
 Both sites are a line, not a point. Buffers are taken out from the street
 itself, and the network seed is the same set of segments. Canal St is the 12
 segments within 400m of Broadway (845m of street), the bridge is the 6 segments

@@ -110,23 +110,28 @@ def snap_crimes(crimes, streets, max_dist=50):
     return j.drop(columns=['index_right'])
 
 
-def buffer_table(anchor, streets, crimes, water, dists, ndist=None):
-    '''Area, land area, street length and crime counts inside progressively
-    larger circular buffers. If ndist is supplied (network distance per
-    segment) also reports how much of the street length inside the buffer is
-    actually within that distance by network, rather than as the crow flies.'''
+def buffer_table(line, streets, crimes, water, dists, ndist=None):
+    """Area, land area, street length and crime counts in each band. Bands are
+    exclusive -- the 100-200 row is the ring between 100 and 200 meters out
+    from the street, not the whole disk, so a crime is counted once. If ndist
+    is supplied (network distance per segment) also reports how much of the
+    street in the band is within that distance by network rather than as the
+    crow flies."""
     # dissolve first, the TIGER water polygons overlap in places and summing
     # the pieces double counts them
     wet_all = water.geometry.union_all()
-    res = []
+    res, prev, lo = [], None, 0
     for d in dists:
-        buf = anchor.buffer(d)
-        clip = gpd.clip(streets, buf)
+        cur = line.buffer(d)
+        ring = cur if prev is None else cur.difference(prev)
+        prev = cur
+        clip = gpd.clip(streets, ring)
         km = clip.length.sum()/1000
-        ins = crimes[crimes.within(buf)]
-        area = buf.area/1e6
-        wet = min(wet_all.intersection(buf).area/1e6, area)
-        row = {'Dist': d,
+        ins = crimes[crimes.within(ring)]
+        area = ring.area/1e6
+        wet = min(wet_all.intersection(ring).area/1e6, area)
+        row = {'Band': f'{lo}-{d}',
+               'To': d,
                'Area': area,
                'Land': area - wet,
                'PctLand': 100*(area - wet)/area,
@@ -134,22 +139,24 @@ def buffer_table(anchor, streets, crimes, water, dists, ndist=None):
                'StreetDens': km/area,
                'Theft': int((ins['Crime']=='Theft').sum()),
                'Robbery': int((ins['Crime']=='Robbery').sum())}
-        if ndist is not None:
+        if ndist is not None and clip.shape[0]:
             reach = ndist[clip.index.values] <= d
             row['PctReach'] = 100*clip.length.values[reach].sum()/clip.length.sum()
         res.append(row)
+        lo = d
     return finish(pd.DataFrame(res))
 
 
 def network_table(orders, streets, crimes):
-    '''Same measures over the segments in each network order. Crimes are the
-    ones snapped to those segments.'''
+    """Same measures over the network, also exclusive. Each row is only the
+    segments first reached at that order, not everything up to it."""
     res = []
     for o, idx in enumerate(orders, start=1):
-        sub = streets.loc[idx]
-        ins = crimes[crimes['SegID'].isin(set(idx))]
+        new = idx if o == 1 else np.setdiff1d(idx, orders[o-2])
+        sub = streets.loc[new]
+        ins = crimes[crimes['SegID'].isin(set(new))]
         res.append({'Order': o,
-                    'Segments': len(idx),
+                    'Segments': len(new),
                     'StreetKm': sub.length.sum()/1000,
                     'Theft': int((ins['Crime']=='Theft').sum()),
                     'Robbery': int((ins['Crime']=='Robbery').sum())})

@@ -1,12 +1,12 @@
 '''Formats the result csvs as markdown tables for the blog post'''
 import pandas as pd
 
-BUF = {'Dist':'Meters','Area':'Area','PctLand':'% Land','StreetKm':'Street km',
+BUF = {'Band':'Band (m)','Area':'Area','PctLand':'% Land','StreetKm':'Street km',
        'StreetDens':'Street km/sq km','Theft':'Thefts','Robbery':'Robberies',
-       'PerSqKm':'Per sq km','PerKm':'Per street km'}
-NET = {'Order':'Order','Segments':'Segments','StreetKm':'Street km',
+       'PerSqKm':'Per sq km','PerKm':'Per street km','PctReach':'% reachable'}
+NET = {'Order':'Order','Segments':'New segs','StreetKm':'Street km',
        'Theft':'Thefts','Robbery':'Robberies','PerKm':'Per street km'}
-RND = {'Area':3,'PctLand':1,'StreetKm':2,'StreetDens':1,'PerSqKm':0,'PerKm':1}
+RND = {'Area':3,'PctLand':1,'StreetKm':2,'StreetDens':1,'PerSqKm':0,'PerKm':1,'PctReach':1}
 
 out = []
 for slug, nm in [('CanalSt','Canal St'),('BrooklynBridge','Brooklyn Bridge')]:

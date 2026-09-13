@@ -100,18 +100,21 @@ def denom_fig(bufs, out):
     fig, axs = plt.subplots(1, 3, figsize=(14, 4.5))
     for nm in SITES:
         b = bufs[nm]
-        axs[0].plot(b['Dist'], b['PctLand'], MK[nm], color=cl(nm),
+        axs[0].plot(b['To'], b['PctLand'], MK[nm], color=cl(nm),
                     markeredgecolor='white', label=nm)
-        axs[1].plot(b['Dist'], b['StreetDens'], MK[nm], color=cl(nm),
+        axs[1].plot(b['To'], b['StreetDens'], MK[nm], color=cl(nm),
                     markeredgecolor='white', label=nm)
-        axs[2].plot(b['Dist'], b['PerSqKm'], MK[nm], color=cl(nm),
+        axs[2].plot(b['To'], b['PerSqKm'], MK[nm], color=cl(nm),
                     markeredgecolor='white', label=nm)
-    axs[0].set_title('Percent of buffer that is land')
-    axs[1].set_title('Street km per sq km of buffer')
-    axs[2].set_title('Crimes per sq km of buffer')
+    axs[0].set_title('Percent of band that is land')
+    axs[1].set_title('Street km per sq km of band')
+    axs[2].set_title('Crimes per sq km of band')
     axs[0].set_ylim(0, 105)
+    # headroom so the legend does not sit on the Canal St peak
+    top = max(b['PerSqKm'].max() for b in bufs.values())
+    axs[2].set_ylim(0, top*1.30)
     for a_ in axs:
-        a_.set_xlabel('Buffer distance (m)')
+        a_.set_xlabel('Band, outer edge (m)')
         a_.legend()
     fig.savefig(out, dpi=300, bbox_inches='tight')
     plt.close(fig)
@@ -125,10 +128,10 @@ def compare_fig(bufs, nets, out):
                     color=cl(nm), markeredgecolor='white', label=nm)
         axs[1].plot(nets[nm]['StreetKm'], nets[nm]['PerKm'], MK[nm],
                     color=cl(nm), markeredgecolor='white', label=nm)
-    axs[0].set_title('Buffers, 100m to 1000m', fontsize=13)
-    axs[1].set_title('Network orders, 1 to 10', fontsize=13)
+    axs[0].set_title('Buffer bands', fontsize=13)
+    axs[1].set_title('Network order bands', fontsize=13)
     for a_ in axs:
-        a_.set_xlabel('Street km included')
+        a_.set_xlabel('Street km in the band')
         a_.legend()
     axs[0].set_ylabel('Crimes per street km')
     fig.savefig(out, dpi=300, bbox_inches='tight')
@@ -167,7 +170,7 @@ if __name__ == '__main__':
 
         print(f'\n===== {nm} (seed segment {seed}) =====')
         print('BUFFERS')
-        print(fmt(b, {'Area':3,'Land':3,'PctLand':1,'StreetKm':2,
+        print(fmt(b, {'Area':3,'Land':3,'PctLand':1,'StreetKm':2,'To':0,
                       'StreetDens':1,'PerKm':1,'PerSqKm':0,'PctReach':1}).to_string(index=False))
         print('NETWORK')
         print(fmt(n, {'StreetKm':2,'PerKm':1}).to_string(index=False))

@@ -10,6 +10,8 @@ Here is the problem. A buffer divides by *area*, and area is not what generates 
 
 I use two runs of street in New York City. Canal Street at Broadway, the counterfeit goods market, which sits in a clean grid. And the span of the Brooklyn Bridge over the East River, which sits in a river. [Data and code are on github](https://github.com/apwheele/Blog_Code/tree/master/Python/StreetBuffers).
 
+Everything below is in exclusive bands. The 100-200 row is the ring between 100 and 200 meters out, not the whole disk, so each crime is counted once. Cumulative buffers hide most of what I am about to show, since every ring inherits the ones inside it.
+
 # The setup
 
 Three years of NYPD complaint data, 2023 through 2025, thefts (petit and grand larceny) and robberies from the NYC open data Socrata endpoint. 49,270 thefts and 2,558 robberies in the bounding box.
@@ -31,30 +33,34 @@ Same street, 40 edges instead of 3. That leaves 6,816 segments across Manhattan 
 
 Both study sites are a run of street, not a point. Canal St is the twelve segments within 400 meters of Broadway, 845 meters of street. The bridge is the six segments TIGER names `Brooklyn Brg` that cross water, 1,327 meters, 86% of which is over the river.
 
-# Buffers along Canal Street
+# Buffer bands along Canal Street
 
-Buffers every 100 meters out from the street itself, out to a kilometer.
+Bands every 100 meters out from the street itself, out to a kilometer.
 
 ![](https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/CanalSt_Map.png)
 
-|   Meters |   Area |   % Land |   Street km |   Street km/sq km |   Thefts |   Robberies |   Per sq km |   Per street km |
-|---------:|-------:|---------:|------------:|------------------:|---------:|------------:|------------:|----------------:|
-|      100 |  0.2   |    100   |        4.61 |              23   |      652 |          68 |        3594 |           156.3 |
-|      200 |  0.463 |    100   |       10.69 |              23.1 |     1490 |         104 |        3440 |           149.1 |
-|      300 |  0.789 |    100   |       17.99 |              22.8 |     2343 |         163 |        3176 |           139.3 |
-|      400 |  1.178 |    100   |       26.98 |              22.9 |     4442 |         278 |        4008 |           174.9 |
-|      500 |  1.629 |    100   |       37.88 |              23.3 |     5360 |         357 |        3510 |           150.9 |
-|      600 |  2.143 |    100   |       49.28 |              23   |     9068 |         456 |        4445 |           193.3 |
-|      700 |  2.719 |     99.7 |       61.28 |              22.5 |    10374 |         548 |        4017 |           178.2 |
-|      800 |  3.358 |     97.9 |       72.78 |              21.7 |    13065 |         688 |        4095 |           189   |
-|      900 |  4.06  |     95.6 |       86.25 |              21.2 |    16419 |         853 |        4254 |           200.3 |
-|     1000 |  4.825 |     92.5 |       99.68 |              20.7 |    20618 |         979 |        4476 |           216.7 |
+| Band (m)   |   Area |   % Land |   Street km |   Street km/sq km |   Thefts |   Robberies |   Per sq km |   Per street km |   % reachable |
+|:-----------|-------:|---------:|------------:|------------------:|---------:|------------:|------------:|----------------:|--------------:|
+| 0-100      |  0.2   |    100   |        4.61 |              23   |      652 |          68 |        3594 |           156.3 |          95.2 |
+| 100-200    |  0.263 |    100   |        6.08 |              23.1 |      838 |          36 |        3323 |           143.6 |          85.9 |
+| 200-300    |  0.326 |    100   |        7.3  |              22.4 |      853 |          59 |        2800 |           124.9 |          78.2 |
+| 300-400    |  0.388 |    100   |        8.99 |              23.1 |     2099 |         115 |        5699 |           246.2 |          67   |
+| 400-500    |  0.451 |    100   |       10.9  |              24.2 |      918 |          79 |        2210 |            91.5 |          63.7 |
+| 500-600    |  0.514 |    100   |       11.4  |              22.2 |     3708 |          99 |        7408 |           334.1 |          53.4 |
+| 600-700    |  0.577 |     98.4 |       12.01 |              20.8 |     1306 |          92 |        2425 |           116.4 |          44.6 |
+| 700-800    |  0.639 |     90.4 |       11.5  |              18   |     2691 |         140 |        4429 |           246.2 |          44.4 |
+| 800-900    |  0.702 |     84.5 |       13.47 |              19.2 |     3354 |         165 |        5013 |           261.2 |          36.8 |
+| 900-1000   |  0.765 |     76   |       13.43 |              17.6 |     4199 |         126 |        5656 |           322.1 |          37.8 |
 
-Look at `Street km/sq km`. It is 23 at 100 meters and 20.7 at a kilometer. Lower Manhattan hands you about 22 kilometers of street for every square kilometer you enclose, no matter how wide the band. That is what a grid does, and it is why buffers are fine here. Crimes per square kilometer runs 3,176 to 4,476 across the whole table.
+The street supply is steady. `Street km/sq km` sits at 22 to 24 for the first six bands, which is what a grid does, and only sags at the end when the outer rings start hitting the Hudson and the East River.
+
+The crime density is not steady at all. 2,210 per square kilometer in the 400-500 band, 7,408 in the very next one. That is a factor of three between adjacent rings, and nothing about Canal Street changed in those hundred meters. What changed is that the 500-600 ring happens to catch a stretch of Broadway and the blocks around it. Ring geometry is picking which hot blocks you get.
+
+The last column is worth a look too. `% reachable` is the share of street in the band that is genuinely within that distance by shortest path on the network rather than as the crow flies. It starts at 95% and falls to 38%. Even in a clean grid, most of what the outer rings grab is further away on foot than the ring says, because you walk around blocks instead of through them.
 
 # The same thing with network orders
 
-Instead of a width, expand over the network. Order 1 is the street you started on. Order 2 is that plus everything sharing an intersection with it. Order 3 adds everything sharing an intersection with those, and so on. TIGER gives you the node ids, so it is a breadth first search:
+Instead of a width, expand over the network. Order 1 is the street you started on. Order 2 is the segments that share an intersection with it. Order 3 is the segments that share an intersection with those, and so on. Each row below is only the segments first reached at that order. TIGER gives you the node ids, so it is a breadth first search:
 
     def network_orders(streets, seed, max_order):
         pairs, node2seg = build_graph(streets)
@@ -76,22 +82,22 @@ Instead of a width, expand over the network. Order 1 is the street you started o
 
 The right panel above shows it, yellow at the seed grading out to purple at order 10.
 
-|   Order |   Segments |   Street km |   Thefts |   Robberies |   Per street km |
+|   Order |   New segs |   Street km |   Thefts |   Robberies |   Per street km |
 |--------:|-----------:|------------:|---------:|------------:|----------------:|
 |       1 |         12 |        0.84 |      197 |          25 |           262.8 |
-|       2 |         36 |        3.2  |      535 |          56 |           184.5 |
-|       3 |         86 |        7.62 |     1436 |          95 |           201   |
-|       4 |        147 |       12.65 |     2123 |         136 |           178.6 |
-|       5 |        213 |       17.92 |     4020 |         191 |           234.9 |
-|       6 |        276 |       23.05 |     5401 |         253 |           245.3 |
-|       7 |        355 |       29.9  |     7845 |         331 |           273.5 |
-|       8 |        442 |       37.29 |     9816 |         422 |           274.6 |
-|       9 |        541 |       44.69 |    11244 |         515 |           263.1 |
-|      10 |        652 |       53.46 |    12316 |         574 |           241.1 |
+|       2 |         24 |        2.36 |      338 |          31 |           156.5 |
+|       3 |         50 |        4.42 |      901 |          39 |           212.9 |
+|       4 |         61 |        5.03 |      687 |          41 |           144.6 |
+|       5 |         66 |        5.27 |     1897 |          55 |           370.2 |
+|       6 |         63 |        5.12 |     1381 |          62 |           281.6 |
+|       7 |         79 |        6.85 |     2444 |          78 |           368.2 |
+|       8 |         87 |        7.39 |     1971 |          91 |           279.1 |
+|       9 |         99 |        7.41 |     1428 |          93 |           205.4 |
+|      10 |        111 |        8.77 |     1072 |          59 |           129   |
 
 That 845 meters of Canal Street carries 222 crimes over three years. There is no area denominator anywhere in this table and there does not need to be one. You have a length and a count.
 
-In Manhattan the two methods agree, which is the honest result. If Canal Street were the only site I looked at, the conclusion would be use whichever you like.
+Per street kilometer still moves around, because some orders reach busier blocks than others. The difference is that the denominator is a thing that exists rather than a circle you drew.
 
 # The Brooklyn Bridge
 
@@ -99,43 +105,45 @@ Same code, seeded on the span over the river.
 
 ![](https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/BrooklynBridge_Map.png)
 
-|   Meters |   Area |   % Land |   Street km |   Street km/sq km |   Thefts |   Robberies |   Per sq km |   Per street km |
-|---------:|-------:|---------:|------------:|------------------:|---------:|------------:|------------:|----------------:|
-|      100 |  0.187 |     32.1 |        3.3  |              17.7 |       33 |           3 |         193 |            10.9 |
-|      200 |  0.428 |     40.9 |        6.15 |              14.4 |      114 |           5 |         278 |            19.3 |
-|      300 |  0.731 |     49.2 |       10.19 |              13.9 |      245 |          28 |         373 |            26.8 |
-|      400 |  1.097 |     55.8 |       15.79 |              14.4 |      483 |          54 |         489 |            34   |
-|      500 |  1.526 |     59.2 |       24.25 |              15.9 |     1397 |          93 |         976 |            61.4 |
-|      600 |  2.018 |     62.5 |       33.47 |              16.6 |     1932 |         133 |        1023 |            61.7 |
-|      700 |  2.572 |     65.8 |       43.71 |              17   |     2660 |         221 |        1120 |            65.9 |
-|      800 |  3.189 |     68.4 |       54.54 |              17.1 |     4095 |         275 |        1370 |            80.1 |
-|      900 |  3.869 |     70.4 |       66.33 |              17.1 |     5827 |         366 |        1601 |            93.4 |
-|     1000 |  4.612 |     71.9 |       79.13 |              17.2 |     7482 |         468 |        1724 |           100.5 |
+| Band (m)   |   Area |   % Land |   Street km |   Street km/sq km |   Thefts |   Robberies |   Per sq km |   Per street km |   % reachable |
+|:-----------|-------:|---------:|------------:|------------------:|---------:|------------:|------------:|----------------:|--------------:|
+| 0-100      |  0.187 |     32.1 |        3.3  |              17.7 |       33 |           3 |         193 |            10.9 |          90.7 |
+| 100-200    |  0.241 |     47.8 |        2.85 |              11.9 |       81 |           2 |         345 |            29.1 |          75.3 |
+| 200-300    |  0.304 |     60.7 |        4.03 |              13.3 |      131 |          23 |         507 |            38.2 |          61.2 |
+| 300-400    |  0.366 |     69.1 |        5.61 |              15.3 |      238 |          26 |         721 |            47.1 |          53.9 |
+| 400-500    |  0.429 |     67.9 |        8.46 |              19.7 |      914 |          39 |        2222 |           112.7 |          43.2 |
+| 500-600    |  0.492 |     72.5 |        9.22 |              18.7 |      535 |          40 |        1170 |            62.4 |          37.8 |
+| 600-700    |  0.554 |     77.9 |       10.24 |              18.5 |      728 |          88 |        1472 |            79.7 |          36.5 |
+| 700-800    |  0.617 |     79.1 |       10.83 |              17.6 |     1435 |          54 |        2413 |           137.4 |          28.8 |
+| 800-900    |  0.68  |     80   |       11.79 |              17.3 |     1732 |          91 |        2682 |           154.7 |          21.6 |
+| 900-1000   |  0.743 |     79.7 |       12.8  |              17.2 |     1655 |         102 |        2366 |           137.2 |          27.1 |
 
-At 100 meters the buffer is 32% land. The rest is the East River. And now watch crimes per square kilometer: 193 at 100 meters, 1,724 at a kilometer. Nine times higher, for the same piece of bridge. Nothing about the bridge changed, the buffer just grew until it reached land on both sides.
+Compare the first two rows. The 100-200 ring has 29% more area than the 0-100 ring and 14% *less* street in it, because that second ring is almost entirely open water. In a grid, a bigger ring always means more street. Here it does not, and that is the whole problem in two rows.
 
-`Street km/sq km` shows the same thing from the other side. It falls from 17.7 to 13.9 and then climbs back to 17.2. Canal Street never does that.
+The 0-100 band is 32% land. Crime density climbs from 193 per square kilometer to 2,682, a factor of fourteen, purely as the rings work their way off the river and onto land.
+
+`% reachable` gets worse than Canal Street, down to 22% in the 800-900 band. Four fifths of the street that ring grabs is not actually 800 to 900 meters from the bridge on foot.
 
 ![](https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/Denominator.png)
 
-Canal Street is blue, the bridge is brown. Any comparison you make between those two places using crime per square kilometer is comparing their geometry, not their crime.
+Canal Street is blue, the bridge is brown. The middle panel is the one that matters -- Canal is flat in the twenties until the river, the bridge dives to 12 and climbs back. Any comparison between those two places using crime per square kilometer is comparing their geometry, not their crime.
 
 The network orders have no such problem, because there is no area:
 
-|   Order |   Segments |   Street km |   Thefts |   Robberies |   Per street km |
+|   Order |   New segs |   Street km |   Thefts |   Robberies |   Per street km |
 |--------:|-----------:|------------:|---------:|------------:|----------------:|
 |       1 |          6 |        1.33 |        0 |           0 |             0   |
-|       2 |         15 |        1.81 |        1 |           1 |             1.1 |
-|       3 |         30 |        2.82 |       15 |           2 |             6   |
-|       4 |         48 |        4.03 |       54 |           2 |            13.9 |
-|       5 |         68 |        5.94 |       85 |           8 |            15.7 |
-|       6 |        101 |        8.24 |      181 |          26 |            25.1 |
-|       7 |        141 |       11.71 |      212 |          29 |            20.6 |
-|       8 |        194 |       15.16 |      250 |          36 |            18.9 |
-|       9 |        254 |       20.02 |      355 |          50 |            20.2 |
-|      10 |        320 |       25.12 |      527 |          65 |            23.6 |
+|       2 |          9 |        0.48 |        1 |           1 |             4.1 |
+|       3 |         15 |        1.01 |       14 |           1 |            14.8 |
+|       4 |         18 |        1.21 |       39 |           0 |            32.3 |
+|       5 |         20 |        1.91 |       31 |           6 |            19.4 |
+|       6 |         33 |        2.3  |       96 |          18 |            49.5 |
+|       7 |         40 |        3.47 |       31 |           3 |             9.8 |
+|       8 |         53 |        3.45 |       38 |           7 |            13.1 |
+|       9 |         60 |        4.86 |      105 |          14 |            24.5 |
+|      10 |         66 |        5.1  |      172 |          15 |            36.6 |
 
-Orders 1 and 2 add almost nothing, 1.33 kilometers of bridge and then 480 more meters. That is the network telling you a bridge is a bottleneck, it has two ends and no cross streets. A band of fixed width cannot express that, a graph does it for free.
+Order 2 adds nine segments and 480 meters. Order 2 at Canal Street adds twenty four segments and 2.4 kilometers. That is the network telling you a bridge is a bottleneck, it has two ends and no cross streets. A band of fixed width cannot express that, a graph does it for free.
 
 # Caveats
 
@@ -145,9 +153,9 @@ The zero crimes on the bridge span is very likely a geocoding artifact. NYPD com
 
 # What I would actually do
 
-Buffers are not wrong, they just assume area is a reasonable proxy for opportunity. In a dense uniform grid it is, which is why Canal Street came out the same either way.
+Buffers are not wrong, they just assume area is a reasonable proxy for opportunity. In a dense uniform grid it mostly is, which is why Canal Street's street supply held steady.
 
-The check is cheap. Clip the street network to your buffer and divide street length by area. If that ratio is stable across the widths you care about, use the buffer, it is one click and everybody understands it. If it swings the way it does at the bridge, use a street network measure.
+The check is cheap. Clip the street network to your bands and divide street length by area. If that ratio is stable across the widths you care about, a buffer is fine, it is one click and everybody understands it. If it moves the way it does at the bridge, use a street network measure.
 
 This matters most at waterfronts, parks, highways, rail corridors and big parking lots -- anywhere the built environment is not a grid. Those are also the places where somebody is most likely to be arguing about a distance in an ordinance.
 

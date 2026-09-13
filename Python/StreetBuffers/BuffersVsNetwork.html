@@ -32,6 +32,7 @@ blockquote {border-left: 3px solid #C5C88F; margin-left: 0; padding-left: 14px;
 <p>Buffers are the default way analysts define the area around a place. You have a bar, a bus stop, a stretch of street, and you want to know how much crime is nearby, so you draw a fixed width band around it. Everybody does it and for most questions it is fine.</p>
 <p>Here is the problem. A buffer divides by <em>area</em>, and area is not what generates crime. Streets are. When the ratio of street to area is stable, buffers work. When it is not, the buffer gives you a number that looks like a crime rate but is really a statement about your geometry.</p>
 <p>I use two runs of street in New York City. Canal Street at Broadway, the counterfeit goods market, which sits in a clean grid. And the span of the Brooklyn Bridge over the East River, which sits in a river. <a href="https://github.com/apwheele/Blog_Code/tree/master/Python/StreetBuffers">Data and code are on github</a>.</p>
+<p>Everything below is in exclusive bands. The 100-200 row is the ring between 100 and 200 meters out, not the whole disk, so each crime is counted once. Cumulative buffers hide most of what I am about to show, since every ring inherits the ones inside it.</p>
 <h1>The setup</h1>
 <p>Three years of NYPD complaint data, 2023 through 2025, thefts (petit and grand larceny) and robberies from the NYC open data Socrata endpoint. 49,270 thefts and 2,558 robberies in the bounding box.</p>
 <p>For streets I use <code>pygris</code>, Kyle Walker's <code>tigris</code> ported to python:</p>
@@ -47,13 +48,13 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 </code></pre>
 <p>Same street, 40 edges instead of 3. That leaves 6,816 segments across Manhattan and Brooklyn after filtering to travel ways and clipping to the study area. Everything is projected to UTM 18N so units are meters, and crimes snap to their nearest segment within 50 meters, which catches 99.0% of them.</p>
 <p>Both study sites are a run of street, not a point. Canal St is the twelve segments within 400 meters of Broadway, 845 meters of street. The bridge is the six segments TIGER names <code>Brooklyn Brg</code> that cross water, 1,327 meters, 86% of which is over the river.</p>
-<h1>Buffers along Canal Street</h1>
-<p>Buffers every 100 meters out from the street itself, out to a kilometer.</p>
+<h1>Buffer bands along Canal Street</h1>
+<p>Bands every 100 meters out from the street itself, out to a kilometer.</p>
 <p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/CanalSt_Map.png" /></p>
 <table>
 <thead>
 <tr>
-<th style="text-align: right;">Meters</th>
+<th style="text-align: left;">Band (m)</th>
 <th style="text-align: right;">Area</th>
 <th style="text-align: right;">% Land</th>
 <th style="text-align: right;">Street km</th>
@@ -62,11 +63,12 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 <th style="text-align: right;">Robberies</th>
 <th style="text-align: right;">Per sq km</th>
 <th style="text-align: right;">Per street km</th>
+<th style="text-align: right;">% reachable</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">100</td>
+<td style="text-align: left;">0-100</td>
 <td style="text-align: right;">0.2</td>
 <td style="text-align: right;">100</td>
 <td style="text-align: right;">4.61</td>
@@ -75,111 +77,123 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 <td style="text-align: right;">68</td>
 <td style="text-align: right;">3594</td>
 <td style="text-align: right;">156.3</td>
+<td style="text-align: right;">95.2</td>
 </tr>
 <tr>
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">0.463</td>
+<td style="text-align: left;">100-200</td>
+<td style="text-align: right;">0.263</td>
 <td style="text-align: right;">100</td>
-<td style="text-align: right;">10.69</td>
+<td style="text-align: right;">6.08</td>
 <td style="text-align: right;">23.1</td>
-<td style="text-align: right;">1490</td>
-<td style="text-align: right;">104</td>
-<td style="text-align: right;">3440</td>
-<td style="text-align: right;">149.1</td>
+<td style="text-align: right;">838</td>
+<td style="text-align: right;">36</td>
+<td style="text-align: right;">3323</td>
+<td style="text-align: right;">143.6</td>
+<td style="text-align: right;">85.9</td>
 </tr>
 <tr>
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">0.789</td>
+<td style="text-align: left;">200-300</td>
+<td style="text-align: right;">0.326</td>
 <td style="text-align: right;">100</td>
-<td style="text-align: right;">17.99</td>
-<td style="text-align: right;">22.8</td>
-<td style="text-align: right;">2343</td>
-<td style="text-align: right;">163</td>
-<td style="text-align: right;">3176</td>
-<td style="text-align: right;">139.3</td>
-</tr>
-<tr>
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">1.178</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">26.98</td>
-<td style="text-align: right;">22.9</td>
-<td style="text-align: right;">4442</td>
-<td style="text-align: right;">278</td>
-<td style="text-align: right;">4008</td>
-<td style="text-align: right;">174.9</td>
-</tr>
-<tr>
-<td style="text-align: right;">500</td>
-<td style="text-align: right;">1.629</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">37.88</td>
-<td style="text-align: right;">23.3</td>
-<td style="text-align: right;">5360</td>
-<td style="text-align: right;">357</td>
-<td style="text-align: right;">3510</td>
-<td style="text-align: right;">150.9</td>
-</tr>
-<tr>
-<td style="text-align: right;">600</td>
-<td style="text-align: right;">2.143</td>
-<td style="text-align: right;">100</td>
-<td style="text-align: right;">49.28</td>
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">9068</td>
-<td style="text-align: right;">456</td>
-<td style="text-align: right;">4445</td>
-<td style="text-align: right;">193.3</td>
-</tr>
-<tr>
-<td style="text-align: right;">700</td>
-<td style="text-align: right;">2.719</td>
-<td style="text-align: right;">99.7</td>
-<td style="text-align: right;">61.28</td>
-<td style="text-align: right;">22.5</td>
-<td style="text-align: right;">10374</td>
-<td style="text-align: right;">548</td>
-<td style="text-align: right;">4017</td>
-<td style="text-align: right;">178.2</td>
-</tr>
-<tr>
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">3.358</td>
-<td style="text-align: right;">97.9</td>
-<td style="text-align: right;">72.78</td>
-<td style="text-align: right;">21.7</td>
-<td style="text-align: right;">13065</td>
-<td style="text-align: right;">688</td>
-<td style="text-align: right;">4095</td>
-<td style="text-align: right;">189</td>
-</tr>
-<tr>
-<td style="text-align: right;">900</td>
-<td style="text-align: right;">4.06</td>
-<td style="text-align: right;">95.6</td>
-<td style="text-align: right;">86.25</td>
-<td style="text-align: right;">21.2</td>
-<td style="text-align: right;">16419</td>
+<td style="text-align: right;">7.3</td>
+<td style="text-align: right;">22.4</td>
 <td style="text-align: right;">853</td>
-<td style="text-align: right;">4254</td>
-<td style="text-align: right;">200.3</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">2800</td>
+<td style="text-align: right;">124.9</td>
+<td style="text-align: right;">78.2</td>
 </tr>
 <tr>
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">4.825</td>
-<td style="text-align: right;">92.5</td>
-<td style="text-align: right;">99.68</td>
-<td style="text-align: right;">20.7</td>
-<td style="text-align: right;">20618</td>
-<td style="text-align: right;">979</td>
-<td style="text-align: right;">4476</td>
-<td style="text-align: right;">216.7</td>
+<td style="text-align: left;">300-400</td>
+<td style="text-align: right;">0.388</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">8.99</td>
+<td style="text-align: right;">23.1</td>
+<td style="text-align: right;">2099</td>
+<td style="text-align: right;">115</td>
+<td style="text-align: right;">5699</td>
+<td style="text-align: right;">246.2</td>
+<td style="text-align: right;">67</td>
+</tr>
+<tr>
+<td style="text-align: left;">400-500</td>
+<td style="text-align: right;">0.451</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">10.9</td>
+<td style="text-align: right;">24.2</td>
+<td style="text-align: right;">918</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">2210</td>
+<td style="text-align: right;">91.5</td>
+<td style="text-align: right;">63.7</td>
+</tr>
+<tr>
+<td style="text-align: left;">500-600</td>
+<td style="text-align: right;">0.514</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">11.4</td>
+<td style="text-align: right;">22.2</td>
+<td style="text-align: right;">3708</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: right;">7408</td>
+<td style="text-align: right;">334.1</td>
+<td style="text-align: right;">53.4</td>
+</tr>
+<tr>
+<td style="text-align: left;">600-700</td>
+<td style="text-align: right;">0.577</td>
+<td style="text-align: right;">98.4</td>
+<td style="text-align: right;">12.01</td>
+<td style="text-align: right;">20.8</td>
+<td style="text-align: right;">1306</td>
+<td style="text-align: right;">92</td>
+<td style="text-align: right;">2425</td>
+<td style="text-align: right;">116.4</td>
+<td style="text-align: right;">44.6</td>
+</tr>
+<tr>
+<td style="text-align: left;">700-800</td>
+<td style="text-align: right;">0.639</td>
+<td style="text-align: right;">90.4</td>
+<td style="text-align: right;">11.5</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">2691</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">4429</td>
+<td style="text-align: right;">246.2</td>
+<td style="text-align: right;">44.4</td>
+</tr>
+<tr>
+<td style="text-align: left;">800-900</td>
+<td style="text-align: right;">0.702</td>
+<td style="text-align: right;">84.5</td>
+<td style="text-align: right;">13.47</td>
+<td style="text-align: right;">19.2</td>
+<td style="text-align: right;">3354</td>
+<td style="text-align: right;">165</td>
+<td style="text-align: right;">5013</td>
+<td style="text-align: right;">261.2</td>
+<td style="text-align: right;">36.8</td>
+</tr>
+<tr>
+<td style="text-align: left;">900-1000</td>
+<td style="text-align: right;">0.765</td>
+<td style="text-align: right;">76</td>
+<td style="text-align: right;">13.43</td>
+<td style="text-align: right;">17.6</td>
+<td style="text-align: right;">4199</td>
+<td style="text-align: right;">126</td>
+<td style="text-align: right;">5656</td>
+<td style="text-align: right;">322.1</td>
+<td style="text-align: right;">37.8</td>
 </tr>
 </tbody>
 </table>
-<p>Look at <code>Street km/sq km</code>. It is 23 at 100 meters and 20.7 at a kilometer. Lower Manhattan hands you about 22 kilometers of street for every square kilometer you enclose, no matter how wide the band. That is what a grid does, and it is why buffers are fine here. Crimes per square kilometer runs 3,176 to 4,476 across the whole table.</p>
+<p>The street supply is steady. <code>Street km/sq km</code> sits at 22 to 24 for the first six bands, which is what a grid does, and only sags at the end when the outer rings start hitting the Hudson and the East River.</p>
+<p>The crime density is not steady at all. 2,210 per square kilometer in the 400-500 band, 7,408 in the very next one. That is a factor of three between adjacent rings, and nothing about Canal Street changed in those hundred meters. What changed is that the 500-600 ring happens to catch a stretch of Broadway and the blocks around it. Ring geometry is picking which hot blocks you get.</p>
+<p>The last column is worth a look too. <code>% reachable</code> is the share of street in the band that is genuinely within that distance by shortest path on the network rather than as the crow flies. It starts at 95% and falls to 38%. Even in a clean grid, most of what the outer rings grab is further away on foot than the ring says, because you walk around blocks instead of through them.</p>
 <h1>The same thing with network orders</h1>
-<p>Instead of a width, expand over the network. Order 1 is the street you started on. Order 2 is that plus everything sharing an intersection with it. Order 3 adds everything sharing an intersection with those, and so on. TIGER gives you the node ids, so it is a breadth first search:</p>
+<p>Instead of a width, expand over the network. Order 1 is the street you started on. Order 2 is the segments that share an intersection with it. Order 3 is the segments that share an intersection with those, and so on. Each row below is only the segments first reached at that order. TIGER gives you the node ids, so it is a breadth first search:</p>
 <pre><code>def network_orders(streets, seed, max_order):
     pairs, node2seg = build_graph(streets)
     cur = set(seed)
@@ -203,7 +217,7 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 <thead>
 <tr>
 <th style="text-align: right;">Order</th>
-<th style="text-align: right;">Segments</th>
+<th style="text-align: right;">New segs</th>
 <th style="text-align: right;">Street km</th>
 <th style="text-align: right;">Thefts</th>
 <th style="text-align: right;">Robberies</th>
@@ -221,87 +235,87 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 </tr>
 <tr>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">36</td>
-<td style="text-align: right;">3.2</td>
-<td style="text-align: right;">535</td>
-<td style="text-align: right;">56</td>
-<td style="text-align: right;">184.5</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2.36</td>
+<td style="text-align: right;">338</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">156.5</td>
 </tr>
 <tr>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">86</td>
-<td style="text-align: right;">7.62</td>
-<td style="text-align: right;">1436</td>
-<td style="text-align: right;">95</td>
-<td style="text-align: right;">201</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">4.42</td>
+<td style="text-align: right;">901</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">212.9</td>
 </tr>
 <tr>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">147</td>
-<td style="text-align: right;">12.65</td>
-<td style="text-align: right;">2123</td>
-<td style="text-align: right;">136</td>
-<td style="text-align: right;">178.6</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">5.03</td>
+<td style="text-align: right;">687</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">144.6</td>
 </tr>
 <tr>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">213</td>
-<td style="text-align: right;">17.92</td>
-<td style="text-align: right;">4020</td>
-<td style="text-align: right;">191</td>
-<td style="text-align: right;">234.9</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">5.27</td>
+<td style="text-align: right;">1897</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">370.2</td>
 </tr>
 <tr>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">276</td>
-<td style="text-align: right;">23.05</td>
-<td style="text-align: right;">5401</td>
-<td style="text-align: right;">253</td>
-<td style="text-align: right;">245.3</td>
+<td style="text-align: right;">63</td>
+<td style="text-align: right;">5.12</td>
+<td style="text-align: right;">1381</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">281.6</td>
 </tr>
 <tr>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">355</td>
-<td style="text-align: right;">29.9</td>
-<td style="text-align: right;">7845</td>
-<td style="text-align: right;">331</td>
-<td style="text-align: right;">273.5</td>
+<td style="text-align: right;">79</td>
+<td style="text-align: right;">6.85</td>
+<td style="text-align: right;">2444</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">368.2</td>
 </tr>
 <tr>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">442</td>
-<td style="text-align: right;">37.29</td>
-<td style="text-align: right;">9816</td>
-<td style="text-align: right;">422</td>
-<td style="text-align: right;">274.6</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">7.39</td>
+<td style="text-align: right;">1971</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">279.1</td>
 </tr>
 <tr>
 <td style="text-align: right;">9</td>
-<td style="text-align: right;">541</td>
-<td style="text-align: right;">44.69</td>
-<td style="text-align: right;">11244</td>
-<td style="text-align: right;">515</td>
-<td style="text-align: right;">263.1</td>
+<td style="text-align: right;">99</td>
+<td style="text-align: right;">7.41</td>
+<td style="text-align: right;">1428</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">205.4</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">652</td>
-<td style="text-align: right;">53.46</td>
-<td style="text-align: right;">12316</td>
-<td style="text-align: right;">574</td>
-<td style="text-align: right;">241.1</td>
+<td style="text-align: right;">111</td>
+<td style="text-align: right;">8.77</td>
+<td style="text-align: right;">1072</td>
+<td style="text-align: right;">59</td>
+<td style="text-align: right;">129</td>
 </tr>
 </tbody>
 </table>
 <p>That 845 meters of Canal Street carries 222 crimes over three years. There is no area denominator anywhere in this table and there does not need to be one. You have a length and a count.</p>
-<p>In Manhattan the two methods agree, which is the honest result. If Canal Street were the only site I looked at, the conclusion would be use whichever you like.</p>
+<p>Per street kilometer still moves around, because some orders reach busier blocks than others. The difference is that the denominator is a thing that exists rather than a circle you drew.</p>
 <h1>The Brooklyn Bridge</h1>
 <p>Same code, seeded on the span over the river.</p>
 <p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/BrooklynBridge_Map.png" /></p>
 <table>
 <thead>
 <tr>
-<th style="text-align: right;">Meters</th>
+<th style="text-align: left;">Band (m)</th>
 <th style="text-align: right;">Area</th>
 <th style="text-align: right;">% Land</th>
 <th style="text-align: right;">Street km</th>
@@ -310,11 +324,12 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 <th style="text-align: right;">Robberies</th>
 <th style="text-align: right;">Per sq km</th>
 <th style="text-align: right;">Per street km</th>
+<th style="text-align: right;">% reachable</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align: right;">100</td>
+<td style="text-align: left;">0-100</td>
 <td style="text-align: right;">0.187</td>
 <td style="text-align: right;">32.1</td>
 <td style="text-align: right;">3.3</td>
@@ -323,118 +338,129 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">193</td>
 <td style="text-align: right;">10.9</td>
+<td style="text-align: right;">90.7</td>
 </tr>
 <tr>
-<td style="text-align: right;">200</td>
-<td style="text-align: right;">0.428</td>
-<td style="text-align: right;">40.9</td>
-<td style="text-align: right;">6.15</td>
-<td style="text-align: right;">14.4</td>
-<td style="text-align: right;">114</td>
-<td style="text-align: right;">5</td>
-<td style="text-align: right;">278</td>
-<td style="text-align: right;">19.3</td>
+<td style="text-align: left;">100-200</td>
+<td style="text-align: right;">0.241</td>
+<td style="text-align: right;">47.8</td>
+<td style="text-align: right;">2.85</td>
+<td style="text-align: right;">11.9</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">345</td>
+<td style="text-align: right;">29.1</td>
+<td style="text-align: right;">75.3</td>
 </tr>
 <tr>
-<td style="text-align: right;">300</td>
-<td style="text-align: right;">0.731</td>
-<td style="text-align: right;">49.2</td>
-<td style="text-align: right;">10.19</td>
-<td style="text-align: right;">13.9</td>
-<td style="text-align: right;">245</td>
-<td style="text-align: right;">28</td>
-<td style="text-align: right;">373</td>
-<td style="text-align: right;">26.8</td>
+<td style="text-align: left;">200-300</td>
+<td style="text-align: right;">0.304</td>
+<td style="text-align: right;">60.7</td>
+<td style="text-align: right;">4.03</td>
+<td style="text-align: right;">13.3</td>
+<td style="text-align: right;">131</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">507</td>
+<td style="text-align: right;">38.2</td>
+<td style="text-align: right;">61.2</td>
 </tr>
 <tr>
-<td style="text-align: right;">400</td>
-<td style="text-align: right;">1.097</td>
-<td style="text-align: right;">55.8</td>
-<td style="text-align: right;">15.79</td>
-<td style="text-align: right;">14.4</td>
-<td style="text-align: right;">483</td>
+<td style="text-align: left;">300-400</td>
+<td style="text-align: right;">0.366</td>
+<td style="text-align: right;">69.1</td>
+<td style="text-align: right;">5.61</td>
+<td style="text-align: right;">15.3</td>
+<td style="text-align: right;">238</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">721</td>
+<td style="text-align: right;">47.1</td>
+<td style="text-align: right;">53.9</td>
+</tr>
+<tr>
+<td style="text-align: left;">400-500</td>
+<td style="text-align: right;">0.429</td>
+<td style="text-align: right;">67.9</td>
+<td style="text-align: right;">8.46</td>
+<td style="text-align: right;">19.7</td>
+<td style="text-align: right;">914</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">2222</td>
+<td style="text-align: right;">112.7</td>
+<td style="text-align: right;">43.2</td>
+</tr>
+<tr>
+<td style="text-align: left;">500-600</td>
+<td style="text-align: right;">0.492</td>
+<td style="text-align: right;">72.5</td>
+<td style="text-align: right;">9.22</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;">535</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">1170</td>
+<td style="text-align: right;">62.4</td>
+<td style="text-align: right;">37.8</td>
+</tr>
+<tr>
+<td style="text-align: left;">600-700</td>
+<td style="text-align: right;">0.554</td>
+<td style="text-align: right;">77.9</td>
+<td style="text-align: right;">10.24</td>
+<td style="text-align: right;">18.5</td>
+<td style="text-align: right;">728</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">1472</td>
+<td style="text-align: right;">79.7</td>
+<td style="text-align: right;">36.5</td>
+</tr>
+<tr>
+<td style="text-align: left;">700-800</td>
+<td style="text-align: right;">0.617</td>
+<td style="text-align: right;">79.1</td>
+<td style="text-align: right;">10.83</td>
+<td style="text-align: right;">17.6</td>
+<td style="text-align: right;">1435</td>
 <td style="text-align: right;">54</td>
-<td style="text-align: right;">489</td>
-<td style="text-align: right;">34</td>
+<td style="text-align: right;">2413</td>
+<td style="text-align: right;">137.4</td>
+<td style="text-align: right;">28.8</td>
 </tr>
 <tr>
-<td style="text-align: right;">500</td>
-<td style="text-align: right;">1.526</td>
-<td style="text-align: right;">59.2</td>
-<td style="text-align: right;">24.25</td>
-<td style="text-align: right;">15.9</td>
-<td style="text-align: right;">1397</td>
-<td style="text-align: right;">93</td>
-<td style="text-align: right;">976</td>
-<td style="text-align: right;">61.4</td>
+<td style="text-align: left;">800-900</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">11.79</td>
+<td style="text-align: right;">17.3</td>
+<td style="text-align: right;">1732</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: right;">2682</td>
+<td style="text-align: right;">154.7</td>
+<td style="text-align: right;">21.6</td>
 </tr>
 <tr>
-<td style="text-align: right;">600</td>
-<td style="text-align: right;">2.018</td>
-<td style="text-align: right;">62.5</td>
-<td style="text-align: right;">33.47</td>
-<td style="text-align: right;">16.6</td>
-<td style="text-align: right;">1932</td>
-<td style="text-align: right;">133</td>
-<td style="text-align: right;">1023</td>
-<td style="text-align: right;">61.7</td>
-</tr>
-<tr>
-<td style="text-align: right;">700</td>
-<td style="text-align: right;">2.572</td>
-<td style="text-align: right;">65.8</td>
-<td style="text-align: right;">43.71</td>
-<td style="text-align: right;">17</td>
-<td style="text-align: right;">2660</td>
-<td style="text-align: right;">221</td>
-<td style="text-align: right;">1120</td>
-<td style="text-align: right;">65.9</td>
-</tr>
-<tr>
-<td style="text-align: right;">800</td>
-<td style="text-align: right;">3.189</td>
-<td style="text-align: right;">68.4</td>
-<td style="text-align: right;">54.54</td>
-<td style="text-align: right;">17.1</td>
-<td style="text-align: right;">4095</td>
-<td style="text-align: right;">275</td>
-<td style="text-align: right;">1370</td>
-<td style="text-align: right;">80.1</td>
-</tr>
-<tr>
-<td style="text-align: right;">900</td>
-<td style="text-align: right;">3.869</td>
-<td style="text-align: right;">70.4</td>
-<td style="text-align: right;">66.33</td>
-<td style="text-align: right;">17.1</td>
-<td style="text-align: right;">5827</td>
-<td style="text-align: right;">366</td>
-<td style="text-align: right;">1601</td>
-<td style="text-align: right;">93.4</td>
-</tr>
-<tr>
-<td style="text-align: right;">1000</td>
-<td style="text-align: right;">4.612</td>
-<td style="text-align: right;">71.9</td>
-<td style="text-align: right;">79.13</td>
+<td style="text-align: left;">900-1000</td>
+<td style="text-align: right;">0.743</td>
+<td style="text-align: right;">79.7</td>
+<td style="text-align: right;">12.8</td>
 <td style="text-align: right;">17.2</td>
-<td style="text-align: right;">7482</td>
-<td style="text-align: right;">468</td>
-<td style="text-align: right;">1724</td>
-<td style="text-align: right;">100.5</td>
+<td style="text-align: right;">1655</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: right;">2366</td>
+<td style="text-align: right;">137.2</td>
+<td style="text-align: right;">27.1</td>
 </tr>
 </tbody>
 </table>
-<p>At 100 meters the buffer is 32% land. The rest is the East River. And now watch crimes per square kilometer: 193 at 100 meters, 1,724 at a kilometer. Nine times higher, for the same piece of bridge. Nothing about the bridge changed, the buffer just grew until it reached land on both sides.</p>
-<p><code>Street km/sq km</code> shows the same thing from the other side. It falls from 17.7 to 13.9 and then climbs back to 17.2. Canal Street never does that.</p>
+<p>Compare the first two rows. The 100-200 ring has 29% more area than the 0-100 ring and 14% <em>less</em> street in it, because that second ring is almost entirely open water. In a grid, a bigger ring always means more street. Here it does not, and that is the whole problem in two rows.</p>
+<p>The 0-100 band is 32% land. Crime density climbs from 193 per square kilometer to 2,682, a factor of fourteen, purely as the rings work their way off the river and onto land.</p>
+<p><code>% reachable</code> gets worse than Canal Street, down to 22% in the 800-900 band. Four fifths of the street that ring grabs is not actually 800 to 900 meters from the bridge on foot.</p>
 <p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/Denominator.png" /></p>
-<p>Canal Street is blue, the bridge is brown. Any comparison you make between those two places using crime per square kilometer is comparing their geometry, not their crime.</p>
+<p>Canal Street is blue, the bridge is brown. The middle panel is the one that matters -- Canal is flat in the twenties until the river, the bridge dives to 12 and climbs back. Any comparison between those two places using crime per square kilometer is comparing their geometry, not their crime.</p>
 <p>The network orders have no such problem, because there is no area:</p>
 <table>
 <thead>
 <tr>
 <th style="text-align: right;">Order</th>
-<th style="text-align: right;">Segments</th>
+<th style="text-align: right;">New segs</th>
 <th style="text-align: right;">Street km</th>
 <th style="text-align: right;">Thefts</th>
 <th style="text-align: right;">Robberies</th>
@@ -452,85 +478,85 @@ e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
 </tr>
 <tr>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">15</td>
-<td style="text-align: right;">1.81</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0.48</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1.1</td>
+<td style="text-align: right;">4.1</td>
 </tr>
 <tr>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">2.82</td>
 <td style="text-align: right;">15</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">1.01</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">14.8</td>
 </tr>
 <tr>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">48</td>
-<td style="text-align: right;">4.03</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">13.9</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">1.21</td>
+<td style="text-align: right;">39</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">32.3</td>
 </tr>
 <tr>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">68</td>
-<td style="text-align: right;">5.94</td>
-<td style="text-align: right;">85</td>
-<td style="text-align: right;">8</td>
-<td style="text-align: right;">15.7</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1.91</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">19.4</td>
 </tr>
 <tr>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">101</td>
-<td style="text-align: right;">8.24</td>
-<td style="text-align: right;">181</td>
-<td style="text-align: right;">26</td>
-<td style="text-align: right;">25.1</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: right;">2.3</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">49.5</td>
 </tr>
 <tr>
 <td style="text-align: right;">7</td>
-<td style="text-align: right;">141</td>
-<td style="text-align: right;">11.71</td>
-<td style="text-align: right;">212</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">20.6</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">3.47</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">9.8</td>
 </tr>
 <tr>
 <td style="text-align: right;">8</td>
-<td style="text-align: right;">194</td>
-<td style="text-align: right;">15.16</td>
-<td style="text-align: right;">250</td>
-<td style="text-align: right;">36</td>
-<td style="text-align: right;">18.9</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">3.45</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">13.1</td>
 </tr>
 <tr>
 <td style="text-align: right;">9</td>
-<td style="text-align: right;">254</td>
-<td style="text-align: right;">20.02</td>
-<td style="text-align: right;">355</td>
-<td style="text-align: right;">50</td>
-<td style="text-align: right;">20.2</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: right;">4.86</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">24.5</td>
 </tr>
 <tr>
 <td style="text-align: right;">10</td>
-<td style="text-align: right;">320</td>
-<td style="text-align: right;">25.12</td>
-<td style="text-align: right;">527</td>
-<td style="text-align: right;">65</td>
-<td style="text-align: right;">23.6</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">5.1</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">36.6</td>
 </tr>
 </tbody>
 </table>
-<p>Orders 1 and 2 add almost nothing, 1.33 kilometers of bridge and then 480 more meters. That is the network telling you a bridge is a bottleneck, it has two ends and no cross streets. A band of fixed width cannot express that, a graph does it for free.</p>
+<p>Order 2 adds nine segments and 480 meters. Order 2 at Canal Street adds twenty four segments and 2.4 kilometers. That is the network telling you a bridge is a bottleneck, it has two ends and no cross streets. A band of fixed width cannot express that, a graph does it for free.</p>
 <h1>Caveats</h1>
 <p>Network order is not a distance. Order 10 reaches a median of 430 meters along the network at Canal Street and 392 meters at the bridge, and that exchange rate is a property of the local network. Orders are comparable within a site, not across sites. If you need metric comparability, band by network distance instead, which is the <code>net_dist</code> function in the repo.</p>
 <p>The zero crimes on the bridge span is very likely a geocoding artifact. NYPD complaints get addresses, and an incident on the walkway probably lands at whichever entrance took the report. A street unit analysis inherits whatever the geocoder did.</p>
 <h1>What I would actually do</h1>
-<p>Buffers are not wrong, they just assume area is a reasonable proxy for opportunity. In a dense uniform grid it is, which is why Canal Street came out the same either way.</p>
-<p>The check is cheap. Clip the street network to your buffer and divide street length by area. If that ratio is stable across the widths you care about, use the buffer, it is one click and everybody understands it. If it swings the way it does at the bridge, use a street network measure.</p>
+<p>Buffers are not wrong, they just assume area is a reasonable proxy for opportunity. In a dense uniform grid it mostly is, which is why Canal Street's street supply held steady.</p>
+<p>The check is cheap. Clip the street network to your bands and divide street length by area. If that ratio is stable across the widths you care about, a buffer is fine, it is one click and everybody understands it. If it moves the way it does at the bridge, use a street network measure.</p>
 <p>This matters most at waterfronts, parks, highways, rail corridors and big parking lots -- anywhere the built environment is not a grid. Those are also the places where somebody is most likely to be arguing about a distance in an ordinance.</p>
 <p>If you want more on the underlying spatial statistics, I have written about <a href="https://crimede-coder.com/blogposts/2025/SPPT">the spatial point pattern test</a> for comparing crime distributions over time, and about <a href="https://andrewpwheeler.com/2020/10/08/recent-papers-on-hot-spots-of-crime-in-dallas/">identifying high return hot spots</a>.</p>
 </body>
