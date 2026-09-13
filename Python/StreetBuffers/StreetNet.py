@@ -8,7 +8,6 @@ import networkx as nx
 import numpy as np
 import pandas as pd
 from shapely.geometry import Point
-from shapely.ops import nearest_points
 
 # UTM 18N, meters, covers all of NYC
 CRS = 'EPSG:32618'
@@ -63,11 +62,12 @@ def build_nx(streets):
 
 
 def net_dist(streets, seed, cutoff=6000):
-    '''Shortest path distance along the street network from the seed segment
+    '''Shortest path distance along the street network from the seed segments
     to every other segment. A segment is scored by its nearer endpoint.'''
     G = build_nx(streets)
+    src = set(streets['TNIDF'].loc[seed]) | set(streets['TNIDT'].loc[seed])
     d = {}
-    for n in (streets['TNIDF'].iloc[seed], streets['TNIDT'].iloc[seed]):
+    for n in src:
         if n not in G:
             continue
         dd = nx.single_source_dijkstra_path_length(G, n, cutoff=cutoff,
@@ -80,13 +80,20 @@ def net_dist(streets, seed, cutoff=6000):
     return out
 
 
-def snap_anchor(streets, lon, lat, name=None):
-    '''Puts an anchor point exactly on the nearest street, optionally
-    restricted to segments with a given FULLNAME'''
-    pt = gpd.GeoSeries([Point(lon, lat)], crs='EPSG:4326').to_crs(CRS).iloc[0]
-    cand = streets if name is None else streets[streets['FULLNAME'] == name]
-    idx = cand.distance(pt).idxmin()
-    return nearest_points(streets.geometry.loc[idx], pt)[0], idx
+def select_site(streets, name, within=None, lon=None, lat=None, water=None):
+    '''The study site is a run of street, not a point. Takes every segment
+    with the given name, then optionally narrows it either to segments whose
+    centre is within `within` meters of lon/lat, or to the segments that cross
+    `water`. Returns the segment positions and their merged geometry, which is
+    what gets buffered.'''
+    cand = streets[streets['FULLNAME'] == name]
+    if within is not None:
+        pt = gpd.GeoSeries([Point(lon, lat)], crs='EPSG:4326').to_crs(CRS).iloc[0]
+        cand = cand[cand.centroid.distance(pt) <= within]
+    if water is not None:
+        cand = cand[cand.intersects(water)]
+    idx = np.array(sorted(cand.index.values))
+    return idx, cand.geometry.union_all()
 
 
 def snap_crimes(crimes, streets, max_dist=50):

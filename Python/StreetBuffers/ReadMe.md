@@ -2,11 +2,16 @@
 
 Code for the blog post [Fixed width buffers versus street network measures](BuffersVsNetwork.md).
 
-Compares fixed width circular buffers against street network expansion for two
-sites in New York City, Canal St at Broadway (dense grid) and the middle of the
-Brooklyn Bridge (mostly river). Point of the post is that a buffer divides by
-area, and area is only a reasonable proxy for criminal opportunity when the
+Compares fixed width buffers against street network expansion for two runs of
+street in New York City, Canal St at Broadway (dense grid) and the span of the
+Brooklyn Bridge over the East River. Point of the post is that a buffer divides
+by area, and area is only a reasonable proxy for criminal opportunity when the
 ratio of street to area is stable.
+
+Both sites are a line, not a point. Buffers are taken out from the street
+itself, and the network seed is the same set of segments. Canal St is the 12
+segments within 400m of Broadway (845m of street), the bridge is the 6 segments
+named `Brooklyn Brg` that cross water (1,327m, 86% of it over the river).
 
 ## Running it
 
@@ -46,3 +51,7 @@ on the EDGES url directly.
 
 Everything is projected to UTM 18N (EPSG:32618) so units are meters. Crimes snap
 to their nearest segment within 50m, which catches 99.0% of them.
+
+Sites are configured in the `SITES` dict at the top of `Analysis.py`. Pass
+`within` to trim a named street to a radius around a point, or `over_water` to
+keep only the segments crossing water.

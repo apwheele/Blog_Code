@@ -19,9 +19,11 @@ DIST = list(range(100, 1100, 100))   # buffers, meters
 ORD = 10                             # network orders
 COL = cdcplot.colors
 
-# the two anchors, lon/lat, and the street name to snap onto
-SITES = {'Canal St': (-74.0005, 40.7190, 'Canal St'),
-         'Brooklyn Bridge': (-73.9969, 40.7061, 'Brooklyn Brg')}
+# Each site is a run of street, not a point. Canal St is trimmed to the blocks
+# around Broadway where the counterfeit market sits, the bridge is every
+# segment TIGER names Brooklyn Brg.
+SITES = {'Canal St': dict(name='Canal St', lon=-74.0005, lat=40.7190, within=400),
+         'Brooklyn Bridge': dict(name='Brooklyn Brg', over_water=True)}
 
 
 def load():
@@ -43,7 +45,7 @@ def fmt(df, cols):
     return out
 
 
-def map_panel(ax, st, wt, cr, anchor, box, title):
+def map_panel(ax, st, wt, box, title):
     '''common basemap for the two map figures'''
     wt.plot(ax=ax, color='#C6DBEF', edgecolor='none', zorder=0)
     st.plot(ax=ax, color='#999999', linewidth=0.5, zorder=1)
@@ -55,28 +57,28 @@ def map_panel(ax, st, wt, cr, anchor, box, title):
     ax.grid(False)
 
 
-def buffer_map(st, wt, cr, anchor, box, nm, out):
+def buffer_map(st, wt, cr, line, seed, orders, box, nm, out):
     fig, axs = plt.subplots(1, 2, figsize=(12, 6))
-    # left, the buffers
-    map_panel(axs[0], st, wt, cr, anchor, box, f'{nm}, buffers every 100m')
-    sub = cr[cr.distance(anchor) <= 1100]
+    seedgs = gpd.GeoSeries([line])
+
+    # left, the buffers around the street itself
+    map_panel(axs[0], st, wt, box, f'{nm}, buffers every 100m')
+    sub = cr[cr.distance(line) <= 1100]
     axs[0].scatter(sub.geometry.x, sub.geometry.y, s=1.5, color=COL['brown'],
                    alpha=0.35, zorder=2)
     for d in DIST:
-        gpd.GeoSeries([anchor.buffer(d)]).boundary.plot(
-            ax=axs[0], color=COL['cdblue'], linewidth=1.1, zorder=3)
-    axs[0].scatter([anchor.x], [anchor.y], s=70, color='k', marker='*', zorder=4)
-    # right, the network orders
-    map_panel(axs[1], st, wt, cr, anchor, box, f'{nm}, network orders 1 to {ORD}')
-    orders = st.attrs['orders']
+        gpd.GeoSeries([line.buffer(d)]).boundary.plot(
+            ax=axs[0], color=COL['cdblue'], linewidth=1.0, zorder=3)
+    seedgs.plot(ax=axs[0], color='k', linewidth=3.0, zorder=5)
+
+    # right, the network orders out from that same street
+    map_panel(axs[1], st, wt, box, f'{nm}, network orders 1 to {ORD}')
     cmap = plt.get_cmap('viridis')
-    # draw the biggest order first, each smaller order paints over it, so the
-    # colour you end up seeing is the order at which a segment first entered
     for o in range(ORD - 1, -1, -1):
         st.loc[orders[o]].plot(ax=axs[1], color=cmap(1 - o/(ORD-1)),
                                linewidth=1.4 + 1.6*(1 - o/(ORD-1)),
                                zorder=2 + (ORD - o))
-    axs[1].scatter([anchor.x], [anchor.y], s=70, color='k', marker='*', zorder=40)
+    seedgs.plot(ax=axs[1], color='k', linewidth=3.0, zorder=40)
     sm = plt.cm.ScalarMappable(cmap=cmap.reversed(),
                                norm=plt.Normalize(vmin=1, vmax=ORD))
     cb = fig.colorbar(sm, ax=axs[1], fraction=0.046, pad=0.02)
@@ -142,13 +144,15 @@ if __name__ == '__main__':
           f'({100*snapped.shape[0]/cr.shape[0]:.1f}%)')
 
     bufs, nets, md = {}, {}, []
-    for nm, (lon, lat, fn) in SITES.items():
-        anchor, seed = sn.snap_anchor(st, lon, lat, name=fn)
-        orders = sn.network_orders(st, [seed], ORD)
-        st.attrs['orders'] = orders
+    for nm, cfg in SITES.items():
+        cfg = dict(cfg)
+        if cfg.pop('over_water', False):
+            cfg['water'] = wt.geometry.union_all()
+        seed, line = sn.select_site(st, **cfg)
+        orders = sn.network_orders(st, seed, ORD)
 
         nd = sn.net_dist(st, seed)
-        b = sn.buffer_table(anchor, st, cr, wt, DIST, ndist=nd)
+        b = sn.buffer_table(line, st, cr, wt, DIST, ndist=nd)
         n = sn.network_table(orders, st, snapped)
         bufs[nm], nets[nm] = b, n
 
@@ -156,8 +160,10 @@ if __name__ == '__main__':
         b.to_csv(f'{slug}_Buffer.csv', index=False)
         n.to_csv(f'{slug}_Network.csv', index=False)
 
-        box = (anchor.x - 1250, anchor.x + 1250, anchor.y - 1250, anchor.y + 1250)
-        buffer_map(st, wt, cr, anchor, box, nm, f'{slug}_Map.png')
+        x0, y0, x1, y1 = line.bounds
+        pad = 1150
+        box = (x0 - pad, x1 + pad, y0 - pad, y1 + pad)
+        buffer_map(st, wt, cr, line, seed, orders, box, nm, f'{slug}_Map.png')
 
         print(f'\n===== {nm} (seed segment {seed}) =====')
         print('BUFFERS')
