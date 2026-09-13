@@ -1,0 +1,17 @@
+[project]
+name = "streetbuffers"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "geopandas>=1.1.4",
+    "markdown>=3.10.3",
+    "matplotlib>=3.11.2",
+    "networkx>=3.6.1",
+    "pandas>=3.0.5",
+    "pygris>=0.2.1",
+    "requests>=2.34.2",
+    "shapely>=2.1.2",
+    "tabulate>=0.10.0",
+]

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixed width buffers versus street network measures</title>
+<style>
+body {font-family: Verdana, Geneva, sans-serif; font-size: 15px;
+      line-height: 1.65; color: #222; max-width: 860px;
+      margin: 40px auto; padding: 0 20px;}
+h1 {font-size: 26px; border-bottom: 2px solid #286090; padding-bottom: 6px;
+    margin-top: 42px;}
+h2 {font-size: 20px; margin-top: 32px;}
+a {color: #286090;}
+img {max-width: 100%; height: auto; display: block; margin: 18px auto;}
+pre {background: #f5f5f5; border-left: 3px solid #455778; padding: 12px 14px;
+     overflow-x: auto; font-size: 13px; line-height: 1.45;}
+code {font-family: Consolas, Monaco, monospace; font-size: 13px;}
+pre code {background: none;}
+p code, li code {background: #f5f5f5; padding: 1px 4px; border-radius: 3px;}
+table {border-collapse: collapse; margin: 18px 0; font-size: 13px;
+       display: block; overflow-x: auto; max-width: 100%;}
+th, td {border: 1px solid #ddd; padding: 5px 9px; text-align: right;}
+th {background: #455778; color: white; font-weight: normal;}
+tr:nth-child(even) {background: #f7f7f7;}
+blockquote {border-left: 3px solid #C5C88F; margin-left: 0; padding-left: 14px;
+            color: #555;}
+</style>
+</head>
+<body>
+<p><em>AI disclosure -- this post was created via Claude Code using Claude Opus 5. I gave it the idea, the two study sites and my prior blog posts as style examples, and it wrote the code and the draft. I will always disclose when I use AI to heavily write any content on this blog. (I use it for minor copy editing all the time.)</em></p>
+<p>Buffers are the default way crime analysts define the area around a place. You have a bar, a bus stop, a vacant lot, and you want to know how much crime is nearby, so you draw a circle. Pick 500 feet, pick a quarter mile, pick whatever the ordinance says. Everybody does it, ArcGIS makes it one click, and for a lot of questions it is fine.</p>
+<p>This post is about when it is not fine. The short version is that a buffer's denominator is <em>area</em>, and area is not the thing that generates crime. Streets are. When the ratio of street to area is stable, buffers and street network measures tell you the same story. When it is not stable, the buffer will hand you a number that looks like a crime rate and is actually a statement about how much water you drew a circle around.</p>
+<p>I use two spots in New York City. The first is Canal Street at Broadway, the counterfeit goods market, which has been <a href="https://fordhampoliticalreview.org/counterfeit-economies-the-politics-policing-of-canal-street/">there since the 1980s</a> and still gets <a href="https://pix11.com/news/crime/nypd-seizes-151m-in-counterfeit-goods-on-canal-street-other-areas-of-lower-manhattan/">seven figure NYPD seizures</a>. It sits in about as clean a street grid as you will find. The second is the middle of the Brooklyn Bridge, where <a href="https://brooklyneagle.com/articles/2025/08/27/illegal-vending-resurfaces-on-brooklyn-bridge-despite-city-ban/">illegal vending has been an on-and-off enforcement problem</a> since the city banned it from the walkway in 2024. It sits in a river.</p>
+<p><a href="https://github.com/apwheele/Blog_Code/tree/master/Python/StreetBuffers">Data and code are on github</a>.</p>
+<h1>The setup</h1>
+<p>Three years of NYPD complaint data, 2023 through 2025, thefts (petit and grand larceny) and robberies, pulled from the NYC open data Socrata endpoint. That is 49,270 thefts and 2,558 robberies in the bounding box.</p>
+<p>For the street network I use <code>pygris</code>, which is Kyle Walker's <code>tigris</code> ported to python. Set the project up with <code>uv</code>:</p>
+<pre><code>uv init
+uv add geopandas pygris networkx matplotlib requests
+</code></pre>
+<p>There is one trap here worth flagging, because it cost me a rewrite. The obvious function is <code>pygris.roads()</code>, and it is the wrong one. <code>roads()</code> returns whole named streets, so Canal Street comes back as three features, the main one running 2.1 kilometers end to end. You cannot expand a network over that, there is nothing to expand across. What you want is TIGER <strong>edges</strong>, which are split at every intersection and carry <code>TNIDF</code> and <code>TNIDT</code> node ids -- the topology is already in the file, you do not have to build it by snapping coordinates yourself.</p>
+<p><code>pygris</code> does not expose <code>edges()</code> the way <code>tigris</code> does, but its internal loader will happily take the URL:</p>
+<pre><code>from pygris.helpers import _load_tiger
+
+url = 'https://www2.census.gov/geo/tiger/TIGER2023/EDGES/tl_2023_36061_edges.zip'
+e = _load_tiger(url, cache=True)
+e = e[(e['ROADFLG'] == 'Y') &amp; (e['MTFCC'].isin(KEEP))]
+</code></pre>
+<p>Same street, 40 edges instead of 3. After filtering to actual travel ways and clipping to the study area that leaves 6,816 segments across Manhattan and Brooklyn. Everything is projected to UTM 18N so the units are meters.</p>
+<p>Crimes get assigned to their nearest segment within 50 meters, which picks up 99.0% of them. That is the standard street units setup -- the crime belongs to a block, not to a polygon.</p>
+<h1>Buffers around Canal Street</h1>
+<p>Buffers every 100 meters out to a kilometer, and for each one I take the area, clip the street network to it, and count crimes inside.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/CanalSt_Map.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Meters</th>
+<th style="text-align: right;">Area</th>
+<th style="text-align: right;">% Land</th>
+<th style="text-align: right;">Street km</th>
+<th style="text-align: right;">Street km/sq km</th>
+<th style="text-align: right;">Thefts</th>
+<th style="text-align: right;">Robberies</th>
+<th style="text-align: right;">Per sq km</th>
+<th style="text-align: right;">Per street km</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.68</td>
+<td style="text-align: right;">21.6</td>
+<td style="text-align: right;">175</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">6408</td>
+<td style="text-align: right;">296.4</td>
+</tr>
+<tr>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.125</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">3.03</td>
+<td style="text-align: right;">24.1</td>
+<td style="text-align: right;">782</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">6631</td>
+<td style="text-align: right;">275</td>
+</tr>
+<tr>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">6.37</td>
+<td style="text-align: right;">22.6</td>
+<td style="text-align: right;">1190</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">4488</td>
+<td style="text-align: right;">198.8</td>
+</tr>
+<tr>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">11.32</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: right;">1690</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">3577</td>
+<td style="text-align: right;">158.6</td>
+</tr>
+<tr>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">0.784</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">17.25</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">3692</td>
+<td style="text-align: right;">168</td>
+<td style="text-align: right;">4923</td>
+<td style="text-align: right;">223.8</td>
+</tr>
+<tr>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">1.129</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">24.84</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">5663</td>
+<td style="text-align: right;">261</td>
+<td style="text-align: right;">5246</td>
+<td style="text-align: right;">238.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">700</td>
+<td style="text-align: right;">1.537</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">33.78</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">6698</td>
+<td style="text-align: right;">341</td>
+<td style="text-align: right;">4580</td>
+<td style="text-align: right;">208.4</td>
+</tr>
+<tr>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">2.007</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">43.93</td>
+<td style="text-align: right;">21.9</td>
+<td style="text-align: right;">9117</td>
+<td style="text-align: right;">457</td>
+<td style="text-align: right;">4769</td>
+<td style="text-align: right;">218</td>
+</tr>
+<tr>
+<td style="text-align: right;">900</td>
+<td style="text-align: right;">2.541</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">56.04</td>
+<td style="text-align: right;">22.1</td>
+<td style="text-align: right;">12253</td>
+<td style="text-align: right;">577</td>
+<td style="text-align: right;">5050</td>
+<td style="text-align: right;">228.9</td>
+</tr>
+<tr>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">3.137</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">69.28</td>
+<td style="text-align: right;">22.1</td>
+<td style="text-align: right;">13855</td>
+<td style="text-align: right;">692</td>
+<td style="text-align: right;">4638</td>
+<td style="text-align: right;">210</td>
+</tr>
+</tbody>
+</table>
+<p>Look at the <code>Street km/sq km</code> column. It is 21.6, then 24.1, and then it settles down to 22 and sits there for the rest of the table. Lower Manhattan delivers about 22 kilometers of street for every square kilometer of circle, no matter how big you draw the circle. That is what a grid does, and it is why buffers work fine here.</p>
+<p>The crime density column bounces more than you might expect though. 6,631 per square kilometer at 200 meters, down to 3,577 at 400 meters, back up to 5,246 at 600. Nothing changed on the ground between those two numbers. That is entirely about which blocks happened to fall inside a circle of a particular radius, and it is the first hint that the measure is picking up geometry rather than crime.</p>
+<h1>The same thing with network orders</h1>
+<p>Instead of a radius, expand over the network. Order 1 is the segment you start on. Order 2 is that segment plus everything sharing an intersection with it. Order 3 adds everything sharing an intersection with those, and so on. Because TIGER gives you the node ids, the whole thing is a breadth first search and the code is short:</p>
+<pre><code>def network_orders(streets, seed, max_order):
+    pairs, node2seg = build_graph(streets)
+    cur = set(seed)
+    out = [np.array(sorted(cur))]
+    done_nodes = set()
+    for _ in range(max_order - 1):
+        front = set()
+        for i in cur:
+            front.update(pairs[i])
+        new_nodes = front - done_nodes
+        done_nodes |= front
+        add = set()
+        for n in new_nodes:
+            add |= node2seg.get(n, set())
+        cur = cur | add
+        out.append(np.array(sorted(cur)))
+    return out
+</code></pre>
+<p>The right hand panel of the map above shows the result, yellow at the seed grading out to purple at order 10.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Order</th>
+<th style="text-align: right;">Segments</th>
+<th style="text-align: right;">Street km</th>
+<th style="text-align: right;">Thefts</th>
+<th style="text-align: right;">Robberies</th>
+<th style="text-align: right;">Per street km</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">383.8</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">201</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">481</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">1.52</td>
+<td style="text-align: right;">287</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">213.7</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">3.8</td>
+<td style="text-align: right;">832</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">235</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">6.68</td>
+<td style="text-align: right;">1192</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">189.4</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">118</td>
+<td style="text-align: right;">10.17</td>
+<td style="text-align: right;">2808</td>
+<td style="text-align: right;">119</td>
+<td style="text-align: right;">287.9</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">172</td>
+<td style="text-align: right;">14.97</td>
+<td style="text-align: right;">4268</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">296.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">230</td>
+<td style="text-align: right;">19.43</td>
+<td style="text-align: right;">6447</td>
+<td style="text-align: right;">216</td>
+<td style="text-align: right;">342.9</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">294</td>
+<td style="text-align: right;">24.7</td>
+<td style="text-align: right;">7386</td>
+<td style="text-align: right;">267</td>
+<td style="text-align: right;">309.8</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">364</td>
+<td style="text-align: right;">30.56</td>
+<td style="text-align: right;">8344</td>
+<td style="text-align: right;">336</td>
+<td style="text-align: right;">284</td>
+</tr>
+</tbody>
+</table>
+<p>That one block of Canal Street, 90 meters of it, carries 33 crimes over three years. The six segments at order 2 carry 231. There is no area denominator anywhere in this table, and there does not need to be one. You have a length, you have a count, and the ratio means something without any assumption about what is happening off the street.</p>
+<p>I want to be honest that in Manhattan this is not a dramatic improvement. Both methods land in the same place. Crimes per street kilometer runs 200 to 300 either way you slice it:</p>
+<p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/Compare.png" /></p>
+<p>If Canal Street were the only case I looked at, the honest conclusion would be <em>use whichever one you like</em>. So let me go find a case where it matters.</p>
+<h1>The Brooklyn Bridge</h1>
+<p>Same anchor logic, except the seed segment is a 570 meter span of the Brooklyn Bridge over the East River.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/BrooklynBridge_Map.png" /></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Meters</th>
+<th style="text-align: right;">Area</th>
+<th style="text-align: right;">% Land</th>
+<th style="text-align: right;">Street km</th>
+<th style="text-align: right;">Street km/sq km</th>
+<th style="text-align: right;">Thefts</th>
+<th style="text-align: right;">Robberies</th>
+<th style="text-align: right;">Per sq km</th>
+<th style="text-align: right;">Per street km</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">0.031</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.4</td>
+<td style="text-align: right;">12.7</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">200</td>
+<td style="text-align: right;">0.125</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.8</td>
+<td style="text-align: right;">6.4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">300</td>
+<td style="text-align: right;">0.282</td>
+<td style="text-align: right;">1.4</td>
+<td style="text-align: right;">1.2</td>
+<td style="text-align: right;">4.2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">400</td>
+<td style="text-align: right;">0.502</td>
+<td style="text-align: right;">19.7</td>
+<td style="text-align: right;">4.04</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">56</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">120</td>
+<td style="text-align: right;">14.9</td>
+</tr>
+<tr>
+<td style="text-align: right;">500</td>
+<td style="text-align: right;">0.784</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">7.64</td>
+<td style="text-align: right;">9.7</td>
+<td style="text-align: right;">138</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">194</td>
+<td style="text-align: right;">19.9</td>
+</tr>
+<tr>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">1.129</td>
+<td style="text-align: right;">42.4</td>
+<td style="text-align: right;">13.46</td>
+<td style="text-align: right;">11.9</td>
+<td style="text-align: right;">373</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">364</td>
+<td style="text-align: right;">30.5</td>
+</tr>
+<tr>
+<td style="text-align: right;">700</td>
+<td style="text-align: right;">1.537</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: right;">13.6</td>
+<td style="text-align: right;">1295</td>
+<td style="text-align: right;">81</td>
+<td style="text-align: right;">895</td>
+<td style="text-align: right;">65.8</td>
+</tr>
+<tr>
+<td style="text-align: right;">800</td>
+<td style="text-align: right;">2.007</td>
+<td style="text-align: right;">54.9</td>
+<td style="text-align: right;">29.16</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">1726</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: right;">918</td>
+<td style="text-align: right;">63.2</td>
+</tr>
+<tr>
+<td style="text-align: right;">900</td>
+<td style="text-align: right;">2.541</td>
+<td style="text-align: right;">59.3</td>
+<td style="text-align: right;">39.12</td>
+<td style="text-align: right;">15.4</td>
+<td style="text-align: right;">2416</td>
+<td style="text-align: right;">181</td>
+<td style="text-align: right;">1022</td>
+<td style="text-align: right;">66.4</td>
+</tr>
+<tr>
+<td style="text-align: right;">1000</td>
+<td style="text-align: right;">3.137</td>
+<td style="text-align: right;">62.9</td>
+<td style="text-align: right;">49.46</td>
+<td style="text-align: right;">15.8</td>
+<td style="text-align: right;">3881</td>
+<td style="text-align: right;">252</td>
+<td style="text-align: right;">1318</td>
+<td style="text-align: right;">83.6</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>% Land</code> column is the whole post in one column. At 100 and 200 meters the buffer is zero percent land. Not <em>mostly</em> water, all of it, a circle drawn on the East River with a bridge deck running through the middle. Even at a full kilometer you are at 63% land.</p>
+<p>Now read the crime density column next to it. Zero per square kilometer at 300 meters. If you handed that number to somebody without the map, they would tell you the middle of the Brooklyn Bridge is the safest place in New York City. It is not a crime rate. It is a statement about the East River.</p>
+<p>And watch <code>Street km/sq km</code> do something Canal Street never did. It starts at 12.7, falls to 4.2 at 300 meters, then climbs back to 15.8 by a kilometer. That U shape is the artifact. The circle is growing as the square of the radius the entire time, but the amount of street inside it grows in fits and starts -- first just the bridge deck, then nothing new as the circle expands over open water, then a rush of street as it finally reaches land on both sides.</p>
+<p><img alt="" src="https://raw.githubusercontent.com/apwheele/Blog_Code/master/Python/StreetBuffers/Denominator.png" /></p>
+<p>Canal Street is the flat blue line in the middle panel. The Brooklyn Bridge is the brown one. Same city, same data, same method, and the denominator behaves completely differently. Any comparison you make between those two places using crime per square kilometer is comparing a property of their geometry, not a property of their crime.</p>
+<p>The network orders have no such problem, because there is no area:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Order</th>
+<th style="text-align: right;">Segments</th>
+<th style="text-align: right;">Street km</th>
+<th style="text-align: right;">Thefts</th>
+<th style="text-align: right;">Robberies</th>
+<th style="text-align: right;">Per street km</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0.57</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">0.81</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1.2</td>
+</tr>
+<tr>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">1.47</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6.1</td>
+</tr>
+<tr>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">2.99</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">4.4</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">6.29</td>
+<td style="text-align: right;">80</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">101</td>
+<td style="text-align: right;">8.75</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">13.4</td>
+</tr>
+<tr>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">149</td>
+<td style="text-align: right;">11.88</td>
+<td style="text-align: right;">213</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">20.3</td>
+</tr>
+<tr>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">198</td>
+<td style="text-align: right;">16.05</td>
+<td style="text-align: right;">289</td>
+<td style="text-align: right;">41</td>
+<td style="text-align: right;">20.6</td>
+</tr>
+</tbody>
+</table>
+<p>Orders 1 and 2 add almost nothing -- 570 meters of bridge, then 30 more meters. That is the network telling you something true, which is that a bridge is a bottleneck. It has two ends and no cross streets. A circle cannot express that. The network expansion does it for free, because a bottleneck in the real world is a low degree node in the graph.</p>
+<h1>One thing I expected and did not get</h1>
+<p>I also computed shortest path distance along the network, and checked what share of the street length inside each buffer is genuinely within that distance on foot. I assumed the bridge would look terrible on this. It does not -- it runs 87 to 100%.</p>
+<p>The reason is worth sitting with. The anchor is <em>on</em> the bridge, and the bridge is the thing that connects Manhattan to Brooklyn. Places across the river really are close to the middle of the span in travel terms. The buffer gets the right answer here, just for the wrong reason, and it pays for it by also swallowing a third of a square kilometer of river.</p>
+<p>Canal Street is the one that loses street to unreachability, dropping from 90% at 100 meters to 81% at a kilometer. Even in a clean grid, about a fifth of what a circle grabs is further away than it looks, because you walk around blocks rather than through them.</p>
+<p>So the barrier story I went in expecting is not the story the data told. The denominator story is.</p>
+<h1>Caveats</h1>
+<p>A few things I would want a reviewer to push on.</p>
+<p><strong>Network order is not a distance.</strong> Order 10 at Canal Street reaches a median of 483 meters along the network. The same order 10 at the bridge reaches a median of 336 meters, because that seed is one long span with a cluster of short segments at each end. Order counts hops, not meters, and the exchange rate between the two is a property of the local network. Orders are comparable within a site and not across sites. If you need metric comparability, band by network distance instead -- the <code>net_dist</code> function in the repo gives you that, and it is a two line change.</p>
+<p><strong>Segment length is not standardized.</strong> TIGER edges split at intersections, which is what you want, but a long block and a short block are both one segment. Per kilometer handles this, per segment does not.</p>
+<p><strong>Zero crimes on the bridge span is probably a geocoding artifact.</strong> NYPD complaints get addresses, and an incident on the walkway very likely lands at whichever entrance the report was taken. So the vending enforcement that prompted me to pick this site would not show up on the span at all. That is a good reminder that a street unit analysis inherits whatever the geocoder did.</p>
+<p><strong>Three years of larceny in lower Manhattan is a lot of crime.</strong> These counts are large enough that none of the patterns above are small sample noise. Try the same exercise on robberies alone in a smaller city and the order 1 and 2 rows get very thin very fast.</p>
+<h1>What I would actually do</h1>
+<p>Buffers are not wrong. They are a measurement instrument with a known failure mode, and the failure mode is that they assume area is a reasonable proxy for opportunity. In a dense uniform grid it is, which is why Canal Street came out the same either way.</p>
+<p>The check is cheap. Clip the network to your buffer and divide street length by area. If that ratio is stable across the radii you care about, use the buffer, it is one click and everybody understands it. If it swings the way it does at the Brooklyn Bridge, the buffer is measuring your geography instead of your crime, and you want a street network measure instead.</p>
+<p>This matters most for exactly the cases people care about -- waterfronts, parks, highways, rail corridors, big box parking lots, anywhere the built environment is not a grid. Those are also the places where somebody is most likely to be arguing about a distance in an ordinance.</p>
+<p>If you want more on the underlying spatial statistics, I have written about <a href="https://crimede-coder.com/blogposts/2025/SPPT">the spatial point pattern test</a> for comparing crime distributions over time, and about <a href="https://andrewpwheeler.com/2020/10/08/recent-papers-on-hot-spots-of-crime-in-dallas/">identifying high return hot spots</a>. The geopandas and network code here is the kind of thing I cover in <a href="https://crimede-coder.com/blogposts/2024/PythonDataScience">my data science book</a>.</p>
+</body>
+</html>
